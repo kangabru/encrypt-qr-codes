@@ -34,18 +34,17 @@ export function generateQrCode(data: EncryptedQRData) {
   svgEl.removeAttribute("height");
   svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   svgEl.setAttribute("viewBox", `0 0 ${size} ${size}`);
-  svgEl.appendChild(createTextElement("Hint", 250, 15, 1));
-  svgEl.appendChild(createTextElement(data.hint, 250, 45, 2));
-  svgEl.appendChild(createTextElement(`${getDate()}`, 250, 480, 1.5));
+  svgEl.appendChild(createTextElement(data.hint, 30, 45));
+  svgEl.appendChild(createTextElement(`${getDate()}`, 470, 45, true));
   return svgEl;
 }
 
-function createTextElement(text: string, x: number, y: number, emSize: number) {
+function createTextElement(text: string, x: number, y: number, end?: boolean) {
   const el = document.createElementNS("http://www.w3.org/2000/svg", "text");
   el.setAttribute("x", x.toString());
   el.setAttribute("y", y.toString());
-  el.setAttribute("font-size", `${emSize}em`);
-  el.setAttribute("text-anchor", "middle");
+  el.setAttribute("font-size", `1.5em`);
+  el.setAttribute("text-anchor", end ? "end" : "start");
   el.setAttribute("font-family", "sans-serif");
   el.textContent = text;
   return el;
