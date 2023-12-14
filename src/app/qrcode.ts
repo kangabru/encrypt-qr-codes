@@ -1,14 +1,5 @@
 import { loadImageFromFile } from "@/common/use-image-load";
-import { getDate } from "@/common/utils";
 import { BrowserQRCodeReader, BrowserQRCodeSvgWriter } from "@zxing/library";
-
-export interface EncryptedQRData {
-  iv: string;
-  salt: string;
-  cipherText: string;
-  hint: string;
-  date: string;
-}
 
 export async function readQrCode(file: File) {
   const MAX_RETRIES = 10;
@@ -23,19 +14,23 @@ export async function readQrCode(file: File) {
       console.info(`Error decoding QR code (attempt ${i + 1}):`, e);
     }
   }
-  throw new Error("Failed to decode QR code");
+  throw new Error("Failed to read QR code");
 }
 
-export function generateQrCode(data: EncryptedQRData) {
+export function generateQrCode(
+  data: string,
+  textLeft?: string,
+  textRight?: string
+) {
   const writer = new BrowserQRCodeSvgWriter();
   const size = 500;
-  const svgEl = writer.write(JSON.stringify(data), size, size);
+  const svgEl = writer.write(data, size, size);
   svgEl.removeAttribute("width");
   svgEl.removeAttribute("height");
   svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   svgEl.setAttribute("viewBox", `0 0 ${size} ${size}`);
-  svgEl.appendChild(createTextElement(data.hint, 30, 45));
-  svgEl.appendChild(createTextElement(`${getDate()}`, 470, 45, true));
+  // textLeft && svgEl.appendChild(createTextElement(textLeft, 30, 35));
+  // textRight && svgEl.appendChild(createTextElement(textRight, 470, 35, true));
   return svgEl;
 }
 

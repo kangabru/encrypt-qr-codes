@@ -1,52 +1,64 @@
 "use client";
 
-import { EncryptedQRData } from "@/common/types";
+import { EncryptedQRData, schemaEncryptedQRData } from "@/common/types";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { encryptText } from "./crypto";
+import { decryptText } from "./crypto";
 import { downloadPng, downloadSvg } from "./download";
 import { generateQrCode, readQrCode } from "./qrcode";
 
-export type QrCodeInfo = { data: EncryptedQRData; html: string };
+export type QrCodeInfo = { encryptedData: EncryptedQRData; html: string };
 
-const MIN_LENGTH_PASSWORD = 12;
-const MIN_LENGTH_HINT = 3;
-
-export default function EncryptSection() {
+export default function DecryptSection() {
   const [dataUrl, setDataUrl] = useState<ImageDetails | null>(null);
 
   const imageEl = useRef<HTMLImageElement>(null);
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
 
-  const encryptQrCode = async (e: FormData) => {
+  const decryptQrCode = async (e: FormData) => {
     setQrCodeInfo(null);
 
-    const { imageFile, password, hint } = z
+    const { imageFile, password } = z
       .object({
         imageFile: z.instanceof(File),
-        password: z.string().min(MIN_LENGTH_PASSWORD),
-        hint: z.string().min(MIN_LENGTH_HINT),
+        password: z.string(),
       })
       .parse({
-        imageFile: e.get("encrypt-image"),
-        password: e.get("encrypt-password"),
-        hint: e.get("hint"),
+        imageFile: e.get("decrypt-image"),
+        password: e.get("decrypt-password"),
       });
 
     try {
-      const plainText = await readQrCode(imageFile);
-      const qrCodeData = await encryptText(plainText, hint, password);
-      const qrCode = generateQrCode(
-        JSON.stringify(qrCodeData),
-        qrCodeData.hint,
-        qrCodeData.date
+      const qrCodeDataString = await readQrCode(imageFile);
+      const qrCodeDataEncrypted: EncryptedQRData = schemaEncryptedQRData.parse(
+        JSON.parse(qrCodeDataString)
       );
-      setQrCodeInfo({ data: qrCodeData, html: qrCode.outerHTML });
+      let qrCodeDataDecrypted: string;
+      try {
+        qrCodeDataDecrypted = await decryptText(qrCodeDataEncrypted, password);
+      } catch (error) {
+        console.error("Couldn't decrypt text");
+        console.error(error);
+        return;
+      }
 
-      console.log("Generated encrypted QR Code:");
-      console.table({ plainText, ...qrCodeData });
+      const qrCode = generateQrCode(
+        qrCodeDataDecrypted,
+        `Decrypted: ${qrCodeDataEncrypted.hint}`
+      );
+
+      setQrCodeInfo({
+        encryptedData: qrCodeDataEncrypted,
+        html: qrCode.outerHTML,
+      });
+
+      console.log("Generated decrypted QR Code:");
+      console.table({
+        ...qrCodeDataEncrypted,
+        decryptedData: qrCodeDataDecrypted,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -54,16 +66,15 @@ export default function EncryptSection() {
 
   const isFileValid = !!dataUrl;
   const [isPassValid, setIsPassValid] = useState(false);
-  const [isNameValid, setIsNameValid] = useState(false);
-  const canGenerate = isFileValid && isPassValid && isNameValid;
+  const canGenerate = isFileValid && isPassValid;
 
   return (
     <section className="max-w-screen-lg w-full grid grid-cols-2 gap-4 p-4">
-      <h2 className="text-xl col-span-2">Encrypt</h2>
+      <h2 className="text-xl col-span-2">Decrypt</h2>
       <div className="bg-white rounded-lg border-t-4 border-blue-200 shadow p-4 flex flex-col">
-        <h2 className="text-lg mb-4">Encrypt a QR Code</h2>
+        <h2 className="text-lg mb-4">Decrypt a QR Code</h2>
 
-        <form action={encryptQrCode} className="space-y-4 flex flex-col flex-1">
+        <form action={decryptQrCode} className="space-y-4 flex flex-col">
           <label
             className={join(
               "w-full h-40 rounded-lg grid place-items-center cursor-pointer",
@@ -85,7 +96,7 @@ export default function EncryptSection() {
             )}
 
             <input
-              name="encrypt-image"
+              name="decrypt-image"
               hidden
               required
               type="file"
@@ -95,49 +106,31 @@ export default function EncryptSection() {
           </label>
 
           <label className="block">
-            <span className="text-gray-700">Hint</span>
-            <input
-              name="hint"
-              type="text"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="Google Account"
-              onChange={(e) =>
-                setIsNameValid(e.currentTarget.value.length >= MIN_LENGTH_HINT)
-              }
-            />
-          </label>
-
-          <label className="block">
             <span className="text-gray-700">Password</span>
             <input
-              name="encrypt-password"
+              name="decrypt-password"
               type="password"
               required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               placeholder="12345"
               onChange={(e) =>
-                setIsPassValid(
-                  e.currentTarget.value.length >= MIN_LENGTH_PASSWORD
-                )
+                setIsPassValid(e.currentTarget.value.length >= 1)
               }
             />
           </label>
-
-          <div className="flex-1" />
 
           <button
             type="submit"
             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled:opacity-50"
             disabled={!canGenerate}
           >
-            Encrypt
+            Decrypt
           </button>
         </form>
       </div>
 
       <div className="bg-white rounded-lg border-t-4 border-blue-200 shadow p-4 flex flex-col">
-        <h2 className="text-lg mb-4">Encrypted QR Code</h2>
+        <h2 className="text-lg mb-4">Decrypted QR Code</h2>
         {qrCodeInfo ? (
           <div
             dangerouslySetInnerHTML={{ __html: qrCodeInfo.html }}
@@ -167,8 +160,8 @@ export default function EncryptSection() {
             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled:opacity-50"
             disabled={!qrCodeInfo}
             onClick={() => {
-              const { html, data } = qrCodeInfo!;
-              downloadSvg(html, getFileName(data)).catch((e) =>
+              const { html, encryptedData } = qrCodeInfo!;
+              downloadSvg(html, getFileName(encryptedData)).catch((e) =>
                 console.error("Failed to download image", e)
               );
             }}
@@ -180,8 +173,8 @@ export default function EncryptSection() {
             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled:opacity-50"
             disabled={!qrCodeInfo}
             onClick={() => {
-              const { html, data } = qrCodeInfo!;
-              downloadPng(html, getFileName(data)).catch((e) =>
+              const { html, encryptedData } = qrCodeInfo!;
+              downloadPng(html, getFileName(encryptedData)).catch((e) =>
                 console.error("Failed to download image", e)
               );
             }}
@@ -195,5 +188,5 @@ export default function EncryptSection() {
 }
 
 function getFileName({ hint, date }: EncryptedQRData) {
-  return `qr-encrypted-${date}-${hint}`;
+  return `qr-decrypted-${date}-${hint}`;
 }
