@@ -13,10 +13,16 @@ export default function TestSection() {
       setSuccess(null);
       console.log("Encrypting", plainText, "with pass", password);
 
-      const qrCodeDataEncrypted = await encryptText(plainText, "", password);
+      const qrCodeDataEncrypted = await encryptText(
+        crypto,
+        plainText,
+        "",
+        password
+      );
       console.log("Encrypted", qrCodeDataEncrypted);
 
       const qrCodeDataDecrypted = await decryptText(
+        crypto,
         qrCodeDataEncrypted,
         password
       );
