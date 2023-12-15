@@ -10,6 +10,11 @@ import { TextDecoder, TextEncoder } from "util";
 
 const TEST_DIR = "./.test";
 
+const cryptoMod = {
+  ...crypto,
+  getRandomValues: (array: Uint8Array) => array.map((_, i) => i),
+};
+
 beforeAll(() => {
   // @ts-ignore
   global.TextEncoder = TextEncoder;
@@ -23,6 +28,29 @@ test("Read QR code", async () => {
   const image = await jimp.read("src/tests/assets/qrcode-example.png");
   const plainText = await readQrCodeBitmap(image.bitmap);
   expect(plainText).toEqual("super-secret-message");
+});
+
+test("Decrypt QR code", async () => {
+  const image = await jimp.read(
+    "src/tests/assets/qrcode-encrypted-example.png"
+  );
+  const dataEncrypted: EncryptedQRData = JSON.parse(
+    await readQrCodeBitmap(image.bitmap)
+  );
+  const dataDecrypted = await decryptText(
+    cryptoMod,
+    dataEncrypted,
+    "password-12345"
+  );
+
+  expect(dataEncrypted.hint).toEqual("Test");
+  expect(dataEncrypted.date).toEqual("2023-12-15");
+  expect(dataEncrypted.iv).toEqual("cd127c30096254d2441fb161");
+  expect(dataEncrypted.salt).toEqual("8cb33770e04a42569770fe8ff7b82a6b");
+  expect(dataEncrypted.cipherText).toEqual(
+    "a044246c7cef69a3e9f9f6d4f7fc5e7a5d71492f9ca4ac4c2ea2cbf9184d52f49a356504"
+  );
+  expect(dataDecrypted).toEqual("super-secret-message");
 });
 
 test("Generate QR code", async () => {
@@ -52,10 +80,6 @@ test("Encrypt QR code", async () => {
 
   // This represents a QR code from a 2FA app
   const qrCodeWithSecret2fa = await generateQrCodePng(secret2fa);
-
-  // Setup dependencies
-  const getRandomValues = (array: Uint8Array) => array.map((_, i) => i);
-  const cryptoMod = { ...crypto, getRandomValues };
 
   // Encrypt the QR code
   const plainTextInput = await readQrCodePng(qrCodeWithSecret2fa);
