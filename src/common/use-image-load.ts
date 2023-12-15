@@ -12,9 +12,9 @@ type Event = ChangeEvent<HTMLInputElement>;
 
 export type ImageDetails = {
   dataUrl: string;
-  fileName: string;
   width: number;
   height: number;
+  fileName?: string;
 };
 export type SetImageDetails = (_: ImageDetails) => void;
 
@@ -101,9 +101,9 @@ export function loadImageFromFile(
 }
 
 /** Loads an image data and dimensions */
-function loadImageFromDataUrl(
+export function loadImageFromDataUrl(
   dataUrl: string | undefined,
-  fileName: string
+  fileName?: string
 ): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
     if (!dataUrl) return reject();

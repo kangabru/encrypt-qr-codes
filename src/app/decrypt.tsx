@@ -1,13 +1,13 @@
 "use client";
 
 import { decryptText } from "@/common/crypto";
+import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
 import { EncryptedQRData, schemaEncryptedQRData } from "@/common/types";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
 import { downloadPng, downloadSvg } from "./download";
-import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode";
 
 export type QrCodeInfo = { encryptedData: EncryptedQRData; html: string };
 

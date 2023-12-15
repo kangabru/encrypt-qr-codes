@@ -1,9 +1,6 @@
 import { decryptText, encryptText } from "@/common/crypto";
-import {
-  generateQrCodePng,
-  readQrCodeBitmap,
-  readQrCodePng,
-} from "@/common/qrcode";
+import { readQrCodeBitmap } from "@/common/qrcode";
+import { generateQrCodePng, readQrCodePng } from "@/common/qrcode.node";
 import { EncryptedQRData } from "@/common/types";
 import crypto from "crypto";
 import { mkdirSync, writeFileSync } from "fs";

@@ -3,7 +3,6 @@ import {
   BarcodeFormat,
   BinaryBitmap,
   DecodeHintType,
-  EncodeHintType,
   HybridBinarizer,
   IllegalStateException,
   MultiFormatReader,
@@ -12,22 +11,10 @@ import {
   RGBLuminanceSource,
   Result,
 } from "@zxing/library";
-import "jimp";
 
-// @ts-ignore
-const Jimp = window.Jimp as JimpType;
-
-export async function readQrCodeFile(file: File) {
-  const image = await Jimp.read(Buffer.from(await file.arrayBuffer()));
-  return readQrCodeBitmap(image.bitmap);
-}
-
-export async function readQrCodePng(pngBuffer: Buffer) {
-  const image = await Jimp.read(pngBuffer);
-  return readQrCodeBitmap(image.bitmap);
-}
-
-export async function readQrCodeBitmap(bitmap: Bitmap): Promise<string> {
+export async function readQrCodeBitmap(
+  bitmap: Bitmap | ImageData
+): Promise<string> {
   const { data, width, height } = bitmap;
   const MAX_RETRIES = 10;
   for (let i = 0; i < MAX_RETRIES; i++) {
@@ -42,7 +29,7 @@ export async function readQrCodeBitmap(bitmap: Bitmap): Promise<string> {
 }
 
 export async function _readQrCodeBitmap(
-  imageData: Buffer,
+  imageData: Buffer | Uint8ClampedArray,
   width: number,
   height: number
 ): Promise<Result> {
@@ -68,50 +55,21 @@ export async function _readQrCodeBitmap(
   return reader.decode(binaryBitmap, hints);
 }
 
-export async function generateQrCodePng(data: string) {
-  const blocks = getQrCodeBlocks(data);
-  return renderBlocksToPng(blocks, 500);
+export interface BlockText {
+  text: string;
+  x: number;
+  y: number;
+  align: "left" | "right";
 }
-
-export function generateQrCodeSvg(
-  data: string,
-  textLeft?: string,
-  textRight?: string
-): string {
-  const blocks = getQrCodeBlocks(data);
-  return renderBlocksToSvg(blocks, 500);
-  // textLeft && svgEl.appendChild(createTextElement(textLeft, 30, 35));
-  // textRight && svgEl.appendChild(createTextElement(textRight, 470, 35, true));
-}
-
-interface Blocks {
+export interface Blocks {
   size: number;
   blocks: [number, number][];
 }
 
-function getQrCodeBlocks(
-  contents: string,
-  hints?: Map<EncodeHintType, any>
-): Blocks {
+export function getQrCodeBlocks(contents: string): Blocks {
   let errorCorrectionLevel = QRCodeDecoderErrorCorrectionLevel.L;
-  let quietZone = 4;
 
-  if (hints) {
-    if (undefined !== hints.get(EncodeHintType.ERROR_CORRECTION)) {
-      errorCorrectionLevel = QRCodeDecoderErrorCorrectionLevel.fromString(
-        hints.get(EncodeHintType.ERROR_CORRECTION).toString()
-      );
-    }
-
-    if (undefined !== hints.get(EncodeHintType.MARGIN)) {
-      quietZone = Number.parseInt(
-        hints.get(EncodeHintType.MARGIN).toString(),
-        10
-      );
-    }
-  }
-
-  const code = QRCodeEncoder.encode(contents, errorCorrectionLevel, hints);
+  const code = QRCodeEncoder.encode(contents, errorCorrectionLevel);
 
   const input = code.getMatrix();
   if (input === null) throw new IllegalStateException();
@@ -119,58 +77,13 @@ function getQrCodeBlocks(
   const inputWidth = input.getWidth();
   const inputHeight = input.getHeight();
 
-  const pad = quietZone;
-  const size = Math.max(inputWidth, inputHeight) + 2 * pad;
+  const size = Math.max(inputWidth, inputHeight);
+
   const blocks: [number, number][] = [];
 
-  for (let inputY = 0; inputY < inputHeight; inputY++) {
-    for (let inputX = 0; inputX < inputWidth; inputX++) {
-      if (input.get(inputX, inputY) === 1) {
-        blocks.push([inputX + pad, inputY + pad]);
-      }
-    }
-  }
+  for (let inputY = 0; inputY < inputHeight; inputY++)
+    for (let inputX = 0; inputX < inputWidth; inputX++)
+      if (input.get(inputX, inputY) === 1) blocks.push([inputX, inputY]);
 
   return { size, blocks };
-}
-
-function renderBlocksToSvg(
-  { size, blocks }: Blocks,
-  outputSize: number
-): string {
-  const svgLines: string[] = [];
-
-  svgLines.push(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${outputSize} ${outputSize}" fill="white">`
-  );
-
-  const s = outputSize / size;
-  for (let [_x, _y] of blocks) {
-    const x = _x * s;
-    const y = _y * s;
-    svgLines.push(
-      `<rect x="${x}" y="${y}" height="${s}" width="${s}" fill="black" />`
-    );
-  }
-
-  svgLines.push(`</svg>`);
-
-  return svgLines.join("");
-}
-
-async function renderBlocksToPng({ size, blocks }: Blocks, outputSize: number) {
-  const image = new Jimp(outputSize, outputSize, 0xffffffff);
-  const s = outputSize / size;
-
-  for (let [_x, _y] of blocks) {
-    const x = _x * s;
-    const y = _y * s;
-    for (let i = 0; i < s; i++) {
-      for (let j = 0; j < s; j++) {
-        image.setPixelColor(0x000000ff, x + i, y + j);
-      }
-    }
-  }
-
-  return await image.getBufferAsync(Jimp.MIME_PNG);
 }
