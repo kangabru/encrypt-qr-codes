@@ -1,11 +1,11 @@
 "use client";
 
+import { decryptText } from "@/common/crypto";
 import { EncryptedQRData, schemaEncryptedQRData } from "@/common/types";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { decryptText } from "./crypto";
 import { downloadPng, downloadSvg } from "./download";
 import { generateQrCode, readQrCode } from "./qrcode";
 
@@ -37,7 +37,11 @@ export default function DecryptSection() {
       );
       let qrCodeDataDecrypted: string;
       try {
-        qrCodeDataDecrypted = await decryptText(qrCodeDataEncrypted, password);
+        qrCodeDataDecrypted = await decryptText(
+          crypto,
+          qrCodeDataEncrypted,
+          password
+        );
       } catch (error) {
         console.error("Couldn't decrypt text");
         console.error(error);

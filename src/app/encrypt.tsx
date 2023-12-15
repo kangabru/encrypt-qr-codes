@@ -1,11 +1,11 @@
 "use client";
 
+import { encryptText } from "@/common/crypto";
 import { EncryptedQRData } from "@/common/types";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { encryptText } from "./crypto";
 import { downloadPng, downloadSvg } from "./download";
 import { generateQrCode, readQrCode } from "./qrcode";
 
@@ -37,7 +37,7 @@ export default function EncryptSection() {
 
     try {
       const plainText = await readQrCode(imageFile);
-      const qrCodeData = await encryptText(plainText, hint, password);
+      const qrCodeData = await encryptText(crypto, plainText, hint, password);
       const qrCode = generateQrCode(
         JSON.stringify(qrCodeData),
         qrCodeData.hint,
