@@ -67,7 +67,7 @@ export interface Blocks {
 }
 
 export function getQrCodeBlocks(contents: string): Blocks {
-  let errorCorrectionLevel = QRCodeDecoderErrorCorrectionLevel.L;
+  let errorCorrectionLevel = QRCodeDecoderErrorCorrectionLevel.H;
 
   const code = QRCodeEncoder.encode(contents, errorCorrectionLevel);
 
