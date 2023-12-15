@@ -7,7 +7,7 @@ import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
 import { downloadPng, downloadSvg } from "./download";
-import { generateQrCode, readQrCode } from "./qrcode";
+import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode";
 
 export type QrCodeInfo = { data: EncryptedQRData; html: string };
 
@@ -36,14 +36,14 @@ export default function EncryptSection() {
       });
 
     try {
-      const plainText = await readQrCode(imageFile);
+      const plainText = await readQrCodeFile(imageFile);
       const qrCodeData = await encryptText(crypto, plainText, hint, password);
-      const qrCode = generateQrCode(
+      const qrCode = generateQrCodeSvg(
         JSON.stringify(qrCodeData),
         qrCodeData.hint,
         qrCodeData.date
       );
-      setQrCodeInfo({ data: qrCodeData, html: qrCode.outerHTML });
+      setQrCodeInfo({ data: qrCodeData, html: qrCode });
 
       console.log("Generated encrypted QR Code:");
       console.table({ plainText, ...qrCodeData });

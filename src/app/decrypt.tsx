@@ -7,7 +7,7 @@ import { join } from "@/common/utils";
 import { useRef, useState } from "react";
 import { z } from "zod";
 import { downloadPng, downloadSvg } from "./download";
-import { generateQrCode, readQrCode } from "./qrcode";
+import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode";
 
 export type QrCodeInfo = { encryptedData: EncryptedQRData; html: string };
 
@@ -31,7 +31,7 @@ export default function DecryptSection() {
       });
 
     try {
-      const qrCodeDataString = await readQrCode(imageFile);
+      const qrCodeDataString = await readQrCodeFile(imageFile);
       const qrCodeDataEncrypted: EncryptedQRData = schemaEncryptedQRData.parse(
         JSON.parse(qrCodeDataString)
       );
@@ -48,14 +48,14 @@ export default function DecryptSection() {
         return;
       }
 
-      const qrCode = generateQrCode(
+      const qrCode = generateQrCodeSvg(
         qrCodeDataDecrypted,
         `Decrypted: ${qrCodeDataEncrypted.hint}`
       );
 
       setQrCodeInfo({
         encryptedData: qrCodeDataEncrypted,
-        html: qrCode.outerHTML,
+        html: qrCode,
       });
 
       console.log("Generated decrypted QR Code:");
