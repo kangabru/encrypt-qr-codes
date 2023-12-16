@@ -1,5 +1,6 @@
 import "client-only";
 import { Blocks, getQrCodeBlocks, readQrCodeBitmap } from "./qrcode";
+import { svgToCanvas } from "@/app/download";
 
 export async function readQrCodeFile(file: File) {
   const bitmap = await getBitmapFromFile(file);
@@ -18,6 +19,11 @@ async function getBitmapFromFile(file: File): Promise<ImageData> {
   const data = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
   bitmap.close();
   return data;
+}
+
+export async function getBitmapFromSvg(svgXml: string): Promise<ImageData> {
+  const [canvas, ctx] = await svgToCanvas(svgXml);
+  return ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
 
 export function generateQrCodeSvg(

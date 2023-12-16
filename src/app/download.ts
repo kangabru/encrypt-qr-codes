@@ -1,5 +1,5 @@
-export async function downloadSvg(html: string, fileName: string) {
-  const blob = new Blob([html], { type: "text/plain" });
+export async function downloadSvg(svgXml: string, fileName: string) {
+  const blob = new Blob([svgXml], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement("a");
@@ -11,9 +11,8 @@ export async function downloadSvg(html: string, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-export async function downloadPng(html: string, fileName: string) {
-  const svgImage = `data:image/svg+xml;base64,${btoa(html)}`;
-  const pngImage = await svgToPng(svgImage);
+export async function downloadPng(svgXml: string, fileName: string) {
+  const pngImage = await svgToPng(svgXml);
 
   const link = document.createElement("a");
   link.href = pngImage;
@@ -22,8 +21,17 @@ export async function downloadPng(html: string, fileName: string) {
   link.click();
 }
 
-async function svgToPng(svgSrc: string): Promise<string> {
-  const svgImage = await createImage(svgSrc);
+export async function svgToPng(svgXml: string): Promise<string> {
+  const [canvas] = await svgToCanvas(svgXml);
+  return canvas.toDataURL("image/png");
+}
+
+export async function svgToCanvas(
+  svgXml: string
+): Promise<[HTMLCanvasElement, CanvasRenderingContext2D]> {
+  const svgDataUrl = svgToDataUrl(svgXml);
+  const svgImage = await createImage(svgDataUrl);
+
   const canvas = document.createElement("canvas");
   const size = 1000;
   canvas.width = size;
@@ -34,7 +42,11 @@ async function svgToPng(svgSrc: string): Promise<string> {
   context.fillRect(0, 0, size, size);
   context.drawImage(svgImage, 0, 0, size, size);
 
-  return canvas.toDataURL("image/png");
+  return [canvas, context];
+}
+
+export function svgToDataUrl(svgXml: string) {
+  return `data:image/svg+xml;base64,${btoa(svgXml)}`;
 }
 
 function createImage(src: string): Promise<HTMLImageElement> {
