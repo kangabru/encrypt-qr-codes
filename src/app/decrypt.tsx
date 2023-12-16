@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { decryptText } from "@/common/crypto";
@@ -10,6 +11,7 @@ import {
 import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
+import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { useState } from "react";
 import { downloadPng, downloadSvg } from "./download";
@@ -36,7 +38,6 @@ async function decryptQrCode(e: FormData): Promise<QrCodeInfo> {
   // Decrypt
   const qrCodeData = await readQrCodeFile(image);
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
-  console.log(3, encryptedData);
   const decryptedData = await decryptText(crypto, encryptedData, pass);
 
   const qrCode = generateQrCodeSvg(
@@ -147,20 +148,7 @@ function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
         />
       ) : (
         <div className="grid place-items-center w-full h-full text-gray-200">
-          <svg
-            aria-hidden="true"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-            className="max-h-40"
-          >
-            <path
-              d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <QrCodeIcon className="max-h-40" />
         </div>
       )}
 
