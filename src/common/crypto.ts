@@ -1,4 +1,4 @@
-import { EncryptedQRData } from "@/common/types";
+import { EncryptedQRData } from "@/common/parser";
 import { getDate } from "@/common/utils";
 
 const ITERATIONS = 100000;

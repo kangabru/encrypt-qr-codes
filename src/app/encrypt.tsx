@@ -1,10 +1,11 @@
 "use client";
 
 import { encryptText } from "@/common/crypto";
+import { EncryptedQRData, parseFile, parseString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
-import { EncryptedQRData } from "@/common/types";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { join } from "@/common/utils";
+import { Panel, SplitPanelSection } from "@/components/panels";
 import { useState } from "react";
 import { downloadPng, downloadSvg } from "./download";
 
@@ -15,18 +16,35 @@ const MIN_LENGTH_HINT = 3;
 
 export default function EncryptSection() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
-
   return (
-    <section className="max-w-screen-lg w-full grid grid-cols-2 gap-4 p-4">
-      <h2 className="text-xl col-span-2">Encrypt</h2>
-
-      <GeneratePanel setQrCodeInfo={setQrCodeInfo} />
+    <SplitPanelSection title="Encrypt">
+      <EncryptPanel setQrCodeInfo={setQrCodeInfo} />
       <DisplayPanel qrCodeInfo={qrCodeInfo} />
-    </section>
+    </SplitPanelSection>
   );
 }
 
-function GeneratePanel(props: {
+async function generateQrCode(d: FormData): Promise<QrCodeInfo> {
+  // Form
+  const image = parseFile("Image", d.get("image"), "Please provide an image");
+  const hint = parseString("Hint", d.get("hint"), MIN_LENGTH_HINT);
+  const pass = parseString("Password", d.get("pass"), MIN_LENGTH_PASS);
+
+  // Encrypt
+  const plainText = await readQrCodeFile(image);
+  const qrCodeData = await encryptText(crypto, plainText, hint, pass);
+  const qrCodeSvg = generateQrCodeSvg(
+    JSON.stringify(qrCodeData),
+    qrCodeData.hint,
+    qrCodeData.date
+  );
+
+  console.log("Generated encrypted QR Code:");
+  console.table({ plainText, ...qrCodeData });
+  return { data: qrCodeData, html: qrCodeSvg };
+}
+
+function EncryptPanel(props: {
   setQrCodeInfo: (qr: QrCodeInfo | null) => void;
 }) {
   const [formError, setFormError] = useState<string>();
@@ -35,15 +53,22 @@ function GeneratePanel(props: {
   const [lengthHint, setLengthHint] = useState(0);
   const [lengthPass, setLengthPass] = useState(0);
 
-  const canGenerate =
+  const canEncrypt =
     dataUrl && lengthHint >= MIN_LENGTH_HINT && lengthPass >= MIN_LENGTH_PASS;
 
   return (
-    <div className="bg-white rounded-lg border-t-4 border-blue-200 shadow p-4 flex flex-col">
-      <h2 className="text-lg mb-4">Encrypt a QR Code</h2>
-
+    <Panel title="Encrypt a QR Code">
       <form
-        action={(d) => generateQrCode(d, props.setQrCodeInfo, setFormError)}
+        action={(d) => {
+          props.setQrCodeInfo(null);
+          setFormError(undefined);
+          generateQrCode(d)
+            .then(props.setQrCodeInfo)
+            .catch((e) => {
+              console.info(e);
+              setFormError(e.message);
+            });
+        }}
         className="space-y-4 flex flex-col flex-1"
       >
         <label
@@ -134,19 +159,18 @@ function GeneratePanel(props: {
         <button
           type="submit"
           className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled:opacity-50"
-          disabled={!canGenerate}
+          disabled={!canEncrypt}
         >
           Encrypt
         </button>
       </form>
-    </div>
+    </Panel>
   );
 }
 
 function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
   return (
-    <div className="bg-white rounded-lg border-t-4 border-blue-200 shadow p-4 flex flex-col">
-      <h2 className="text-lg mb-4">Encrypted QR Code</h2>
+    <Panel title="Encrypted QR Code">
       {qrCodeInfo ? (
         <div
           dangerouslySetInnerHTML={{ __html: qrCodeInfo.html }}
@@ -198,53 +222,8 @@ function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
           Download PNG
         </button>
       </div>
-    </div>
+    </Panel>
   );
-}
-
-async function generateQrCode(
-  e: FormData,
-  setQrCodeInfo: (d: QrCodeInfo | null) => void,
-  setFormError: (e: string | undefined) => void
-) {
-  // Reset
-  setQrCodeInfo(null);
-  setFormError(undefined);
-
-  // Field date
-  const image = e.get("image") as File;
-  const hint = e.get("hint") as string;
-  const pass = e.get("pass") as string;
-
-  // Validate
-  if (!(image && image instanceof File))
-    return setFormError("Please provide an image");
-
-  const isBadString = (val: string) => !(val && typeof val === "string");
-  if (isBadString(hint)) return setFormError("Please provide a hint");
-  if (isBadString(pass)) return setFormError("Please provide a password");
-
-  if (hint.length < MIN_LENGTH_HINT) return setFormError(`Hint is too short`);
-  if (pass.length < MIN_LENGTH_PASS)
-    return setFormError(`Password is too short`);
-
-  // Encrypt
-  try {
-    const plainText = await readQrCodeFile(image);
-    const qrCodeData = await encryptText(crypto, plainText, hint, pass);
-    const qrCodeSvg = generateQrCodeSvg(
-      JSON.stringify(qrCodeData),
-      qrCodeData.hint,
-      qrCodeData.date
-    );
-
-    console.log("Generated encrypted QR Code:");
-    console.table({ plainText, ...qrCodeData });
-    setQrCodeInfo({ data: qrCodeData, html: qrCodeSvg });
-  } catch (error: any) {
-    console.error(error);
-    setFormError(error.message);
-  }
 }
 
 function getFileName({ hint, date }: EncryptedQRData) {
