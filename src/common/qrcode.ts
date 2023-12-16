@@ -11,6 +11,7 @@ import {
   RGBLuminanceSource,
   Result,
 } from "@zxing/library";
+import QRCode from "@zxing/library/esm/core/qrcode/encoder/QRCode";
 
 export async function readQrCodeBitmap(
   bitmap: Bitmap | ImageData
@@ -69,7 +70,13 @@ export interface Blocks {
 export function getQrCodeBlocks(contents: string): Blocks {
   let errorCorrectionLevel = QRCodeDecoderErrorCorrectionLevel.H;
 
-  const code = QRCodeEncoder.encode(contents, errorCorrectionLevel);
+  let code: QRCode;
+  try {
+    code = QRCodeEncoder.encode(contents, errorCorrectionLevel);
+  } catch (error) {
+    console.info(error);
+    throw new Error("Failed to read QR code");
+  }
 
   const input = code.getMatrix();
   if (input === null) throw new IllegalStateException();
