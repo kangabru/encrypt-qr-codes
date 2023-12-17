@@ -1,6 +1,7 @@
 "use client";
 
 import { decryptText, encryptText } from "@/common/crypto";
+import { getErrorMessage } from "@/common/utils";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { useCallback, useState } from "react";
 
@@ -37,7 +38,7 @@ export default function TextTestPanel() {
       addMessage("Success");
     } catch (error: any) {
       console.error(error);
-      addMessage(`Error: ${error.message}`);
+      addMessage(`Error: ${getErrorMessage(error)}`);
     }
   };
 

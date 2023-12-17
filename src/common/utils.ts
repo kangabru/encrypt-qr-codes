@@ -11,3 +11,7 @@ export type CssClass = { className?: string };
 export function getDate() {
   return new Date().toISOString().split("T")[0];
 }
+
+export function getErrorMessage(e: any) {
+  return e.message ?? e.toString();
+}

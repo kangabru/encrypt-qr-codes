@@ -10,13 +10,13 @@ import {
 } from "@/common/parser";
 import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
-import { join } from "@/common/utils";
+import { getErrorMessage, join } from "@/common/utils";
 import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { useState } from "react";
 import { downloadPng, downloadSvg } from "./download";
 
-const MIN_LENGTH_PASS = 10;
+const MIN_LENGTH_PASS = 1;
 
 export type QrCodeInfo = { encryptedData: EncryptedQRData; html: string };
 
@@ -69,7 +69,7 @@ function DecryptPanel(props: {
             .then(props.setQrCodeInfo)
             .catch((e) => {
               console.info(e);
-              setFormError(e.message);
+              setFormError(getErrorMessage(e));
             });
         }}
         className="space-y-4 flex flex-col"

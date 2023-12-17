@@ -5,6 +5,7 @@ import { decryptText, encryptText } from "@/common/crypto";
 import { parseEncryptedQRDataString } from "@/common/parser";
 import { readQrCodeBitmap } from "@/common/qrcode";
 import { generateQrCodeSvg, getBitmapFromSvg } from "@/common/qrcode.browser";
+import { getErrorMessage } from "@/common/utils";
 import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { useCallback, useState } from "react";
@@ -57,7 +58,7 @@ export default function QrCodeTestPanel() {
       addMessage("Success");
     } catch (error: any) {
       console.error(error);
-      addMessage(`Error: ${error.message}`);
+      addMessage(`Error: ${getErrorMessage(error)}`);
     }
   };
 
