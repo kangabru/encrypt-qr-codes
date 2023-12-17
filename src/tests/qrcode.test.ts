@@ -30,6 +30,12 @@ test("Read QR code", async () => {
   expect(plainText).toEqual("super-secret-message");
 });
 
+test("Read failing QR code", async () => {
+  const image = await jimp.read("src/tests/assets/qrcode-failing-example.png");
+  const plainText = await readQrCodeBitmap(image.bitmap);
+  expect(plainText).toEqual("super-secret-message");
+});
+
 test("Decrypt QR code", async () => {
   const image = await jimp.read(
     "src/tests/assets/qrcode-encrypted-example.png"

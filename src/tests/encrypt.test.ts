@@ -49,6 +49,25 @@ test("Decrypt text", async () => {
   expect(qrCodeDataDecrypted).toEqual(plainText);
 });
 
+test("Decrypt text fail", async () => {
+  const plainText = `message-12345`;
+  const password = `password-12345`;
+
+  const qrCodeDataEncrypted = {
+    date: "123",
+    hint: "123",
+    iv: "012345678901234567890123456789",
+    salt: "123123123123123",
+    cipherText: "123123123123123",
+  };
+  try {
+    await decryptText(crypto, qrCodeDataEncrypted, password);
+    fail("Error wasn't thrown");
+  } catch (error: any) {
+    expect(error.message).toContain("Could not decrypt the QR code.");
+  }
+});
+
 test("Encrypt and decrypt text", async () => {
   const plainText = `message-${crypto.randomUUID()}`;
   const password = `password-${crypto.randomUUID()}`;

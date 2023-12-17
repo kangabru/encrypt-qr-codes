@@ -7,13 +7,19 @@ export interface EncryptedQRData {
 }
 
 export function parseEncryptedQRDataString(encryptedDataString: string) {
-  let encryptedData;
   try {
-    encryptedData = JSON.parse(encryptedDataString);
+    let encryptedData;
+    try {
+      encryptedData = JSON.parse(encryptedDataString);
+    } catch (error) {
+      console.info("Could not parse JSON:", encryptedDataString);
+      throw new Error("Data is not valid JSON");
+    }
+    return parseEncryptedQrData(encryptedData);
   } catch (error) {
-    throw new Error("Data is not valid JSON");
+    console.info(error);
+    throw new Error("Data is unencrypted or in the wrong format");
   }
-  return parseEncryptedQrData(encryptedData);
 }
 
 export function parseEncryptedQrData(data: EncryptedQRData): EncryptedQRData {

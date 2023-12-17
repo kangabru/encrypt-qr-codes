@@ -54,14 +54,20 @@ export async function decryptText(
     SHA
   );
 
-  const decrypted = await lib.subtle.decrypt(
-    {
-      name: ALGORITHM,
-      iv: fromText(data.iv),
-    },
-    derivedKey,
-    fromText(data.cipherText)
-  );
+  let decrypted;
+  try {
+    decrypted = await lib.subtle.decrypt(
+      {
+        name: ALGORITHM,
+        iv: fromText(data.iv),
+      },
+      derivedKey,
+      fromText(data.cipherText)
+    );
+  } catch (error) {
+    console.info(error);
+    throw new Error("Could not decrypt the QR code. Is the password correct?");
+  }
 
   return new TextDecoder().decode(decrypted);
 }
