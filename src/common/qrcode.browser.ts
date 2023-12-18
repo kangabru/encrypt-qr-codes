@@ -47,20 +47,20 @@ function renderBlocksToSvg(
     `<defs><rect id="r" height="1" width="1" fill="black" /></defs>`,
   ];
 
-  const ty = totalSize - pad / 2;
+  const ty = totalSize - pad / 2,
+    tr = totalSize - pad;
   const tSize = (pad * 0.9).toFixed(1);
   const textAttrs = `font-size="${tSize}" font-family="sans-serif" fill="black" dominant-baseline="central"`;
-  if (textLeft)
-    svgLines.push(
-      `<text x="${pad}" y="${ty}" text-anchor="start" ${textAttrs}>${textLeft}</text>`
-    );
 
-  if (textRight)
-    svgLines.push(
-      `<text x="${
-        totalSize - pad
-      }" y="${ty}" text-anchor="end" ${textAttrs}>${textRight}</text>`
-    );
+  if (textLeft) {
+    const line = xml`<text x="${pad}" y="${ty}" text-anchor="start" $attrs>${textLeft}</text>`;
+    svgLines.push(line.replace("$attrs", textAttrs));
+  }
+
+  if (textRight) {
+    const line = xml`<text x="${tr}" y="${ty}" text-anchor="end" $attrs>${textRight}</text>`;
+    svgLines.push(line.replace("$attrs", textAttrs));
+  }
 
   for (let [x, y] of blocks)
     svgLines.push(`<use href="#r" x="${pad + x}" y="${pad + y}" />`);
@@ -68,4 +68,36 @@ function renderBlocksToSvg(
   svgLines.push(`</svg>`);
 
   return svgLines.join("");
+}
+
+function xml(
+  strings: TemplateStringsArray,
+  ...values: (string | number | boolean)[]
+): string {
+  return strings.reduce((result, string, i) => {
+    let value = values[i - 1];
+    if (typeof value === "string") {
+      value = escapeXML(value);
+    }
+    return result + value + string;
+  });
+}
+
+function escapeXML(str: string) {
+  return str.replace(/[<>&'"]/g, function (char) {
+    switch (char) {
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "&":
+        return "&amp;";
+      case "'":
+        return "&apos;";
+      case '"':
+        return "&quot;";
+      default:
+        return char;
+    }
+  });
 }
