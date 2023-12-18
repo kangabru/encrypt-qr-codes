@@ -27,13 +27,13 @@ export async function svgToPng(svgXml: string): Promise<string> {
 }
 
 export async function svgToCanvas(
-  svgXml: string
+  svgXml: string,
+  size = 1000
 ): Promise<[HTMLCanvasElement, CanvasRenderingContext2D]> {
   const svgDataUrl = svgToDataUrl(svgXml);
   const svgImage = await createImage(svgDataUrl);
 
   const canvas = document.createElement("canvas");
-  const size = 1000;
   canvas.width = size;
   canvas.height = size;
 

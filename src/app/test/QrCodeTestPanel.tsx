@@ -3,13 +3,16 @@
 
 import { decryptText, encryptText } from "@/common/crypto";
 import { parseEncryptedQRDataString } from "@/common/parser";
-import { readQrCodeBitmap } from "@/common/qrcode";
-import { generateQrCodeSvg, getBitmapFromSvg } from "@/common/qrcode.browser";
+import {
+  generateQrCodeSvg,
+  readQrCodeFromSvg,
+  readQrCode,
+} from "@/common/qrcode.browser";
 import { getErrorMessage } from "@/common/utils";
 import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { useCallback, useState } from "react";
-import { svgToPng } from "../download";
+import { svgToCanvas, svgToPng } from "../download";
 
 export default function QrCodeTestPanel() {
   const [messages, setMessages] = useState<string[]>([]);
@@ -42,11 +45,10 @@ export default function QrCodeTestPanel() {
       );
       const pngSrc = await svgToPng(svgSrc);
       setDataUrl(pngSrc);
-      const qrCodeEncrypted = await getBitmapFromSvg(svgSrc);
       addMessage(`Generated QR code from encrypted data`);
 
       // Decrypt
-      const qrCodeData = await readQrCodeBitmap(qrCodeEncrypted);
+      const qrCodeData = await readQrCode(pngSrc);
       const encryptedData = parseEncryptedQRDataString(qrCodeData);
       addMessage(
         `Read encrypted QR code:\n${JSON.stringify(dataEncypted, null, 4)}`

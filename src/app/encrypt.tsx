@@ -3,7 +3,7 @@
 
 import { encryptText } from "@/common/crypto";
 import { EncryptedQRData, parseFile, parseString } from "@/common/parser";
-import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
+import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { getErrorMessage, join } from "@/common/utils";
 import { QrCodeIcon } from "@/components/icons";
@@ -33,7 +33,7 @@ async function generateQrCode(d: FormData): Promise<QrCodeInfo> {
   const pass = parseString("Password", d.get("pass"), MIN_LENGTH_PASS);
 
   // Encrypt
-  const plainText = await readQrCodeFile(image);
+  const plainText = await readQrCode(image);
   const qrCodeData = await encryptText(crypto, plainText, hint, pass);
   const qrCodeSvg = generateQrCodeSvg(
     JSON.stringify(qrCodeData),

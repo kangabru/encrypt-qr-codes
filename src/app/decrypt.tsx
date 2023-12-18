@@ -8,7 +8,7 @@ import {
   parseFile,
   parseString,
 } from "@/common/parser";
-import { generateQrCodeSvg, readQrCodeFile } from "@/common/qrcode.browser";
+import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { ImageDetails, onInputChange } from "@/common/use-image-load";
 import { getErrorMessage, join } from "@/common/utils";
 import { QrCodeIcon } from "@/components/icons";
@@ -36,7 +36,7 @@ async function decryptQrCode(e: FormData): Promise<QrCodeInfo> {
   const pass = parseString("Password", e.get("pass"), MIN_LENGTH_PASS);
 
   // Decrypt
-  const qrCodeData = await readQrCodeFile(image);
+  const qrCodeData = await readQrCode(image);
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
   const decryptedData = await decryptText(crypto, encryptedData, pass);
 

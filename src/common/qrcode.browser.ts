@@ -1,27 +1,26 @@
 import "client-only";
-import { Blocks, getQrCodeBlocks, readQrCodeBitmap } from "./qrcode";
+
 import { svgToCanvas } from "@/app/download";
+import qrScanner from "qr-scanner";
+import { Blocks, getQrCodeBlocks } from "./qrcode";
 
-export async function readQrCodeFile(file: File) {
-  const bitmap = await getBitmapFromFile(file);
-  return readQrCodeBitmap(bitmap);
+export async function readQrCode(
+  imageOrFileOrBlobOrUrl:
+    | HTMLImageElement
+    | HTMLVideoElement
+    | HTMLCanvasElement
+    | OffscreenCanvas
+    | ImageBitmap
+    | SVGImageElement
+    | File
+    | Blob
+    | URL
+    | String
+) {
+  return qrScanner.scanImage(imageOrFileOrBlobOrUrl);
 }
 
-async function getBitmapFromFile(file: File): Promise<ImageData> {
-  const bitmap = await createImageBitmap(file);
-
-  const canvas = document.createElement("canvas");
-  canvas.width = bitmap.width;
-  canvas.height = bitmap.height;
-
-  const ctx = canvas.getContext("2d")!;
-  ctx.drawImage(bitmap, 0, 0);
-  const data = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
-  bitmap.close();
-  return data;
-}
-
-export async function getBitmapFromSvg(svgXml: string): Promise<ImageData> {
+export async function readQrCodeFromSvg(svgXml: string): Promise<ImageData> {
   const [canvas, ctx] = await svgToCanvas(svgXml);
   return ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
