@@ -17,7 +17,6 @@ export async function encryptText(
   password: string
 ): Promise<EncryptedQRData> {
   const salt = lib.getRandomValues(new Uint8Array(16));
-  const iv = lib.getRandomValues(new Uint8Array(12));
   const derivedKey = await deriveKeyFromPassword(
     lib,
     password,
@@ -26,6 +25,7 @@ export async function encryptText(
     SHA
   );
 
+  const iv = lib.getRandomValues(new Uint8Array(12));
   const encrypted = await lib.subtle.encrypt(
     { name: ALGORITHM, iv },
     derivedKey,
@@ -33,9 +33,9 @@ export async function encryptText(
   );
 
   return {
-    iv: toText(iv),
-    salt: toText(salt),
-    cipherText: toText(encrypted),
+    iv: hexify(iv),
+    salt: hexify(salt),
+    cipherText: hexify(encrypted),
     hint,
     date: getDate(),
   };
@@ -49,7 +49,7 @@ export async function decryptText(
   const derivedKey = await deriveKeyFromPassword(
     lib,
     password,
-    fromText(data.salt),
+    dehexify(data.salt),
     ITERATIONS,
     SHA
   );
@@ -59,10 +59,10 @@ export async function decryptText(
     decrypted = await lib.subtle.decrypt(
       {
         name: ALGORITHM,
-        iv: fromText(data.iv),
+        iv: dehexify(data.iv),
       },
       derivedKey,
-      fromText(data.cipherText)
+      dehexify(data.cipherText)
     );
   } catch (error) {
     console.info(error);
@@ -99,14 +99,10 @@ async function deriveKeyFromPassword(
   );
 }
 
-function toText(data: ArrayBuffer) {
-  return Array.from(new Uint8Array(data))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+function hexify(data: ArrayBuffer): string {
+  return Buffer.from(data).toString("hex");
 }
 
-function fromText(text: string): Uint8Array {
-  const matches = text.match(/.{1,2}/g) || [];
-  const numbers = matches.map((byte) => parseInt(byte, 16));
-  return new Uint8Array(numbers);
+function dehexify(text: string): Uint8Array {
+  return new Uint8Array(Buffer.from(text, "hex"));
 }
