@@ -44,7 +44,7 @@ function renderBlocksToSvg(
   const totalSize = size + 2 * pad;
   const svgLines: string[] = [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalSize} ${totalSize}" fill="white">`,
-    `<defs><rect id="r" height="1" width="1" fill="black" /></defs>`,
+    `<defs><rect id="r" height="1.05" width="1.05" fill="black" /></defs>`,
   ];
 
   const ty = totalSize - pad / 2,

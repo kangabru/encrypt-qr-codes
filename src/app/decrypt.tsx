@@ -38,6 +38,10 @@ async function decryptQrCode(e: FormData): Promise<QrCodeInfo> {
   // Decrypt
   const qrCodeData = await readQrCode(image);
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
+
+  console.log("Encrypted data:");
+  console.table({ ...encryptedData });
+
   const decryptedData = await decryptText(crypto, encryptedData, pass);
 
   const qrCode = generateQrCodeSvg(
@@ -45,8 +49,9 @@ async function decryptQrCode(e: FormData): Promise<QrCodeInfo> {
     `Decrypted: ${encryptedData.hint}`
   );
 
-  console.log("Generated decrypted QR Code:");
-  console.table({ ...encryptedData, decryptedData });
+  console.log("Decrypted data:");
+  console.table({ data: decryptedData });
+
   return { encryptedData, html: qrCode };
 }
 
