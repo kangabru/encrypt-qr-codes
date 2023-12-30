@@ -22,7 +22,7 @@ export function parseEncryptedQRDataString(encryptedDataString: string) {
   }
 }
 
-export function parseEncryptedQrData(data: EncryptedQRData): EncryptedQRData {
+function parseEncryptedQrData(data: EncryptedQRData): EncryptedQRData {
   if (!(data && typeof data === "object"))
     throw new Error("Data is not a valid object");
 
@@ -35,23 +35,17 @@ export function parseEncryptedQrData(data: EncryptedQRData): EncryptedQRData {
   };
 }
 
-export function parseStringFromObj<T>(propertyName: keyof T, data: T): string {
+function parseStringFromObj<T>(propertyName: keyof T, data: T): string {
   return parseString(propertyName as string, data[propertyName] as string);
 }
 
-export function parseString(name: string, value: any, minLength = 0): string {
+function parseString(name: string, value: any, minLength = 0): string {
   if (!isValidString(value)) throw new Error(`'${name}' is not a valid string`);
   if (value.length < minLength)
     throw new Error(`'${name}' must be at least ${minLength} chars long`);
   return value;
 }
 
-export function isValidString(value: any, minLength = 0): value is string {
+function isValidString(value: any, minLength = 0): value is string {
   return value && typeof value === "string" && value.trim().length >= minLength;
-}
-
-export function parseFile(name: string, value: any, error?: string): File {
-  if (!(value instanceof File))
-    throw new Error(error ?? `'${name}' is not a valid file`);
-  return value;
 }

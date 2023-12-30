@@ -1,10 +1,8 @@
 import {
   ChangeEvent,
-  Ref,
   useCallback,
   useEffect,
   useLayoutEffect,
-  useRef,
   useState,
 } from "react";
 
@@ -31,8 +29,7 @@ export function useImagePaste(setDataUrl: SetImageDetails) {
 /** Imports an image by dragging and dropping from the file system. */
 export function useImageDrop<T extends HTMLElement>(
   setDataUrl: SetImageDetails
-): [Ref<T>, boolean, boolean] {
-  const dropZone = useRef<T>();
+): [boolean, boolean] {
   const [isDropping, setIsDropping] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -67,7 +64,7 @@ export function useImageDrop<T extends HTMLElement>(
   );
 
   useLayoutEffect(() => {
-    var zone = dropZone.current;
+    const zone = document.querySelector("main");
     if (!zone) return;
     zone.addEventListener("dragover", onFileOver);
     zone.addEventListener("dragleave", onFileLeave);
@@ -79,7 +76,7 @@ export function useImageDrop<T extends HTMLElement>(
     };
   }, [onFileDrop]);
 
-  return [dropZone as any, isDropping, isError];
+  return [isDropping, isError];
 }
 
 /** Imports an image from a file input. */
@@ -88,11 +85,11 @@ export function loadImageFromFile(
 ): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
     if (file?.type.match("image.*")) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onerror = () => reject("Error reading file");
       reader.onload = (evt) =>
-        loadImageFromDataUrl(evt.target?.result as string, file.name ?? "Hello")
+        loadImageFromDataUrl(evt.target?.result as string, file.name ?? "")
           .then(accept)
           .catch(reject);
     } else if (file) reject("File is not an image");
@@ -125,7 +122,7 @@ export function onInputChange(setDataUrl: SetImageDetails) {
 
 function loadImageOnChange(e: Event): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
-    var files = (e.target as HTMLInputElement)?.files;
+    const files = (e.target as HTMLInputElement)?.files;
     if (files) loadImageFromFile(files[0]).then(accept).catch(reject);
     else reject("No data given");
   });
@@ -144,7 +141,7 @@ function loadImageOnPaste(e: LocalClipboardEvent): Promise<ImageDetails> {
 
     const items = clipboardData.items;
     let file: File | null = null;
-    for (var i = 0; i < items.length; i++)
+    for (let i = 0; i < items.length; i++)
       if (items[i].type.indexOf("image") === 0) file = items[i].getAsFile();
 
     loadImageFromFile(file).then(accept).catch(reject);
@@ -154,7 +151,7 @@ function loadImageOnPaste(e: LocalClipboardEvent): Promise<ImageDetails> {
 /** @see https://stackoverflow.com/a/15369753/3801481 */
 function loadImageOnDrop(e: DragEvent): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
-    var files = e.dataTransfer?.files;
+    const files = e.dataTransfer?.files;
     if (files) loadImageFromFile(files[0]).then(accept).catch(reject);
     else reject("No data given");
   });
