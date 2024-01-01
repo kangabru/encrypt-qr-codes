@@ -17,7 +17,11 @@ export async function readQrCode(
     | URL
     | String
 ) {
-  return qrScanner.scanImage(imageOrFileOrBlobOrUrl);
+  return qrScanner
+    .scanImage(imageOrFileOrBlobOrUrl, {
+      returnDetailedScanResult: true,
+    })
+    .then((r) => r.data);
 }
 
 export async function readQrCodeFromSvg(svgXml: string): Promise<ImageData> {

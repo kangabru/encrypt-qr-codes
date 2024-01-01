@@ -5,6 +5,7 @@ interface Props {
   name: string;
   label: string;
   minLength: number;
+  placeholder: string;
   disabled?: boolean;
 }
 
@@ -38,7 +39,6 @@ export default function TextField(props: Props) {
             ? "border-red-300 focus:border-red-300 focus:ring-red-200"
             : "border-gray-300 focus:border-indigo-300 focus:ring-indigo-200"
         )}
-        placeholder="Google Account"
       />
       {meta.error && meta.touched ? (
         <div className="text-red-500 text-sm">{meta.error}</div>

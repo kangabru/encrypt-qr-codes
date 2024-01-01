@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { readQrCode } from "@/common/qrcode.browser";
 import {
   ImageDetails,
   loadImageFromFile,
@@ -9,42 +8,118 @@ import {
   useImagePaste,
 } from "@/common/use-image-load";
 import { getErrorMessage, join } from "@/common/utils";
+import {
+  PhotographIcon,
+  QrcodeIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/solid";
 import { useField, useFormikContext } from "formik";
-import { useCallback, useState } from "react";
+import QrScanner from "qr-scanner";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+export interface ImageFields {
+  image: string;
+  webcamQrCodeData?: string;
+}
+
+type Mode = "image" | "webcam";
 
 export default function QrCodeImageInput() {
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField<string>("image");
-
+  const [mode, setMode] = useState<Mode>("image");
   const [fileName, setFileName] = useState("");
-  const { value: dataUrl, ...fieldVals } = field;
 
-  const onInput = useCallback(
-    async (d: ImageDetails) => {
+  const { setFieldValue } = useFormikContext();
+  const onImageInput: OnInputFunc = useCallback(
+    (d) => {
+      setMode("image");
       setFileName(d.fileName ?? "");
       setFieldValue("image", d.dataUrl);
+      d.qrCodeData && setFieldValue("webcamQrCodeData", d.qrCodeData);
     },
     [setFieldValue]
   );
 
-  useImagePaste(onInput);
-  const [isDropping] = useImageDrop(onInput);
+  // We keep these at this level to enable paste/drop in webcam mode
+  useImagePaste(onImageInput);
+  const [isDropping] = useImageDrop(onImageInput);
+
+  return (
+    <div>
+      <div className="grid grid-cols-2 mb-2 text-center text-sm font-medium text-gray-900">
+        <button
+          type="button"
+          onClick={() => setMode("image")}
+          className={join(
+            "flex items-center justify-center p-3 hover:bg-gray-50",
+            mode && "border-b-2 border-b-indigo-500"
+          )}
+        >
+          <QrcodeIcon className="w-5 h-5 mr-1" />
+          <span>Scan image</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("webcam")}
+          className={join(
+            "flex items-center justify-center p-3 hover:bg-gray-50",
+            !mode && "border-b-2 border-b-indigo-500"
+          )}
+        >
+          <VideoCameraIcon className="w-5 h-5 mr-1" />
+          <span>Scan webcam</span>
+          {mode && (
+            <span className="bg-indigo-500 absolute inset-x-0 bottom-0 h-0.5" />
+          )}
+        </button>
+      </div>
+      <div className="col-span-2">
+        {mode === "image" && (
+          <ImageMode
+            isDropping={isDropping}
+            onInput={onImageInput}
+            fileName={fileName}
+          />
+        )}{" "}
+        {mode === "webcam" && <WebcameMode onInput={onImageInput} />}
+      </div>
+    </div>
+  );
+}
+
+type OnInputFunc = (d: ImageDetails) => void;
+
+function ImageMode(props: {
+  isDropping: boolean;
+  onInput: OnInputFunc;
+  fileName?: string;
+}) {
+  const [field, meta] = useField<string>("image");
+  const { value: dataUrl, ...fieldVals } = field;
 
   return (
     <label
       className={join(
-        "w-full h-40 rounded-lg grid place-items-center cursor-pointer",
-        "bg-blue-50 p-2 border-dashed border-2",
-        isDropping ? "border-red-500" : "border-blue-500"
+        "group flex flex-col items-center justify-center w-full h-40 rounded-lg cursor-pointer text-center p-2 border-dashed border-2",
+        props.isDropping
+          ? "border-indigo-400"
+          : "border-gray-300 hover:border-indigo-400"
       )}
     >
       {dataUrl ? (
         <>
           <img src={dataUrl} alt="" className="h-full w-full object-contain" />
-          {fileName && <span>{fileName}</span>}
+          {props.fileName && <span>{props.fileName}</span>}
         </>
       ) : (
-        <span>Select, paste, or drop image</span>
+        <>
+          <PhotographIcon className="text-gray-300 w-12 h-12" />
+          <span className="mt-4 flex text-sm leading-6 text-gray-600">
+            <span className="font-semibold text-indigo-600 group-hover:underline">
+              Select an image
+            </span>
+            , drag and drop, or paste
+          </span>
+        </>
       )}
 
       {meta.touched && meta.error && (
@@ -60,10 +135,125 @@ export default function QrCodeImageInput() {
           const files = (e.target as HTMLInputElement)?.files;
           if (files) {
             const imageDetails = await loadImageFromFile(files[0]);
-            onInput(imageDetails);
+            props.onInput(imageDetails);
           }
         }}
       />
     </label>
   );
+}
+
+function WebcameMode({ onInput }: { onInput: OnInputFunc }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const qrRef = useRef<QrScanner>(null);
+
+  const [running, setRunning] = useState(false);
+  const [error, setError] = useState<string>();
+  const [cams, setCams] = useState<QrScanner.Camera[]>([]);
+
+  useEffect(() => {
+    setError(undefined);
+    setRunning(false);
+    if (!videoRef.current) return;
+
+    const qrScanner = new QrScanner(
+      videoRef.current,
+      ({ data }) => {
+        const video = videoRef.current;
+        if (video) {
+          console.info("Found QR code data:", data);
+          const [dataUrl, size] = extractSquareFromVideo(video);
+          onInput({ dataUrl, width: size, height: size, qrCodeData: data });
+        }
+      },
+      {
+        highlightScanRegion: true,
+        returnDetailedScanResult: true,
+      }
+    );
+
+    // @ts-ignore
+    qrRef.current = qrScanner;
+    qrScanner
+      .start()
+      .then(() => setRunning(true))
+      .catch((error) => {
+        setRunning(false);
+        setError(getErrorMessage(error) || "Couldn't load webcam");
+      });
+
+    return () => {
+      setRunning(false);
+      qrScanner.destroy();
+    };
+  }, [onInput]);
+
+  useEffect(() => {
+    setCams([]);
+    QrScanner.listCameras(true).then((cams) => setCams(cams));
+  }, []);
+
+  return (
+    <div
+      className={join(
+        "relative border-dashed border-2 rounded-lg p-1.5",
+        error ? "border-red-400" : "border-indigo-400"
+      )}
+    >
+      <div className="flex flex-col items-center">
+        <video ref={videoRef} className="h-36 rounded-md" />
+
+        {running && cams.length > 1 && (
+          <select
+            className="mt-2 text-xs rounded"
+            onInput={(e) => qrRef.current?.setCamera(e.currentTarget.value)}
+          >
+            {cams.map((cam) => (
+              <option
+                key={cam.id}
+                value={cam.id}
+                onClick={() => qrRef.current?.setCamera(cam.id)}
+              >
+                {cam.label}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      {!running && (
+        <div className="absolute inset-0 p-2 flex flex-col items-center justify-center">
+          <VideoCameraIcon className="text-gray-300 w-12 h-12" />
+          <span
+            className={join(
+              "mt-4 flex text-sm leading-6",
+              error ? "text-red-600" : "text-gray-600"
+            )}
+          >
+            {error ?? "Starting webcam..."}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function extractSquareFromVideo(video: HTMLVideoElement): [string, number] {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d")!;
+
+  const size = Math.min(video.videoWidth, video.videoHeight);
+  canvas.width = size;
+  canvas.height = size;
+
+  // Get middle square
+  const x = Math.floor((video.videoWidth - size) * 0.5);
+  const y = Math.floor((video.videoHeight - size) * 0.5);
+
+  // Flip horizontal to match flipped webcam view
+  ctx.scale(-1, 1);
+  ctx.translate(-canvas.width, 0);
+
+  ctx.drawImage(video, x, y, size, size, 0, 0, size, size);
+  return [canvas.toDataURL(), size];
 }

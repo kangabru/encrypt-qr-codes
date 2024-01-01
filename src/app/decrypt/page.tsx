@@ -5,10 +5,12 @@ import { decryptText } from "@/common/crypto";
 import { EncryptedQRData, parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage } from "@/common/utils";
-import QrCodeImageInput from "@/components/fields/qrCodeImageField";
+import QrCodeImageInput, {
+  ImageFields,
+} from "@/components/fields/qrCodeImageField";
 import TextField from "@/components/fields/textField";
-import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
+import { QrcodeIcon } from "@heroicons/react/outline";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
@@ -35,16 +37,15 @@ export default function DecryptPage() {
   );
 }
 
-interface Fields {
-  image: string;
+interface Fields extends ImageFields {
   pass: string;
 }
 
-async function decrypt({ image, pass }: Fields) {
-  const qrCodeData = await readQrCode(image);
+async function decrypt({ image, pass, webcamQrCodeData }: Fields) {
+  const qrCodeData = webcamQrCodeData ?? (await readQrCode(image));
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
 
-  console.log("Encrypted data:");
+  console.info("Encrypted data:");
   console.table({ ...encryptedData });
 
   const decryptedData = await decryptText(crypto, encryptedData, pass);
@@ -54,7 +55,7 @@ async function decrypt({ image, pass }: Fields) {
     `Decrypted: ${encryptedData.hint}`
   );
 
-  console.log("Decrypted data:");
+  console.info("Decrypted data:");
   console.table({ data: decryptedData });
   return { encryptedData, html: qrCode };
 }
@@ -85,6 +86,7 @@ function DecryptPanel(props: {
               label="Password"
               minLength={1}
               disabled={!image}
+              placeholder="hunter2"
             />
 
             <div className="flex-1" />
@@ -117,7 +119,7 @@ function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
         />
       ) : (
         <div className="grid place-items-center w-full h-full text-gray-200">
-          <QrCodeIcon className="max-h-40" />
+          <QrcodeIcon className="max-h-40" />
         </div>
       )}
 

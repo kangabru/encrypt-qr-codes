@@ -4,15 +4,17 @@
 import { encryptText } from "@/common/crypto";
 import { EncryptedQRData } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
-import QrCodeImageInput from "@/components/fields/qrCodeImageField";
+import { getErrorMessage } from "@/common/utils";
+import QrCodeImageInput, {
+  ImageFields,
+} from "@/components/fields/qrCodeImageField";
 import TextField from "@/components/fields/textField";
-import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
+import { QrcodeIcon } from "@heroicons/react/outline";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
 import { downloadPng, downloadSvg } from "../download";
-import { getErrorMessage } from "@/common/utils";
 
 interface QrCodeInfo {
   data: EncryptedQRData;
@@ -35,14 +37,13 @@ export default function EncryptSection() {
   );
 }
 
-interface Fields {
-  image: string;
+interface Fields extends ImageFields {
   hint: string;
   pass: string;
 }
 
-async function encrypt({ image, hint, pass }: Fields) {
-  const plainText = await readQrCode(image);
+async function encrypt({ image, hint, pass, webcamQrCodeData }: Fields) {
+  const plainText = webcamQrCodeData ?? (await readQrCode(image));
   const qrCodeData = await encryptText(crypto, plainText, hint, pass);
   const qrCodeSvg = generateQrCodeSvg(
     JSON.stringify(qrCodeData),
@@ -50,7 +51,7 @@ async function encrypt({ image, hint, pass }: Fields) {
     qrCodeData.date
   );
 
-  console.log("Generated encrypted QR Code:");
+  console.info("Generated encrypted QR Code:");
   console.table({ plainText, ...qrCodeData });
   return { data: qrCodeData, html: qrCodeSvg };
 }
@@ -81,12 +82,14 @@ function EncryptPanel(props: {
               label="Hint"
               minLength={3}
               disabled={!image}
+              placeholder="Google Account"
             />
             <TextField
               name="pass"
               label="Password"
               minLength={12}
               disabled={!image}
+              placeholder="hunter2"
             />
 
             <div className="flex-1" />
@@ -119,7 +122,7 @@ function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
         />
       ) : (
         <div className="grid place-items-center w-full h-full text-gray-200">
-          <QrCodeIcon className="max-h-40" />
+          <QrcodeIcon className="max-h-40" />
         </div>
       )}
 

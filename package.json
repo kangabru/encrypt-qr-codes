@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@zxing/library": "^0.20.0",
     "client-only": "^0.0.1",
     "formik": "^2.4.5",

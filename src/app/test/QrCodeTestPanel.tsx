@@ -3,16 +3,12 @@
 
 import { decryptText, encryptText } from "@/common/crypto";
 import { parseEncryptedQRDataString } from "@/common/parser";
-import {
-  generateQrCodeSvg,
-  readQrCodeFromSvg,
-  readQrCode,
-} from "@/common/qrcode.browser";
+import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage } from "@/common/utils";
-import { QrCodeIcon } from "@/components/icons";
 import { Panel, SplitPanelSection } from "@/components/panels";
+import { QrcodeIcon } from "@heroicons/react/outline";
 import { useCallback, useState } from "react";
-import { svgToCanvas, svgToPng } from "../download";
+import { svgToPng } from "../download";
 
 export default function QrCodeTestPanel() {
   const [messages, setMessages] = useState<string[]>([]);
@@ -79,7 +75,7 @@ export default function QrCodeTestPanel() {
                 alt=""
               />
             ) : (
-              <QrCodeIcon className="max-h-40" />
+              <QrcodeIcon className="max-h-40" />
             )}
           </div>
 

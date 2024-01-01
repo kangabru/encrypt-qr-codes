@@ -13,6 +13,7 @@ export type ImageDetails = {
   width: number;
   height: number;
   fileName?: string;
+  qrCodeData?: string;
 };
 export type SetImageDetails = (_: ImageDetails) => void;
 
@@ -27,9 +28,7 @@ export function useImagePaste(setDataUrl: SetImageDetails) {
 }
 
 /** Imports an image by dragging and dropping from the file system. */
-export function useImageDrop<T extends HTMLElement>(
-  setDataUrl: SetImageDetails
-): [boolean, boolean] {
+export function useImageDrop(setDataUrl: SetImageDetails): [boolean, boolean] {
   const [isDropping, setIsDropping] = useState(false);
   const [isError, setIsError] = useState(false);
 
