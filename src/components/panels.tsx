@@ -1,4 +1,4 @@
-import { Children } from "@/common/utils";
+import { Children, join } from "@/common/utils";
 
 export function SplitPanelSection(props: { title: string } & Children) {
   return (
@@ -9,10 +9,24 @@ export function SplitPanelSection(props: { title: string } & Children) {
   );
 }
 
-export function Panel(props: { title: string } & Children) {
+export function Panel(
+  props: {
+    title: string;
+    hasError?: boolean;
+    icon?: React.ReactNode;
+  } & Children
+) {
   return (
-    <div className="bg-white rounded-lg border-t-4 border-blue-200 shadow p-4 flex flex-col">
-      <h2 className="text-lg mb-4">{props.title}</h2>
+    <div
+      className={join(
+        "bg-white rounded-lg border-t-4 shadow p-4 flex flex-col",
+        props.hasError ? "border-red-200" : "border-blue-200"
+      )}
+    >
+      <div className="flex items-center mb-4">
+        {props.icon}
+        <h2 className="text-lg">{props.title}</h2>
+      </div>
       {props.children}
     </div>
   );

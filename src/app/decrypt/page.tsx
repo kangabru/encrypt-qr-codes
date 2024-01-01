@@ -4,13 +4,14 @@
 import { decryptText } from "@/common/crypto";
 import { EncryptedQRData, parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
-import { getErrorMessage } from "@/common/utils";
+import { getErrorMessage, join } from "@/common/utils";
 import QrCodeImageInput, {
   ImageFields,
 } from "@/components/fields/qrCodeImageField";
 import TextField from "@/components/fields/textField";
 import { Panel, SplitPanelSection } from "@/components/panels";
 import { QrcodeIcon } from "@heroicons/react/outline";
+import { LockOpenIcon } from "@heroicons/react/solid";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
@@ -64,20 +65,24 @@ function DecryptPanel(props: {
   setQrCodeInfo: (qr: QrCodeInfo | null) => void;
 }) {
   return (
-    <Panel title="Decrypt a QR Code">
-      <Formik<Fields>
-        initialValues={{ image: "", pass: "" }}
-        onSubmit={(values, helpers) => {
-          props.setQrCodeInfo(null);
-          return decrypt(values)
-            .then(props.setQrCodeInfo)
-            .catch((e) => {
-              console.info(e);
-              helpers.setErrors(getErrorMessage(e));
-            });
-        }}
-      >
-        {({ isValid, errors, values: { image } }) => (
+    <Formik<Fields>
+      initialValues={{ image: "", pass: "" }}
+      onSubmit={(values, helpers) => {
+        props.setQrCodeInfo(null);
+        return decrypt(values)
+          .then(props.setQrCodeInfo)
+          .catch((e) => {
+            console.info(e);
+            helpers.setErrors(getErrorMessage(e));
+          });
+      }}
+    >
+      {({ isValid, errors, values: { image } }) => (
+        <Panel
+          title="Decrypt a QR Code"
+          hasError={typeof errors === "string"}
+          icon={<LockOpenIcon className="w-6 h-6 mr-2 -mt-0.5 text-gray-300" />}
+        >
           <Form className="space-y-4 flex flex-col">
             <QrCodeImageInput />
 
@@ -97,15 +102,19 @@ function DecryptPanel(props: {
 
             <button
               type="submit"
-              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
+              className={join(
+                "flex items-center justify-center mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 text-white disabled",
+                typeof errors === "string" ? "bg-red-500" : "bg-blue-500"
+              )}
               disabled={!(image && isValid)}
             >
-              Decrypt
+              <LockOpenIcon className="w-5 h-5 mr-1" />
+              <span>Decrypt</span>
             </button>
           </Form>
-        )}
-      </Formik>
-    </Panel>
+        </Panel>
+      )}
+    </Formik>
   );
 }
 
