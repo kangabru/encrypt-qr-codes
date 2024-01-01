@@ -2,25 +2,19 @@
 "use client";
 
 import { decryptText } from "@/common/crypto";
-import { EncryptedQRData, parseEncryptedQRDataString } from "@/common/parser";
+import { parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
+import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
+import { Panel, SplitPanelSection } from "@/components/Panel";
 import QrCodeImageInput, {
   ImageFields,
-} from "@/components/fields/qrCodeImageField";
-import TextField from "@/components/fields/textField";
-import { Panel, SplitPanelSection } from "@/components/panels";
-import { QrcodeIcon } from "@heroicons/react/outline";
+} from "@/components/fields/QrCodeImageField";
+import TextField from "@/components/fields/TextField";
 import { LockOpenIcon } from "@heroicons/react/solid";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
-import { downloadPng, downloadSvg } from "../download";
-
-interface QrCodeInfo {
-  encryptedData: EncryptedQRData;
-  html: string;
-}
 
 export default function DecryptPage() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
@@ -29,7 +23,11 @@ export default function DecryptPage() {
       <h1 className="text-4xl">Decrypt 2FA QR Codes</h1>
       <SplitPanelSection title="Decrypt">
         <DecryptPanel setQrCodeInfo={setQrCodeInfo} />
-        <DisplayPanel qrCodeInfo={qrCodeInfo} />
+        <DisplayPanel
+          title="Decrypted QR Code"
+          qrCodeInfo={qrCodeInfo}
+          getFileName={(d) => `qr-decrypted-${d.date}-${d.hint}`}
+        />
       </SplitPanelSection>
       <Link href="/encrypt" className="">
         Encrypt instead?
@@ -42,7 +40,11 @@ interface Fields extends ImageFields {
   pass: string;
 }
 
-async function decrypt({ image, pass, webcamQrCodeData }: Fields) {
+async function decrypt({
+  image,
+  pass,
+  webcamQrCodeData,
+}: Fields): Promise<QrCodeInfo> {
   const qrCodeData = webcamQrCodeData ?? (await readQrCode(image));
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
 
@@ -58,7 +60,7 @@ async function decrypt({ image, pass, webcamQrCodeData }: Fields) {
 
   console.info("Decrypted data:");
   console.table({ data: decryptedData });
-  return { encryptedData, html: qrCode };
+  return { data: encryptedData, html: qrCode };
 }
 
 function DecryptPanel(props: {
@@ -116,53 +118,4 @@ function DecryptPanel(props: {
       )}
     </Formik>
   );
-}
-
-function DisplayPanel({ qrCodeInfo }: { qrCodeInfo: QrCodeInfo | null }) {
-  return (
-    <Panel title="Decrypted QR Code">
-      {qrCodeInfo ? (
-        <div
-          dangerouslySetInnerHTML={{ __html: qrCodeInfo.html }}
-          className="w-full max-w-lg aspect-square"
-        />
-      ) : (
-        <div className="grid place-items-center w-full h-full text-gray-200">
-          <QrcodeIcon className="max-h-40" />
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 gap-4">
-        <button
-          className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
-          disabled={!qrCodeInfo}
-          onClick={() => {
-            const { html, encryptedData } = qrCodeInfo!;
-            downloadSvg(html, getFileName(encryptedData)).catch((e) =>
-              console.error("Failed to download image", e)
-            );
-          }}
-        >
-          Download SVG
-        </button>
-
-        <button
-          className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
-          disabled={!qrCodeInfo}
-          onClick={() => {
-            const { html, encryptedData } = qrCodeInfo!;
-            downloadPng(html, getFileName(encryptedData)).catch((e) =>
-              console.error("Failed to download image", e)
-            );
-          }}
-        >
-          Download PNG
-        </button>
-      </div>
-    </Panel>
-  );
-}
-
-function getFileName({ hint, date }: EncryptedQRData) {
-  return `qr-decrypted-${date}-${hint}`;
 }

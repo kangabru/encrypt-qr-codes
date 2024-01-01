@@ -5,7 +5,7 @@ import { decryptText, encryptText } from "@/common/crypto";
 import { parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage } from "@/common/utils";
-import { Panel, SplitPanelSection } from "@/components/panels";
+import { Panel, SplitPanelSection } from "@/components/Panel";
 import { QrcodeIcon } from "@heroicons/react/outline";
 import { useCallback, useState } from "react";
 import { svgToPng } from "../download";

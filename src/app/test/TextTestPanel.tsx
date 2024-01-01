@@ -2,7 +2,7 @@
 
 import { decryptText, encryptText } from "@/common/crypto";
 import { getErrorMessage } from "@/common/utils";
-import { Panel, SplitPanelSection } from "@/components/panels";
+import { Panel, SplitPanelSection } from "@/components/Panel";
 import { useCallback, useState } from "react";
 
 export default function TextTestPanel() {
