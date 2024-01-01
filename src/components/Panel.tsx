@@ -2,7 +2,7 @@ import { Children, join } from "@/common/utils";
 
 export function SplitPanelSection(props: { title: string } & Children) {
   return (
-    <section className="max-w-screen-lg w-full grid grid-cols-2 gap-4 p-4">
+    <section className="max-w-screen-lg w-full flex flex-col md:grid grid-cols-2 gap-4 p-4">
       <h2 className="text-xl col-span-2">{props.title}</h2>
       {props.children}
     </section>

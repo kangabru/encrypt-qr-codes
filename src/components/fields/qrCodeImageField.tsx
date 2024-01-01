@@ -113,8 +113,8 @@ function ImageMode(props: {
       ) : (
         <>
           <PhotographIcon className="text-gray-300 w-12 h-12" />
-          <span className="mt-4 flex text-sm leading-6 text-gray-600">
-            <span className="font-semibold text-indigo-600 group-hover:underline">
+          <span className="mt-4 text-sm leading-6 text-gray-600">
+            <span className="inline font-semibold text-indigo-600 group-hover:underline">
               Select an image
             </span>
             , drag and drop, or paste
