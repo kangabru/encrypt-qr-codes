@@ -44,9 +44,9 @@ async function encrypt({
   image,
   hint,
   pass,
-  webcamQrCodeData,
+  cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const plainText = webcamQrCodeData ?? (await readQrCode(image));
+  const plainText = cameraQrCodeData ?? (await readQrCode(image));
   const qrCodeData = await encryptText(crypto, plainText, hint, pass);
   const qrCodeSvg = generateQrCodeSvg(
     JSON.stringify(qrCodeData),

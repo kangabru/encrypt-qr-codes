@@ -43,9 +43,9 @@ interface Fields extends ImageFields {
 async function decrypt({
   image,
   pass,
-  webcamQrCodeData,
+  cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const qrCodeData = webcamQrCodeData ?? (await readQrCode(image));
+  const qrCodeData = cameraQrCodeData ?? (await readQrCode(image));
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
 
   console.info("Encrypted data:");

@@ -19,10 +19,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface ImageFields {
   image: string;
-  webcamQrCodeData?: string;
+  cameraQrCodeData?: string;
 }
 
-type Mode = "image" | "webcam";
+type Mode = "image" | "camera";
 
 export default function QrCodeImageInput() {
   const [mode, setMode] = useState<Mode>("image");
@@ -34,12 +34,12 @@ export default function QrCodeImageInput() {
       setMode("image");
       setFileName(d.fileName ?? "");
       setFieldValue("image", d.dataUrl);
-      d.qrCodeData && setFieldValue("webcamQrCodeData", d.qrCodeData);
+      d.qrCodeData && setFieldValue("cameraQrCodeData", d.qrCodeData);
     },
     [setFieldValue]
   );
 
-  // We keep these at this level to enable paste/drop in webcam mode
+  // We keep these at this level to enable paste/drop in camera mode
   useImagePaste(onImageInput);
   const [isDropping] = useImageDrop(onImageInput);
 
@@ -51,22 +51,22 @@ export default function QrCodeImageInput() {
           onClick={() => setMode("image")}
           className={join(
             "flex items-center justify-center p-3 hover:bg-gray-50",
-            mode && "border-b-2 border-b-indigo-500"
+            mode === "image" && "border-b-2 border-b-indigo-500"
           )}
         >
           <QrcodeIcon className="w-5 h-5 mr-1" />
-          <span>Scan image</span>
+          <span>Select image</span>
         </button>
         <button
           type="button"
-          onClick={() => setMode("webcam")}
+          onClick={() => setMode("camera")}
           className={join(
             "flex items-center justify-center p-3 hover:bg-gray-50",
-            !mode && "border-b-2 border-b-indigo-500"
+            mode === "camera" && "border-b-2 border-b-indigo-500"
           )}
         >
           <VideoCameraIcon className="w-5 h-5 mr-1" />
-          <span>Scan webcam</span>
+          <span>Scan camera</span>
           {mode && (
             <span className="bg-indigo-500 absolute inset-x-0 bottom-0 h-0.5" />
           )}
@@ -79,8 +79,8 @@ export default function QrCodeImageInput() {
             onInput={onImageInput}
             fileName={fileName}
           />
-        )}{" "}
-        {mode === "webcam" && <WebcameMode onInput={onImageInput} />}
+        )}
+        {mode === "camera" && <CameraMode onInput={onImageInput} />}
       </div>
     </div>
   );
@@ -143,7 +143,7 @@ function ImageMode(props: {
   );
 }
 
-function WebcameMode({ onInput }: { onInput: OnInputFunc }) {
+function CameraMode({ onInput }: { onInput: OnInputFunc }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const qrRef = useRef<QrScanner>(null);
 
@@ -179,7 +179,7 @@ function WebcameMode({ onInput }: { onInput: OnInputFunc }) {
       .then(() => setRunning(true))
       .catch((error) => {
         setRunning(false);
-        setError(getErrorMessage(error) || "Couldn't load webcam");
+        setError(getErrorMessage(error) || "Couldn't load camera");
       });
 
     return () => {
@@ -230,7 +230,7 @@ function WebcameMode({ onInput }: { onInput: OnInputFunc }) {
               error ? "text-red-600" : "text-gray-600"
             )}
           >
-            {error ?? "Starting webcam..."}
+            {error ?? "Starting camera..."}
           </span>
         </div>
       )}
@@ -250,7 +250,7 @@ function extractSquareFromVideo(video: HTMLVideoElement): [string, number] {
   const x = Math.floor((video.videoWidth - size) * 0.5);
   const y = Math.floor((video.videoHeight - size) * 0.5);
 
-  // Flip horizontal to match flipped webcam view
+  // Flip horizontal to match flipped camera view
   ctx.scale(-1, 1);
   ctx.translate(-canvas.width, 0);
 
