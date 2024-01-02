@@ -11,7 +11,7 @@ import { useFormikContext } from "formik";
 import { createContext, useCallback, useState } from "react";
 import { ImageFields } from "./types";
 
-export type Mode = "image" | "camera";
+export type Mode = "image" | "camera" | "demo";
 
 export interface ImageInputContext {
   mode: Mode;

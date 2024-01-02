@@ -83,7 +83,10 @@ function EncryptPanel(props: {
           hasError={typeof errors === "string"}
         >
           <Form className="space-y-4 flex flex-col flex-1">
-            <QrCodeImageInput />
+            <QrCodeImageInput
+              demoSrc="/demo/qr-code-plain.png"
+              demoDescription="Demo QR Code"
+            />
 
             <TextField
               name="hint"

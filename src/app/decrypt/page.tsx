@@ -85,7 +85,10 @@ function DecryptPanel(props: {
           icon={<LockOpenIcon className="w-6 h-6 mr-2 -mt-0.5 text-gray-300" />}
         >
           <Form className="space-y-4 flex flex-col flex-1">
-            <QrCodeImageInput />
+            <QrCodeImageInput
+              demoSrc="/demo/qr-code-encrypted.png"
+              demoDescription="Password is 'pass-1234567890'"
+            />
 
             <TextField
               name="pass"

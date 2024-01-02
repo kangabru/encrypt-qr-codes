@@ -8,18 +8,24 @@ import {
 } from "@heroicons/react/solid";
 import { useContext } from "react";
 import CameraMode from "./CameraMode";
+import DemoMode from "./DemoMode";
 import ImageMode from "./ImageMode";
 import { WithImageInputContext, imageInputContext } from "./context";
 
-export default function QrCodeImageInput() {
+interface DemoProps {
+  demoSrc: string;
+  demoDescription: string;
+}
+
+export default function QrCodeImageInput(props: DemoProps) {
   return (
     <WithImageInputContext>
-      <QrCodeImageInputCore />
+      <QrCodeImageInputCore {...props} />
     </WithImageInputContext>
   );
 }
 
-function QrCodeImageInputCore() {
+function QrCodeImageInputCore(props: DemoProps) {
   const { mode, setMode } = useContext(imageInputContext);
   return (
     <div>
@@ -46,10 +52,27 @@ function QrCodeImageInputCore() {
           <VideoCameraIcon className="w-5 h-5 mr-1" />
           <span>Scan camera</span>
         </button>
+        <button
+          type="button"
+          onClick={() => setMode("demo")}
+          className={join(
+            "flex items-center justify-center p-3 hover:bg-gray-50",
+            mode === "demo" && "border-b-2 border-b-indigo-500"
+          )}
+        >
+          <BeakerIcon className="w-5 h-5 mr-1" />
+          <span>Demo QR code</span>
+        </button>
       </div>
       <div>
         {mode === "image" && <ImageMode />}
         {mode === "camera" && <CameraMode />}
+        {mode === "demo" && (
+          <DemoMode
+            imageSrc={props.demoSrc}
+            description={props.demoDescription}
+          />
+        )}
       </div>
     </div>
   );
