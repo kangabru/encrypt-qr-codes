@@ -67,9 +67,6 @@ export default function QrCodeImageInput() {
         >
           <VideoCameraIcon className="w-5 h-5 mr-1" />
           <span>Scan camera</span>
-          {mode && (
-            <span className="bg-indigo-500 absolute inset-x-0 bottom-0 h-0.5" />
-          )}
         </button>
       </div>
       <div className="col-span-2">
@@ -226,7 +223,7 @@ function CameraMode({ onInput }: { onInput: OnInputFunc }) {
           <VideoCameraIcon className="text-gray-300 w-12 h-12" />
           <span
             className={join(
-              "mt-4 flex text-sm leading-6",
+              "mt-3 flex text-sm leading-6",
               error ? "text-red-600" : "text-gray-600"
             )}
           >

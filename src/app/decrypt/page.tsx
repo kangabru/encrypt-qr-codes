@@ -85,12 +85,13 @@ function DecryptPanel(props: {
           hasError={typeof errors === "string"}
           icon={<LockOpenIcon className="w-6 h-6 mr-2 -mt-0.5 text-gray-300" />}
         >
-          <Form className="space-y-4 flex flex-col">
+          <Form className="space-y-4 flex flex-col flex-1">
             <QrCodeImageInput />
 
             <TextField
               name="pass"
               label="Password"
+              description="Used to encrypt the QR code. Unrecoverable if lost."
               minLength={1}
               disabled={!image}
               placeholder="hunter2"

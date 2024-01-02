@@ -4,6 +4,7 @@ import { useField } from "formik";
 interface Props {
   name: string;
   label: string;
+  description: string;
   minLength: number;
   placeholder: string;
   disabled?: boolean;
@@ -28,6 +29,7 @@ export default function TextField(props: Props) {
               : null}
         </span>
       </div>
+      <span className="text-xs">{props.description}</span>
       <input
         {...field}
         {...props}

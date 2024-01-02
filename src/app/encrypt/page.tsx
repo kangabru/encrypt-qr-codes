@@ -89,6 +89,7 @@ function EncryptPanel(props: {
             <TextField
               name="hint"
               label="Hint"
+              description="Unencrypted text to remember what the QR code is for."
               minLength={3}
               disabled={!image}
               placeholder="Google Account"
@@ -96,6 +97,7 @@ function EncryptPanel(props: {
             <TextField
               name="pass"
               label="Password"
+              description="Make it secure but memorable as this is unrecoverable."
               minLength={12}
               disabled={!image}
               placeholder="hunter2"
