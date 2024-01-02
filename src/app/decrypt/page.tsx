@@ -91,6 +91,7 @@ function DecryptPanel(props: {
             <TextField
               name="pass"
               label="Password"
+              type="password"
               description="Used to encrypt the QR code. Unrecoverable if lost."
               minLength={1}
               disabled={!image}

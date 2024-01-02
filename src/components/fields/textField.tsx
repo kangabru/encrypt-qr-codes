@@ -8,6 +8,7 @@ interface Props {
   minLength: number;
   placeholder: string;
   disabled?: boolean;
+  type?: "text" | "password";
 }
 
 export default function TextField(props: Props) {
@@ -33,7 +34,7 @@ export default function TextField(props: Props) {
       <input
         {...field}
         {...props}
-        type="text"
+        type={props.type ?? "text"}
         required
         className={join(
           "disabled mt-1 block w-full rounded-md shadow-sm focus:ring focus:ring-opacity-50",

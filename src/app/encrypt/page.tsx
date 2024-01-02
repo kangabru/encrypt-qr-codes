@@ -97,6 +97,7 @@ function EncryptPanel(props: {
             <TextField
               name="pass"
               label="Password"
+              type="password"
               description="Make it secure but memorable as this is unrecoverable."
               minLength={12}
               disabled={!image}
