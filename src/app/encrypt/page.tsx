@@ -23,6 +23,7 @@ export default function EncryptSection() {
         <EncryptPanel setQrCodeInfo={setQrCodeInfo} />
         <DisplayPanel
           title="Encrypted QR Code"
+          decryptedTextLabel="Original text"
           qrCodeInfo={qrCodeInfo}
           getFileName={(d) => `qr-encrypted-${d.date}-${d.hint}`}
         />
@@ -115,8 +116,10 @@ function EncryptPanel(props: {
             <button
               type="submit"
               className={join(
-                "flex items-center justify-center mt-1 p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 text-white disabled",
-                typeof errors === "string" ? "bg-red-500" : "bg-blue-500"
+                "flex items-center justify-center mt-1 p-2 w-full rounded-md shadow-sm text-white disabled focus-ring",
+                typeof errors === "string"
+                  ? "bg-red-500 focus:ring-red-300/50"
+                  : "bg-indigo-500 focus:ring-indigo-300/50"
               )}
               disabled={!(image && isValid)}
             >

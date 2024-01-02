@@ -6,4 +6,8 @@
   .disabled {
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
   }
+
+  .focus-ring {
+    @apply focus:outline-none focus:ring;
+  }
 }

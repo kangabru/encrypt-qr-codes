@@ -37,10 +37,10 @@ export default function TextField(props: Props) {
         type={props.type ?? "text"}
         required
         className={join(
-          "disabled mt-1 block w-full rounded-md shadow-sm focus:ring focus:ring-opacity-50",
+          "disabled mt-1 block w-full rounded-md shadow-sm border focus:ring",
           value.length > 0 && value.length < props.minLength
-            ? "border-red-300 focus:border-red-300 focus:ring-red-200"
-            : "border-gray-300 focus:border-indigo-300 focus:ring-indigo-200"
+            ? "border-red-300 focus:border-red-300 focus:ring-red-200/50"
+            : "border-gray-300 focus:border-indigo-300 focus:ring-indigo-200/50"
         )}
       />
       {meta.error && meta.touched ? (

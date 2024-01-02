@@ -20,7 +20,7 @@ export function Panel(
     <div
       className={join(
         "bg-white rounded-lg border-t-4 shadow p-4 flex flex-col",
-        props.hasError ? "border-red-200" : "border-blue-200"
+        props.hasError ? "border-red-200" : "border-indigo-200"
       )}
     >
       <div className="flex items-center mb-4">

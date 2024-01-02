@@ -34,7 +34,7 @@ function QrCodeImageInputCore(props: DemoProps) {
           type="button"
           onClick={() => setMode("image")}
           className={join(
-            "flex items-center justify-center p-3 hover:bg-gray-50",
+            "flex items-center justify-center p-3 hover:bg-gray-50 focus-ring hover:rounded focus:rounded",
             mode === "image" && "border-b-2 border-b-indigo-500"
           )}
         >
@@ -45,7 +45,7 @@ function QrCodeImageInputCore(props: DemoProps) {
           type="button"
           onClick={() => setMode("camera")}
           className={join(
-            "flex items-center justify-center p-3 hover:bg-gray-50",
+            "flex items-center justify-center p-3 hover:bg-gray-50 focus-ring hover:rounded focus:rounded",
             mode === "camera" && "border-b-2 border-b-indigo-500"
           )}
         >
@@ -56,7 +56,7 @@ function QrCodeImageInputCore(props: DemoProps) {
           type="button"
           onClick={() => setMode("demo")}
           className={join(
-            "flex items-center justify-center p-3 hover:bg-gray-50",
+            "flex items-center justify-center p-3 hover:bg-gray-50 focus-ring hover:rounded focus:rounded",
             mode === "demo" && "border-b-2 border-b-indigo-500"
           )}
         >

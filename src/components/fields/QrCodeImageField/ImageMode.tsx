@@ -19,8 +19,9 @@ export default function ImageMode() {
 
   return (
     <label
+      tabIndex={0}
       className={join(
-        "group flex flex-col items-center justify-center w-full h-40 rounded-lg cursor-pointer text-center p-2 border-dashed border-2",
+        "group flex flex-col items-center justify-center w-full h-40 rounded-lg cursor-pointer text-center p-2 border-dashed border-2 focus-ring focus:ring-indigo-400/50",
         isDropping
           ? "border-indigo-400"
           : "border-gray-300 hover:border-indigo-400"
@@ -48,7 +49,7 @@ export default function ImageMode() {
       )}
 
       <input
-        hidden
+        className="invisible h-0 w-0"
         type="file"
         accept="image/*"
         {...fieldVals}

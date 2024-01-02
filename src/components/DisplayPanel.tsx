@@ -11,10 +11,12 @@ export interface QrCodeInfo {
 
 export default function DisplayPanel({
   title,
+  decryptedTextLabel,
   qrCodeInfo,
   getFileName,
 }: {
   title: string;
+  decryptedTextLabel: string;
   qrCodeInfo: QrCodeInfo | null;
   getFileName: (i: EncryptedQRData) => string;
 }) {
@@ -26,7 +28,7 @@ export default function DisplayPanel({
             dangerouslySetInnerHTML={{ __html: qrCodeInfo.svgHtml }}
             className="w-full max-w-lg aspect-square rounded-md shadow-sm border border-gray-300"
           />
-          <p className="mt-4 mb-1 text-sm">Decrypted text:</p>
+          <p className="mt-4 mb-1 text-sm">{decryptedTextLabel}</p>
           <div className="text-mono p-2 rounded-md text-sm shadow-sm bg-gray-50 border border-gray-300 break-words">
             {qrCodeInfo.dataDecrypted}
           </div>
@@ -39,7 +41,7 @@ export default function DisplayPanel({
 
       <div className="grid grid-cols-2 gap-4 mt-4">
         <button
-          className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
+          className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
           disabled={!qrCodeInfo}
           onClick={() => {
             const { svgHtml, dataEncrypted } = qrCodeInfo!;
@@ -52,7 +54,7 @@ export default function DisplayPanel({
         </button>
 
         <button
-          className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
+          className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
           disabled={!qrCodeInfo}
           onClick={() => {
             const { svgHtml, dataEncrypted } = qrCodeInfo!;
