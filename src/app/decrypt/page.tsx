@@ -7,9 +7,8 @@ import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
 import { Panel, SplitPanelSection } from "@/components/Panel";
-import QrCodeImageInput, {
-  ImageFields,
-} from "@/components/fields/QrCodeImageField";
+import QrCodeImageInput from "@/components/fields/QrCodeImageField";
+import { ImageFields } from "@/components/fields/QrCodeImageField/types";
 import TextField from "@/components/fields/TextField";
 import { LockOpenIcon } from "@heroicons/react/solid";
 import { Form, Formik } from "formik";
@@ -45,7 +44,7 @@ async function decrypt({
   pass,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const qrCodeData = cameraQrCodeData ?? (await readQrCode(image));
+  const qrCodeData = cameraQrCodeData || (await readQrCode(image));
   const encryptedData = parseEncryptedQRDataString(qrCodeData);
 
   console.info("Encrypted data:");
@@ -68,7 +67,7 @@ function DecryptPanel(props: {
 }) {
   return (
     <Formik<Fields>
-      initialValues={{ image: "", pass: "" }}
+      initialValues={{ image: "", pass: "", cameraQrCodeData: "" }}
       onSubmit={(values, helpers) => {
         props.setQrCodeInfo(null);
         return decrypt(values)

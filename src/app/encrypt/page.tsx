@@ -6,9 +6,8 @@ import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
 import { Panel, SplitPanelSection } from "@/components/Panel";
-import QrCodeImageInput, {
-  ImageFields,
-} from "@/components/fields/QrCodeImageField";
+import QrCodeImageInput from "@/components/fields/QrCodeImageField";
+import { ImageFields } from "@/components/fields/QrCodeImageField/types";
 import TextField from "@/components/fields/TextField";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { Form, Formik } from "formik";
@@ -46,7 +45,7 @@ async function encrypt({
   pass,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const plainText = cameraQrCodeData ?? (await readQrCode(image));
+  const plainText = cameraQrCodeData || (await readQrCode(image));
   const qrCodeData = await encryptText(crypto, plainText, hint, pass);
   const qrCodeSvg = generateQrCodeSvg(
     JSON.stringify(qrCodeData),
@@ -64,7 +63,7 @@ function EncryptPanel(props: {
 }) {
   return (
     <Formik<Fields>
-      initialValues={{ image: "", hint: "", pass: "" }}
+      initialValues={{ image: "", hint: "", pass: "", cameraQrCodeData: "" }}
       onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null);
         await encrypt(values)

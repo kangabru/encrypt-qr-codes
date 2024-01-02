@@ -1,0 +1,56 @@
+"use client";
+
+import { join } from "@/common/utils";
+import {
+  BeakerIcon,
+  QrcodeIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/solid";
+import { useContext } from "react";
+import CameraMode from "./CameraMode";
+import ImageMode from "./ImageMode";
+import { WithImageInputContext, imageInputContext } from "./context";
+
+export default function QrCodeImageInput() {
+  return (
+    <WithImageInputContext>
+      <QrCodeImageInputCore />
+    </WithImageInputContext>
+  );
+}
+
+function QrCodeImageInputCore() {
+  const { mode, setMode } = useContext(imageInputContext);
+  return (
+    <div>
+      <div className="grid grid-cols-3 mb-2 text-center text-sm font-medium text-gray-900">
+        <button
+          type="button"
+          onClick={() => setMode("image")}
+          className={join(
+            "flex items-center justify-center p-3 hover:bg-gray-50",
+            mode === "image" && "border-b-2 border-b-indigo-500"
+          )}
+        >
+          <QrcodeIcon className="w-5 h-5 mr-1" />
+          <span>Select image</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("camera")}
+          className={join(
+            "flex items-center justify-center p-3 hover:bg-gray-50",
+            mode === "camera" && "border-b-2 border-b-indigo-500"
+          )}
+        >
+          <VideoCameraIcon className="w-5 h-5 mr-1" />
+          <span>Scan camera</span>
+        </button>
+      </div>
+      <div>
+        {mode === "image" && <ImageMode />}
+        {mode === "camera" && <CameraMode />}
+      </div>
+    </div>
+  );
+}
