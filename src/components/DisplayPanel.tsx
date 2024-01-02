@@ -4,8 +4,9 @@ import { Panel } from "@/components/Panel";
 import { QrcodeIcon } from "@heroicons/react/outline";
 
 export interface QrCodeInfo {
-  data: EncryptedQRData;
-  html: string;
+  svgHtml: string;
+  dataDecrypted: string;
+  dataEncrypted: EncryptedQRData;
 }
 
 export default function DisplayPanel({
@@ -21,7 +22,7 @@ export default function DisplayPanel({
     <Panel title={title}>
       {qrCodeInfo ? (
         <div
-          dangerouslySetInnerHTML={{ __html: qrCodeInfo.html }}
+          dangerouslySetInnerHTML={{ __html: qrCodeInfo.svgHtml }}
           className="w-full max-w-lg aspect-square"
         />
       ) : (
@@ -35,8 +36,8 @@ export default function DisplayPanel({
           className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
           disabled={!qrCodeInfo}
           onClick={() => {
-            const { html, data } = qrCodeInfo!;
-            downloadSvg(html, getFileName(data)).catch((e) =>
+            const { svgHtml, dataEncrypted } = qrCodeInfo!;
+            downloadSvg(svgHtml, getFileName(dataEncrypted)).catch((e) =>
               console.error("Failed to download image", e)
             );
           }}
@@ -48,8 +49,8 @@ export default function DisplayPanel({
           className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-blue-500 text-white disabled"
           disabled={!qrCodeInfo}
           onClick={() => {
-            const { html, data } = qrCodeInfo!;
-            downloadPng(html, getFileName(data)).catch((e) =>
+            const { svgHtml, dataEncrypted } = qrCodeInfo!;
+            downloadPng(svgHtml, getFileName(dataEncrypted)).catch((e) =>
               console.error("Failed to download image", e)
             );
           }}

@@ -44,22 +44,22 @@ async function decrypt({
   pass,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const qrCodeData = cameraQrCodeData || (await readQrCode(image));
-  const encryptedData = parseEncryptedQRDataString(qrCodeData);
+  const dataEncryptedString = cameraQrCodeData || (await readQrCode(image));
+  const dataEncrypted = parseEncryptedQRDataString(dataEncryptedString);
 
   console.info("Encrypted data:");
-  console.table({ ...encryptedData });
+  console.table({ ...dataEncrypted });
 
-  const decryptedData = await decryptText(crypto, encryptedData, pass);
+  const dataDecrypted = await decryptText(crypto, dataEncrypted, pass);
 
-  const qrCode = generateQrCodeSvg(
-    decryptedData,
-    `Decrypted: ${encryptedData.hint}`
+  const svgHtml = generateQrCodeSvg(
+    dataDecrypted,
+    `Decrypted: ${dataEncrypted.hint}`
   );
 
   console.info("Decrypted data:");
-  console.table({ data: decryptedData });
-  return { data: encryptedData, html: qrCode };
+  console.table({ dataDecrypted });
+  return { svgHtml, dataEncrypted, dataDecrypted };
 }
 
 function DecryptPanel(props: {

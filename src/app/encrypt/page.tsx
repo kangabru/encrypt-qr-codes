@@ -45,17 +45,17 @@ async function encrypt({
   pass,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  const plainText = cameraQrCodeData || (await readQrCode(image));
-  const qrCodeData = await encryptText(crypto, plainText, hint, pass);
-  const qrCodeSvg = generateQrCodeSvg(
-    JSON.stringify(qrCodeData),
-    qrCodeData.hint,
-    qrCodeData.date
+  const dataDecrypted = cameraQrCodeData || (await readQrCode(image));
+  const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass);
+  const svgHtml = generateQrCodeSvg(
+    JSON.stringify(dataEncrypted),
+    dataEncrypted.hint,
+    dataEncrypted.date
   );
 
   console.info("Generated encrypted QR Code:");
-  console.table({ plainText, ...qrCodeData });
-  return { data: qrCodeData, html: qrCodeSvg };
+  console.table({ plainText: dataDecrypted, ...dataEncrypted });
+  return { svgHtml, dataEncrypted, dataDecrypted };
 }
 
 function EncryptPanel(props: {
