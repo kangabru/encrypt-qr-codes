@@ -46,7 +46,7 @@ const features = [
 
 function Content() {
   return (
-    <div className="mx-auto max-w-7xl px-6 lg:px-8 font-mono">
+    <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="flex flex-col items-center text-center mx-auto max-w-2xl">
         <QrcodeIcon className="w-20 h-20 text-indigo-500 mb-4" />
 

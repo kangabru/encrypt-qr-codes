@@ -5,6 +5,7 @@ import { encryptText } from "@/common/crypto";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
+import Page from "@/components/Page";
 import { Panel, SplitPanelSection } from "@/components/Panel";
 import QrCodeImageInput from "@/components/fields/QrCodeImageField";
 import { ImageFields } from "@/components/fields/QrCodeImageField/types";
@@ -17,9 +18,8 @@ import { useState } from "react";
 export default function EncryptSection() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
   return (
-    <main className="bg-gray-50 min-h-screen w-full flex flex-col items-center p-5">
-      <h1 className="text-4xl">Encrypt 2FA QR Codes</h1>
-      <SplitPanelSection title="Encrypt">
+    <Page title="Encrypt QR Codes">
+      <SplitPanelSection>
         <EncryptPanel setQrCodeInfo={setQrCodeInfo} />
         <DisplayPanel
           title="Encrypted QR Code"
@@ -28,10 +28,7 @@ export default function EncryptSection() {
           getFileName={(d) => `qr-encrypted-${d.date}-${d.hint}`}
         />
       </SplitPanelSection>
-      <Link href="/decrypt" className="">
-        Decrypt instead?
-      </Link>
-    </main>
+    </Page>
   );
 }
 

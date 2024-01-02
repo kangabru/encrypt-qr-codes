@@ -1,9 +1,8 @@
 import { Children, join } from "@/common/utils";
 
-export function SplitPanelSection(props: { title: string } & Children) {
+export function SplitPanelSection(props: Children) {
   return (
-    <section className="max-w-screen-lg w-full flex flex-col md:grid grid-cols-2 gap-4 p-4">
-      <h2 className="text-xl col-span-2">{props.title}</h2>
+    <section className="flex flex-col items-center md:items-stretch md:grid grid-cols-2 gap-4 mx-4">
       {props.children}
     </section>
   );
@@ -19,7 +18,7 @@ export function Panel(
   return (
     <div
       className={join(
-        "bg-white rounded-lg border-t-4 shadow p-4 flex flex-col",
+        "bg-white rounded-lg border-t-4 shadow p-4 flex flex-col w-full max-w-lg",
         props.hasError ? "border-red-200" : "border-indigo-200"
       )}
     >

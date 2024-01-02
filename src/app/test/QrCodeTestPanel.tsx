@@ -89,7 +89,7 @@ export default function QrCodeTestPanel() {
       </Panel>
       <Panel title="Logs">
         <textarea
-          className="h-full space-y-4 p-4 overflow-scroll flex flex-col bg-gray-50 border border-gray-200 rounded font-mono text-sm"
+          className="h-full space-y-4 p-4 overflow-scroll flex flex-col bg-gray-50 border border-gray-200 rounded text-sm"
           value={messages.join("\n\n")}
           disabled
         />

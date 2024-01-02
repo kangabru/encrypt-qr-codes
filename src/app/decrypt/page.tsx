@@ -6,6 +6,7 @@ import { parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
+import Page from "@/components/Page";
 import { Panel, SplitPanelSection } from "@/components/Panel";
 import QrCodeImageInput from "@/components/fields/QrCodeImageField";
 import { ImageFields } from "@/components/fields/QrCodeImageField/types";
@@ -18,9 +19,8 @@ import { useState } from "react";
 export default function DecryptPage() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
   return (
-    <main className="bg-gray-50 min-h-screen w-full flex flex-col items-center p-5">
-      <h1 className="text-4xl">Decrypt 2FA QR Codes</h1>
-      <SplitPanelSection title="Decrypt">
+    <Page title="Encrypt QR Codes">
+      <SplitPanelSection>
         <DecryptPanel setQrCodeInfo={setQrCodeInfo} />
         <DisplayPanel
           title="Decrypted QR Code"
@@ -29,10 +29,7 @@ export default function DecryptPage() {
           getFileName={(d) => `qr-decrypted-${d.date}-${d.hint}`}
         />
       </SplitPanelSection>
-      <Link href="/encrypt" className="">
-        Encrypt instead?
-      </Link>
-    </main>
+    </Page>
   );
 }
 
