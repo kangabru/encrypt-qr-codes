@@ -1,4 +1,14 @@
 import {
+  hrefEncryptionAlgo,
+  hrefExamplePython,
+  hrefExampleTypescript,
+  hrefGithub,
+  hrefLocalHost,
+  hrefSelfHost,
+} from "@/common/links";
+import { Children } from "@/common/utils";
+import { QrcodeIcon } from "@heroicons/react/outline";
+import {
   CodeIcon,
   EyeOffIcon,
   FingerPrintIcon,
@@ -6,8 +16,8 @@ import {
   LockOpenIcon,
   PhotographIcon,
 } from "@heroicons/react/solid";
-import { QrcodeIcon } from "@heroicons/react/outline";
 import Link from "next/link";
+import { SVGProps } from "react";
 
 export default function Home() {
   return (
@@ -17,7 +27,13 @@ export default function Home() {
   );
 }
 
-const features = [
+interface Feature {
+  name: string;
+  description: string | JSX.Element;
+  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+}
+
+const features: Feature[] = [
   {
     name: "Secure Backups",
     description:
@@ -27,19 +43,30 @@ const features = [
   {
     name: "Privacy Focused",
     description:
-      "No data is collected about you and all QR code scanning, encryption, and  decryption is done on your device.",
+      "No data is collected about you and all QR code scanning, encryption, and decryption is done on your device.",
     icon: EyeOffIcon,
   },
   {
     name: "MIT Open Source",
-    description:
-      "Review the code and reuse it however you like. Self-host or run the site locally for fully offline encryption.",
+    description: (
+      <>
+        <L href={hrefGithub}>Review the code</L> and reuse it however you like.{" "}
+        <L href={hrefSelfHost}>Self-host</L> or run the{" "}
+        <L href={hrefLocalHost}>site locally</L> for fully offline encryption.{" "}
+      </>
+    ),
     icon: CodeIcon,
   },
   {
     name: "Advanced Security",
-    description:
-      "Encryption uses AES-GCM and PBKDF2 with a salted 256-bit key. View the process in Typescript or Python.",
+    description: (
+      <>
+        Encryption uses <L href={hrefEncryptionAlgo}>AES-GCM and PBKDF2</L> with
+        a salted 256-bit key. View the process in{" "}
+        <L href={hrefExampleTypescript}>Typescript</L> or{" "}
+        <L href={hrefExamplePython}>Python</L>.
+      </>
+    ),
     icon: FingerPrintIcon,
   },
 ];
@@ -100,4 +127,8 @@ function Content() {
       </div>
     </div>
   );
+}
+
+function L(props: Children & { href: string }) {
+  return <Link {...props} className="text-indigo-900 underline" />;
 }
