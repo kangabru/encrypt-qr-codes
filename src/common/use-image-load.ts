@@ -143,7 +143,9 @@ function loadImageOnPaste(e: LocalClipboardEvent): Promise<ImageDetails> {
     for (let i = 0; i < items.length; i++)
       if (items[i].type.indexOf("image") === 0) file = items[i].getAsFile();
 
-    loadImageFromFile(file).then(accept).catch(reject);
+    loadImageFromFile(file)
+      .then((d) => accept({ ...d, fileName: "Pasted image" }))
+      .catch(reject);
   });
 }
 

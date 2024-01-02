@@ -155,12 +155,18 @@ function CameraMode({ onInput }: { onInput: OnInputFunc }) {
 
     const qrScanner = new QrScanner(
       videoRef.current,
-      ({ data }) => {
+      ({ data: qrCodeData }) => {
         const video = videoRef.current;
         if (video) {
-          console.info("Found QR code data:", data);
+          console.info("Found QR code data:", qrCodeData);
           const [dataUrl, size] = extractSquareFromVideo(video);
-          onInput({ dataUrl, width: size, height: size, qrCodeData: data });
+          onInput({
+            dataUrl,
+            width: size,
+            height: size,
+            qrCodeData,
+            fileName: "Scanned from camera",
+          });
         }
       },
       {
