@@ -2,9 +2,11 @@
 "use client";
 
 import { encryptText } from "@/common/crypto";
+import { faqsEncrypt } from "@/components/Faqs";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
+import FAQ from "@/components/FAQ";
 import Page from "@/components/Page";
 import { Panel, SplitPanelSection } from "@/components/Panel";
 import QrCodeImageInput from "@/components/fields/QrCodeImageField";
@@ -12,7 +14,6 @@ import { ImageFields } from "@/components/fields/QrCodeImageField/types";
 import TextField from "@/components/fields/TextField";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { Form, Formik } from "formik";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function EncryptSection() {
@@ -28,6 +29,7 @@ export default function EncryptSection() {
           getFileName={(d) => `qr-encrypted-${d.date}-${d.hint}`}
         />
       </SplitPanelSection>
+      <FAQ faqs={faqsEncrypt} />
     </Page>
   );
 }

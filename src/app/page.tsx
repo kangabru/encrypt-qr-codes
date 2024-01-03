@@ -1,3 +1,4 @@
+import { Q_A, faqsHome } from "@/components/Faqs";
 import {
   hrefEncryptionAlgo,
   hrefExamplePython,
@@ -6,7 +7,8 @@ import {
   hrefLocalHost,
   hrefSelfHost,
 } from "@/common/links";
-import { Children } from "@/common/utils";
+import { CssClass } from "@/common/utils";
+import L from "@/components/FaqLink";
 import { QrcodeIcon } from "@heroicons/react/outline";
 import {
   CodeIcon,
@@ -73,8 +75,8 @@ const features: Feature[] = [
 
 function Content() {
   return (
-    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="flex flex-col items-center text-center mx-auto max-w-2xl">
+    <>
+      <section className="flex flex-col items-center text-center mx-auto max-w-2xl">
         <QrcodeIcon className="w-20 h-20 text-indigo-500 mb-4" />
 
         <h1 className="text-3xl font-bold tracking-tight leading-loose text-gray-900 sm:text-4xl">
@@ -83,7 +85,7 @@ function Content() {
           for private backups
         </h1>
         <p className="mt-6 max-w-xl text-lg text-gray-600">
-          Securely encrypt and decrypt QR codes used for 2 factor
+          Securely encrypt and decrypt QR codes used for two-factor
           authentication. Safely store encrypted QR codes in your photo gallery
           or print them out.
         </p>
@@ -103,9 +105,9 @@ function Content() {
             <span>Decrypt</span>
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+      <section className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
         <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
           {features.map((feature) => (
             <div key={feature.name} className="relative pl-16">
@@ -124,11 +126,30 @@ function Content() {
             </div>
           ))}
         </dl>
-      </div>
-    </div>
+      </section>
+
+      <FaqLarge faqs={faqsHome} className="mt-20 mx-auto max-w-2xl" />
+    </>
   );
 }
 
-function L(props: Children & { href: string }) {
-  return <Link {...props} className="text-indigo-900 underline" />;
+export function FaqLarge({ faqs, className }: { faqs: Q_A[] } & CssClass) {
+  return (
+    <div className={className}>
+      <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
+        Frequently Asked Questions
+      </h2>
+      <dl className="">
+        {faqs.map((faq) => (
+          <div key={faq.question}>
+            <dt className="font-semibold text-slate-900">
+              <div className="my-10 h-px bg-gradient-to-r from-slate-200/0 via-slate-200 to-slate-200/0" />
+              {faq.question}
+            </dt>
+            <dd className="space-y-8 leading-8 mt-4">{faq.answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
 }
