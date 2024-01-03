@@ -78,10 +78,11 @@ export default function Page(props: { title: string } & Children) {
 }
 
 function usePagePath() {
-  const [path, setPath] = useState(window.location.pathname);
+  const [path, setPath] = useState(getPath());
 
   useEffect(() => {
-    const handleLocationChange = () => setPath(window.location.pathname);
+    if (typeof window === "undefined") return;
+    const handleLocationChange = () => setPath(getPath());
 
     window.addEventListener("popstate", handleLocationChange);
     handleLocationChange();
@@ -89,4 +90,8 @@ function usePagePath() {
   }, []);
 
   return path;
+}
+
+function getPath() {
+  return typeof window === "undefined" ? "" : window.location.pathname;
 }
