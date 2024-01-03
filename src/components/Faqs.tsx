@@ -1,11 +1,14 @@
 import {
-  authyBackupBlog,
+  hrefAuthy,
+  hrefAuthyBackupBlog,
+  hrefCryptoAesGcm,
+  hrefCryptoPbkdf2,
+  hrefCryptoRandomValues,
   hrefExamplePython,
   hrefExampleTypescript,
   hrefGithub,
   hrefLocalHost,
   hrefSelfHost,
-  mdnCryptoRandomValues,
 } from "@/common/links";
 import { Children } from "@/common/utils";
 import { BulletPoints } from "@/components/BulletPoints";
@@ -60,13 +63,18 @@ export const faqsCommon: Q_A[] = [
     answer: (
       <BulletPoints
         points={[
-          "Authy is a great authenticator app that can double as a backup by saving your 2FA codes for you. However, this is opt-in and you must rely on a private service. If you lose access to Authy, you lose all of your 2FA codes.",
+          <>
+            <L href={hrefAuthy}>Authy</L> is a great authenticator app that can
+            double as a backup by saving your 2FA codes for you. However, this
+            is opt-in and you must rely on a private service. If you lose access
+            to Authy, you lose all of your 2FA codes.
+          </>,
           <>
             One problem is that Authy is linked to your mobile phone number and{" "}
-            <L href={authyBackupBlog}>you must receive an sms</L> to gain access
-            to your account. If you lose your phone & SIM then its up to your
-            phone provider to give you that number again, and that could take
-            weeks.
+            <L href={hrefAuthyBackupBlog}>you must receive an sms</L> to gain
+            access to your account. If you lose your phone & SIM then its up to
+            your phone provider to give you that number again, and that could
+            take weeks.
           </>,
           "So definitely use a service like Authy, but it's a good idea to have extra backups. Encrypted QR codes are just images that you can safely save in Whatsapp, a photo gallery, and even print them out.",
         ]}
@@ -106,11 +114,17 @@ const _faqsEncrypt: Q_A[] = [
             <BulletPoints
               key={0}
               points={[
-                "PBKDF2 derives a 256 bit key from the password and random salt.",
-                "AES-GCM with random init values (IV) encrypts the data.",
+                <>
+                  <L href={hrefCryptoPbkdf2}>PBKDF2</L> derives a 256 bit key
+                  from the password and random salt.
+                </>,
+                <>
+                  <L href={hrefCryptoAesGcm}>AES-GCM</L> with random init values
+                  (IV) encrypts the data.
+                </>,
                 <>
                   Cryptographically strong random data is provided by{" "}
-                  <L href={mdnCryptoRandomValues}>Crypto.getRandomValues()</L>.
+                  <L href={hrefCryptoRandomValues}>Crypto</L>.
                 </>,
               ]}
             />

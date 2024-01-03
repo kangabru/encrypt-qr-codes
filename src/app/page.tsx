@@ -1,5 +1,5 @@
 import {
-  hrefEncryptionAlgo,
+  hrefCryptoAesGcm,
   hrefExamplePython,
   hrefExampleTypescript,
   hrefGithub,
@@ -132,8 +132,8 @@ const features: Feature[] = [
     name: "Advanced Security",
     description: (
       <>
-        Encryption uses <L href={hrefEncryptionAlgo}>AES-GCM and PBKDF2</L> with
-        a salted 256-bit key. View the process in{" "}
+        Encryption uses <L href={hrefCryptoAesGcm}>AES-GCM and PBKDF2</L> with a
+        salted 256-bit key. View the process in{" "}
         <L href={hrefExampleTypescript}>Typescript</L> or{" "}
         <L href={hrefExamplePython}>Python</L>.
       </>
