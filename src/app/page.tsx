@@ -1,11 +1,4 @@
-import {
-  hrefCryptoAesGcm,
-  hrefExamplePython,
-  hrefExampleTypescript,
-  hrefGithub,
-  hrefLocalHost,
-  hrefSelfHost,
-} from "@/common/links";
+import links from "@/common/links";
 import { CssClass } from "@/common/utils";
 import L from "@/components/FaqLink";
 import { Q_A, faqsHome } from "@/components/Faqs";
@@ -60,7 +53,7 @@ export default function Home() {
           </div>
 
           <Link
-            href={hrefGithub}
+            href={links.github.home}
             className="mt-5 mx-auto flex items-center rounded-md py-2 px-3 font-medium text-black hover:bg-gray-200 hover:bg-opacity-75"
           >
             <GitHubIcon
@@ -121,9 +114,10 @@ const features: Feature[] = [
     name: "MIT Open Source",
     description: (
       <>
-        <L href={hrefGithub}>Review the code</L> and reuse it however you like.{" "}
-        <L href={hrefSelfHost}>Self-host</L> or run the{" "}
-        <L href={hrefLocalHost}>site locally</L> for fully offline encryption.{" "}
+        <L href={links.github.home}>Review the code</L> and reuse it however you
+        like. <L href={links.github.deploy}>Self-host</L> or run the{" "}
+        <L href={links.github.local}>site locally</L> for fully offline
+        encryption.{" "}
       </>
     ),
     icon: CodeIcon,
@@ -132,10 +126,10 @@ const features: Feature[] = [
     name: "Advanced Security",
     description: (
       <>
-        Encryption uses <L href={hrefCryptoAesGcm}>AES-GCM and PBKDF2</L> with a
-        salted 256-bit key. View the process in{" "}
-        <L href={hrefExampleTypescript}>Typescript</L> or{" "}
-        <L href={hrefExamplePython}>Python</L>.
+        Encryption uses <L href={links.crypto.aesGcm}>AES-GCM and PBKDF2</L>{" "}
+        with a salted 256-bit key. View the process in{" "}
+        <L href={links.examples.typescript}>Typescript</L> or{" "}
+        <L href={links.examples.python}>Python</L>.
       </>
     ),
     icon: FingerPrintIcon,

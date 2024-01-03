@@ -1,15 +1,4 @@
-import {
-  hrefAuthy,
-  hrefAuthyBackupBlog,
-  hrefCryptoAesGcm,
-  hrefCryptoPbkdf2,
-  hrefCryptoRandomValues,
-  hrefExamplePython,
-  hrefExampleTypescript,
-  hrefGithub,
-  hrefLocalHost,
-  hrefSelfHost,
-} from "@/common/links";
+import links from "@/common/links";
 import { Children } from "@/common/utils";
 import { BulletPoints } from "@/components/BulletPoints";
 import L from "@/components/FaqLink";
@@ -64,14 +53,14 @@ export const faqsCommon: Q_A[] = [
       <BulletPoints
         points={[
           <>
-            <L href={hrefAuthy}>Authy</L> is a great authenticator app that can
-            double as a backup by saving your 2FA codes for you. However, this
-            is opt-in and you must rely on a private service. If you lose access
-            to Authy, you lose all of your 2FA codes.
+            <L href={links.authy.home}>Authy</L> is a great authenticator app
+            that can double as a backup by saving your 2FA codes for you.
+            However, this is opt-in and you must rely on a private service. If
+            you lose access to Authy, you lose all of your 2FA codes.
           </>,
           <>
             One problem is that Authy is linked to your mobile phone number and{" "}
-            <L href={hrefAuthyBackupBlog}>you must receive an sms</L> to gain
+            <L href={links.authy.backup}>you must receive an sms</L> to gain
             access to your account. If you lose your phone & SIM then its up to
             your phone provider to give you that number again, and that could
             take weeks.
@@ -87,13 +76,13 @@ export const faqsCommon: Q_A[] = [
       <>
         Yes but the great thing is, you don&apos;t have to! This website is
         fully open source so you can control how you use it.{" "}
-        <L href={hrefGithub}>Fork the code</L> and reuse it however you like,{" "}
-        <L href={hrefSelfHost}>self-host</L> it, or run the{" "}
-        <L href={hrefLocalHost}>site locally</L> for fully offline use.{" "}
+        <L href={links.github.home}>Fork the code</L> and reuse it however you
+        like, <L href={links.github.deploy}>self-host</L> it, or run the{" "}
+        <L href={links.github.local}>site locally</L> for fully offline use.{" "}
         Decryption is langauge agnostic so you can always recover an encrypted
         QR code in future. Here are examples in both{" "}
-        <L href={hrefExampleTypescript}>Typescript</L> and{" "}
-        <L href={hrefExamplePython}>Python</L>.
+        <L href={links.examples.typescript}>Typescript</L> and{" "}
+        <L href={links.examples.python}>Python</L>.
       </>
     ),
   },
@@ -115,16 +104,16 @@ const _faqsEncrypt: Q_A[] = [
               key={0}
               points={[
                 <>
-                  <L href={hrefCryptoPbkdf2}>PBKDF2</L> derives a 256 bit key
+                  <L href={links.crypto.pbkdf2}>PBKDF2</L> derives a 256 bit key
                   from the password and random salt.
                 </>,
                 <>
-                  <L href={hrefCryptoAesGcm}>AES-GCM</L> with random init values
-                  (IV) encrypts the data.
+                  <L href={links.crypto.aesGcm}>AES-GCM</L> with random init
+                  values (IV) encrypts the data.
                 </>,
                 <>
                   Cryptographically strong random data is provided by{" "}
-                  <L href={hrefCryptoRandomValues}>Crypto</L>.
+                  <L href={links.crypto.randomValues}>Crypto</L>.
                 </>,
               ]}
             />
@@ -213,8 +202,8 @@ const _faqsDecrypt: Q_A[] = [
           "You can scan the decrypted code as a normal two-factor auth QR code.",
           <>
             Advanced users can use decrypt codes using{" "}
-            <L href={hrefExampleTypescript}>Typescript</L> or{" "}
-            <L href={hrefExamplePython}>Python</L>.
+            <L href={links.examples.typescript}>Typescript</L> or{" "}
+            <L href={links.examples.python}>Python</L>.
           </>,
         ]}
       />

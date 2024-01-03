@@ -1,6 +1,6 @@
 "use client";
 
-import { hrefGithub } from "@/common/links";
+import links from "@/common/links";
 import { Children, join } from "@/common/utils";
 import { QrcodeIcon } from "@heroicons/react/outline";
 import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/solid";
@@ -50,7 +50,7 @@ export default function Page(props: { title: string } & Children) {
             <div className="block ml-4">
               <div className="flex items-center">
                 <Link
-                  href={hrefGithub}
+                  href={links.github.home}
                   className="flex items-center rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75"
                 >
                   <span>Star</span>
