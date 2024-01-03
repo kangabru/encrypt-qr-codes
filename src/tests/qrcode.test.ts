@@ -53,7 +53,7 @@ test("Decrypt QR code", async () => {
     await readQrCodeBitmap(image.bitmap)
   );
   const dataDecrypted = await decryptText(
-    cryptoMod,
+    cryptoMod as any,
     dataEncrypted,
     "password-12345"
   );
@@ -101,7 +101,7 @@ test("Encrypt QR code", async () => {
   expect(plainTextInput).toEqual(secret2fa);
 
   const cipherTextInput = await encryptText(
-    cryptoMod,
+    cryptoMod as any,
     plainTextInput,
     "hint",
     password
@@ -115,7 +115,7 @@ test("Encrypt QR code", async () => {
     (d) => JSON.parse(d) as EncryptedQRData
   );
   const plainTextOutput = await decryptText(
-    cryptoMod,
+    cryptoMod as any,
     cipherTextOutput,
     password
   );

@@ -61,7 +61,7 @@ export default function QrCodeTestPanel() {
   };
 
   return (
-    <SplitPanelSection title="QR Code Generate/Read Test">
+    <SplitPanelSection>
       <Panel title="Encrypt a QR Code">
         <form
           action={encryptDecryptTest}

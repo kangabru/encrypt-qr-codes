@@ -14,10 +14,10 @@ test("Encrypt text", async () => {
   const password = `password-12345`;
 
   const getRandomValues = (array: Uint8Array) => array.map((_, i) => i);
-  const cryptoMod = { ...crypto, getRandomValues };
+  const cryptoMod = { ...(crypto as any), getRandomValues };
 
   const qrCodeDataEncrypted = await encryptText(
-    cryptoMod,
+    cryptoMod as any,
     plainText,
     "hint",
     password
@@ -42,7 +42,7 @@ test("Decrypt text", async () => {
     cipherText: "bf18e246f6b02bb6f5b6717c27cc32f2d32b9ada955256531dd7e7ee96",
   };
   const qrCodeDataDecrypted = await decryptText(
-    crypto,
+    crypto as any,
     qrCodeDataEncrypted,
     password
   );
@@ -61,7 +61,7 @@ test("Decrypt text fail", async () => {
     cipherText: "123123123123123",
   };
   try {
-    await decryptText(crypto, qrCodeDataEncrypted, password);
+    await decryptText(crypto as any, qrCodeDataEncrypted, password);
     fail("Error wasn't thrown");
   } catch (error: any) {
     expect(error.message).toContain("Could not decrypt the QR code.");
@@ -73,13 +73,13 @@ test("Encrypt and decrypt text", async () => {
   const password = `password-${crypto.randomUUID()}`;
 
   const qrCodeDataEncrypted = await encryptText(
-    crypto,
+    crypto as any,
     plainText,
     "",
     password
   );
   const qrCodeDataDecrypted = await decryptText(
-    crypto,
+    crypto as any,
     qrCodeDataEncrypted,
     password
   );

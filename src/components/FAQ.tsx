@@ -12,8 +12,8 @@ export default function FAQ({ faqs }: { faqs: Q_A[] }) {
         FAQs
       </h2>
       <dl className="mt-5 divide-y divide-gray-900/10">
-        {faqs.map((faq) => (
-          <Disclosure key={faq.question} {...faq} />
+        {faqs.map((faq, i) => (
+          <Disclosure key={i} {...faq} />
         ))}
       </dl>
     </div>

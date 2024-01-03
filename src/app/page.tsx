@@ -142,15 +142,15 @@ const features: Feature[] = [
   },
 ];
 
-export function FaqLarge({ faqs, className }: { faqs: Q_A[] } & CssClass) {
+function FaqLarge({ faqs, className }: { faqs: Q_A[] } & CssClass) {
   return (
     <div className={className}>
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
         Frequently Asked Questions
       </h2>
       <dl className="">
-        {faqs.map((faq) => (
-          <div key={faq.question}>
+        {faqs.map((faq, i) => (
+          <div key={i}>
             <dt className="font-semibold text-slate-900">
               <div className="my-10 h-px bg-gradient-to-r from-slate-200/0 via-slate-200 to-slate-200/0" />
               {faq.question}
