@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [Encrypt QR Codes](https://encrypt-qr-codes.netlify.app/)
 
-## Getting Started
+## Intro
 
-First, run the development server:
+A simple web app to securely encrypt and decrypt QR codes used for two-factor authentication. Safely store encrypted QR codes in your photo gallery or print them out.
+
+- **Secure Backups:** Encrypted QR code images can be saved anywhere or printed out to recover accounts if your 2FA device is lost.
+- **Privacy Focused:** No data is collected about you and all QR code scanning, encryption, and decryption is done on your device.
+- **Advanced Security:** Encryption uses AES-GCM and PBKDF2 with a salted 256-bit key. View the process in Typescript or Python.
+- **MIT Open Source:** Review the code and reuse it however you like. Self-host or run the site locally for fully offline encryption.
+
+## Develop
+
+Install and run (pnpm, yarn, and bun should work too). Access on [localhost:3000](http://localhost:3000).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Start at the landing page `app/page.tsx` and start playing. The page auto-updates as you edit the file.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Test and deploy with:
+
+```bash
+npm run typecheck
+npm run test
+npm run build
+```
+
+Or quickly self-host with:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kangabru/encrypt-qr-codes)
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Here are some helpful resources to work with the project:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js docs](https://nextjs.org/docs)
+- [Tailwind CSS docs](https://tailwindcss.com/)
+- [QR Scanner](https://github.com/nimiq/qr-scanner/)
+- [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Issues, Questions, Contributions
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Feel free to open a GitHub issue to get in touch. I'm open to ideas and any feedback you might have.
