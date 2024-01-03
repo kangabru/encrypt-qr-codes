@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Children) {
   return (
     <html lang="en">
-      <body className={join(inter.className, "font-mono")}>{children}</body>
+      <body className={join(inter.className, "!font-mono")}>{children}</body>
     </html>
   );
 }
