@@ -10,6 +10,7 @@ import { CssClass } from "@/common/utils";
 import L from "@/components/FaqLink";
 import { Q_A, faqsHome } from "@/components/Faqs";
 import HangingQrCodes from "@/components/HangingQrCodes";
+import { GitHubIcon } from "@/components/icons";
 import { QrcodeIcon } from "@heroicons/react/outline";
 import {
   CodeIcon,
@@ -57,6 +58,17 @@ export default function Home() {
               <span>Decrypt</span>
             </Link>
           </div>
+
+          <Link
+            href={hrefGithub}
+            className="mt-5 mx-auto flex items-center rounded-md py-2 px-3 font-medium text-black hover:bg-gray-200 hover:bg-opacity-75"
+          >
+            <GitHubIcon
+              className="h-5 w-5 -mt-0.5 mr-2 -ml-1"
+              aria-hidden="true"
+            />
+            <span>Star on GitHub</span>
+          </Link>
         </div>
       </section>
 
