@@ -1,6 +1,3 @@
-import { BulletPoints } from "@/components/BulletPoints";
-import L from "@/components/FaqLink";
-import type { ReactNode } from "react";
 import {
   authyBackupBlog,
   hrefExamplePython,
@@ -9,10 +6,16 @@ import {
   hrefLocalHost,
   hrefSelfHost,
   mdnCryptoRandomValues,
-} from "../common/links";
+} from "@/common/links";
+import { Children } from "@/common/utils";
+import { BulletPoints } from "@/components/BulletPoints";
+import L from "@/components/FaqLink";
+import { QrcodeIcon } from "@heroicons/react/outline";
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/solid";
+import type { ReactNode } from "react";
 
 export interface Q_A {
-  question: string;
+  question: string | ReactNode;
   answer: string | ReactNode;
 }
 
@@ -24,8 +27,16 @@ export const faqsCommon: Q_A[] = [
   },
   {
     question: "What is a QR code?",
-    answer:
-      "A QR (quick-response) code is a barcode that's easy to scan and contains useful data. They are blocky, black/white, square images which you usually scan when adding two-factor auth to an account.",
+    answer: (
+      <p className="flex">
+        <span>
+          A QR (quick-response) code is a barcode that&apos;s easy to scan and
+          contains useful data. They are blocky, black/white, square images
+          which you usually scan when adding two-factor auth to an account.
+        </span>
+        <QrcodeIcon className="w-28 h-28 ml-2 text-gray-700 flex-shrink-0" />
+      </p>
+    ),
   },
   {
     question: "What is two-factor auth (2FA)?",
@@ -82,7 +93,9 @@ export const faqsCommon: Q_A[] = [
 
 const _faqsEncrypt: Q_A[] = [
   {
-    question: "How are codes encrypted?",
+    question: (
+      <IconTitle icon={LockClosedIcon}>How are codes encrypted?</IconTitle>
+    ),
     answer: (
       <BulletPoints
         points={[
@@ -128,7 +141,9 @@ const _faqsEncrypt: Q_A[] = [
     ),
   },
   {
-    question: "How do I encrypt a 2FA code?",
+    question: (
+      <IconTitle icon={LockClosedIcon}>How do I encrypt a 2FA code?</IconTitle>
+    ),
     answer: (
       <BulletPoints
         points={[
@@ -142,7 +157,9 @@ const _faqsEncrypt: Q_A[] = [
     ),
   },
   {
-    question: "How do I encrypt a QR code?",
+    question: (
+      <IconTitle icon={LockClosedIcon}>How do I encrypt a QR code?</IconTitle>
+    ),
     answer: (
       <BulletPoints
         points={[
@@ -170,7 +187,9 @@ const _faqsEncrypt: Q_A[] = [
 
 const _faqsDecrypt: Q_A[] = [
   {
-    question: "How do I decrypt a QR code?",
+    question: (
+      <IconTitle icon={LockOpenIcon}>How do I decrypt a QR code?</IconTitle>
+    ),
     answer: (
       <BulletPoints
         points={[
@@ -196,3 +215,16 @@ export const faqsHome: Q_A[] = [
   ..._faqsEncrypt,
   ..._faqsDecrypt,
 ];
+
+function IconTitle(
+  props: Children & {
+    icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+  }
+) {
+  return (
+    <span className="flex items-center">
+      <props.icon className="w-5 h-5 mr-2 -mt-0.5" />
+      {props.children}
+    </span>
+  );
+}
