@@ -19,7 +19,7 @@ import { SVGProps } from "react";
 
 export default function Home() {
   return (
-    <main className="relative bg-gray-50 min-h-screen w-full px-5 pt-12 sm:pt-16 pb-32 border-y-4 border-indigo-500">
+    <main className="relative bg-gray-50 min-h-screen w-full px-5 pt-12 sm:pt-16 pb-32 border-y-4 border-indigo-500 overflow-hidden">
       <HangingQrCodes />
 
       <section className="relative flex flex-col items-center text-center">

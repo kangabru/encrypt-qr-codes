@@ -22,7 +22,7 @@ export default function Page(props: { title: string } & Children) {
   const path = usePagePath();
   return (
     <div className="min-h-screen bg-gray-100 pb-32 print:pb-0">
-      <header className="bg-indigo-600 text-white pb-16 md:pb-32 print:hidden">
+      <header className="bg-indigo-600 text-white pb-32 md:pb-48 print:hidden">
         <div className="lg:border-b lg:border-indigo-400 lg:border-opacity-25">
           <div className="relative flex items-center justify-between h-16 mx-auto max-w-screen-lg px-4 lg:px-8">
             <Link href="/" className="flex-shrink-0">
@@ -61,7 +61,7 @@ export default function Page(props: { title: string } & Children) {
         <h1 className="hidden">{props.title}</h1>
       </header>
 
-      <main className="-mt-16 print:mt-0 mx-auto max-w-screen-lg w-full">
+      <main className="-mt-32 print:mt-0 mx-auto max-w-screen-lg w-full">
         {props.children}
       </main>
     </div>

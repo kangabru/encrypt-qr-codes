@@ -16,6 +16,7 @@
     "@zxing/library": "^0.20.0",
     "client-only": "^0.0.1",
     "formik": "^2.4.5",
+    "idb-keyval": "^6.2.1",
     "jimp": "^0.22.10",
     "next": "14.0.4",
     "qr-scanner": "^1.4.2",
