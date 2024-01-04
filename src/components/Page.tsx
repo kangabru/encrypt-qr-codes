@@ -16,7 +16,7 @@ const navigation = [
 export default function Page(props: { title: string } & Children) {
   const path = usePagePath();
   return (
-    <div className="min-h-full bg-gray-100 pb-32">
+    <div className="min-h-screen bg-gray-100 pb-32">
       <div className="bg-indigo-600 pb-32">
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">

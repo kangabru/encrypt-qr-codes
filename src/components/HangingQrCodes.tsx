@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from "react";
 
 export default function HangingQrCodes() {
   return (
-    <section className="opacity-80 hidden md:block">
+    <section className="absolute top-0 left-1/2 -translate-x-1/2 opacity-80 hidden md:block w-full max-w-screen-2xl">
       <QrHang left={10} counts={[5, 15, 10, 5, 15, 10, 15]}>
         <QrcodeIcon className="w-20 h-20 p-2 scale-90 rotate-6 rounded-lg bg-red-200 text-red-800" />
       </QrHang>

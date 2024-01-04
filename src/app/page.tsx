@@ -19,7 +19,7 @@ import { SVGProps } from "react";
 
 export default function Home() {
   return (
-    <main className="relative bg-gray-50 min-h-screen w-full flex flex-col items-center p-5 py-12 sm:py-16 border-y-4 border-indigo-500">
+    <main className="relative bg-gray-50 min-h-screen w-full p-5 py-12 sm:py-16 border-y-4 border-indigo-500">
       <HangingQrCodes />
 
       <section className="relative flex flex-col items-center text-center">
@@ -66,15 +66,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-5">
-        <Image
-          src="/images/ui-encrypt.png"
-          alt="Encrypt UI"
-          width={1542}
-          height={1018}
-          className="w-full max-w-3xl rounded-2xl shadow"
-        />
-      </section>
+      <Image
+        src="/images/ui-encrypt.png"
+        alt="Encrypt UI"
+        width={1542}
+        height={1018}
+        className="mt-5 mx-auto w-full max-w-3xl rounded-2xl shadow"
+      />
 
       <section className="mx-auto max-w-2xl mt-16 sm:mt-20 lg:mt-24 lg:max-w-4xl">
         <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
@@ -97,7 +95,13 @@ export default function Home() {
         </dl>
       </section>
 
-      <FaqLarge faqs={faqsHome} className="mt-20 mx-auto max-w-2xl" />
+      <section className="relative mt-20 mx-auto max-w-screen-2xl">
+        <QrcodeIcon className="absolute w-48 h-48 left-10 top-1/4 rotate-6 text-indigo-500 opacity-5" />
+        <QrcodeIcon className="absolute w-64 h-64 -right-5 top-1/2 -rotate-3 text-indigo-500 opacity-5" />
+        <QrcodeIcon className="absolute w-52 h-52 -left-5 top-[80%] rotate-3 text-indigo-500 opacity-5" />
+
+        <FaqLarge faqs={faqsHome} className="mx-auto max-w-2xl" />
+      </section>
     </main>
   );
 }
@@ -153,7 +157,7 @@ function FaqLarge({ faqs, className }: { faqs: Q_A[] } & CssClass) {
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
         Frequently Asked Questions
       </h2>
-      <dl className="">
+      <dl>
         {faqs.map((faq, i) => (
           <div key={i}>
             <dt className="font-semibold text-slate-900">
