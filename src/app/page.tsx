@@ -13,6 +13,7 @@ import {
   LockOpenIcon,
   PhotographIcon,
 } from "@heroicons/react/solid";
+import Image from "next/image";
 import Link from "next/link";
 import { SVGProps } from "react";
 
@@ -65,7 +66,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+      <section className="mt-5">
+        <Image
+          src="/images/ui-encrypt.png"
+          alt="Encrypt UI"
+          width={1542}
+          height={1018}
+          className="w-full max-w-3xl rounded-2xl shadow"
+        />
+      </section>
+
+      <section className="mx-auto max-w-2xl mt-16 sm:mt-20 lg:mt-24 lg:max-w-4xl">
         <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
           {features.map((feature) => (
             <div key={feature.name} className="relative pl-16">

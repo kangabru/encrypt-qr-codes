@@ -1,4 +1,13 @@
+<div align="center">
+
 # [Encrypt QR Codes](https://encrypt-qr-codes.netlify.app/)
+
+For private two-factor auth backups.
+
+![Encrypt UI](public/images/ui-encrypt.png)
+<br/>
+
+</div>
 
 ## Intro
 
