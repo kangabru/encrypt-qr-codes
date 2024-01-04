@@ -39,6 +39,8 @@ export default function DisplayPanel({
         </div>
       )}
 
+      <div className="flex-1" />
+
       <div className="grid grid-cols-2 gap-4 mt-4">
         <button
           className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
