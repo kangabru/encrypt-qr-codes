@@ -35,8 +35,8 @@ export const faqsCommon: Q_A[] = [
     answer: (
       <BulletPoints
         points={[
-          "Two-factor authentication (2FA) helps protects your online accounts from being accessed by someone who has access to your password.",
-          "You usually setup 2FA by scanning a QR code to link the service with an authenticator app on your phone. The app generates a random code every few seconds which you fill into the website when asked.",
+          "Two-factor authentication (2FA) helps protect your online accounts from being accessed by someone who has access to your password.",
+          "You usually set up 2FA by scanning a QR code to link the service with an authenticator app on your phone. The app generates a random code every few seconds which you fill into the website when asked.",
           "By knowing your password and filling in the 2FA code, you verify two factors: something you know and something you have. This makes it much harder to hack an account even if someone knows your password.",
         ]}
       />
@@ -45,7 +45,7 @@ export const faqsCommon: Q_A[] = [
   {
     question: "Why should I backup 2FA codes?",
     answer:
-      "If you lose or break your 2FA device you could lose access to some accounts forever - even if you have the password. We often setup 2FA with our most important accounts so losing access could be a huge loss of data e.g. photos, emails, and documents. You should absolutely backup 2FA codes and in multiple places.",
+      "If you lose or break your 2FA device you could lose access to some accounts forever - even if you have the password. We often set up 2FA with our most important accounts so losing access could be a huge loss of data e.g. photos, emails, and documents. You should absolutely backup 2FA codes and in multiple places.",
   },
   {
     question: "What's wrong with Authy?",
@@ -55,13 +55,13 @@ export const faqsCommon: Q_A[] = [
           <>
             <L href={links.authy.home}>Authy</L> is a great authenticator app
             that can double as a backup by saving your 2FA codes for you.
-            However, this is opt-in and you must rely on a private service. If
-            you lose access to Authy, you lose all of your 2FA codes.
+            However, this is opt-in and you must now rely on a private service.
+            If you lose access to Authy, you lose all of your 2FA codes.
           </>,
           <>
             One problem is that Authy is linked to your mobile phone number and{" "}
             <L href={links.authy.backup}>you must receive an sms</L> to gain
-            access to your account. If you lose your phone & SIM then its up to
+            access to your account. If you lose your phone & SIM then it's up to
             your phone provider to give you that number again, and that could
             take weeks.
           </>,
@@ -79,7 +79,7 @@ export const faqsCommon: Q_A[] = [
         <L href={links.github.home}>Fork the code</L> and reuse it however you
         like, <L href={links.github.deploy}>self-host</L> it, or run the{" "}
         <L href={links.github.local}>site locally</L> for fully offline use.{" "}
-        Decryption is langauge agnostic so you can always recover an encrypted
+        Decryption is language agnostic so you can always recover an encrypted
         QR code in future. Here are examples in both{" "}
         <L href={links.examples.typescript}>Typescript</L> and{" "}
         <L href={links.examples.python}>Python</L>.
@@ -150,7 +150,7 @@ const _faqsEncrypt: Q_A[] = [
     answer: (
       <BulletPoints
         points={[
-          "Log into an account and follow their instructions to setup 2FA. Stop when they present you with a QR code.",
+          "Log into an account and follow their instructions to set up 2FA. Stop when they present you with a QR code.",
           "Before you scan the QR code with your auth app, first encrypt the QR code with this website.",
           "Either screenshot, copy/paste, or scan the QR code with a camera and encrypt it. The following Q&A has more details.",
           "Download the encrypted QR code and save or print the image in multiple places as a backup.",
@@ -197,11 +197,11 @@ const _faqsDecrypt: Q_A[] = [
       <BulletPoints
         points={[
           "Note: Encryption/decryption is done on your device and no data is collected about you.",
-          "Select/paste/drop/scan an encrypted QR code into the decrypt page. Use can use your phone camera to scan a printed code for example.",
+          "Select/paste/drop/scan an encrypted QR code into the decrypt page. You can use your phone camera to scan a printed code for example.",
           "Type in the original password to unlock the code. There is no way to recover a password if you have lost or forgotten it.",
           "You can scan the decrypted code as a normal two-factor auth QR code.",
           <>
-            Advanced users can use decrypt codes using{" "}
+            Advanced users can decrypt codes using{" "}
             <L href={links.examples.typescript}>Typescript</L> or{" "}
             <L href={links.examples.python}>Python</L>.
           </>,

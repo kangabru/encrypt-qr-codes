@@ -29,7 +29,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tight leading-loose text-gray-900 sm:text-4xl">
             Encrypt QR codes
             <br />
-            for private backups
+            for private 2FA backups
           </h1>
           <p className="mt-6 max-w-xl text-lg text-gray-600">
             Securely encrypt and decrypt QR codes used for two-factor
@@ -116,7 +116,7 @@ const features: Feature[] = [
   {
     name: "Secure Backups",
     description:
-      "Encrypted QR code images can be saved anywhere or printed out to recover accounts if your 2FA device is lost.",
+      "Encrypted QR code images can be saved or printed for account recovery if your 2FA device is lost.",
     icon: PhotographIcon,
   },
   {
