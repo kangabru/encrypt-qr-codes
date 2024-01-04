@@ -34,8 +34,7 @@ Start at the landing page `app/page.tsx` and start playing. The page auto-update
 Test and deploy with:
 
 ```bash
-npm run typecheck
-npm run test
+npm run check
 npm run build
 ```
 

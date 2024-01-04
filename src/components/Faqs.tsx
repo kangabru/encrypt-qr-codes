@@ -61,9 +61,9 @@ export const faqsCommon: Q_A[] = [
           <>
             One problem is that Authy is linked to your mobile phone number and{" "}
             <L href={links.authy.backup}>you must receive an sms</L> to gain
-            access to your account. If you lose your phone & SIM then it's up to
-            your phone provider to give you that number again, and that could
-            take weeks.
+            access to your account. If you lose your phone & SIM then it&apos;s
+            up to your phone provider to give you that number again, and that
+            could take weeks.
           </>,
           "So definitely use a service like Authy, but it's a good idea to have extra backups. Encrypted QR codes are just images that you can safely save in Whatsapp, a photo gallery, and even print them out.",
         ]}
