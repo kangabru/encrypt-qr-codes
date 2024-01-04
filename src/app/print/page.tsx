@@ -47,7 +47,7 @@ export default function PrintPage() {
               <span>Print pages</span>
             </button>
           </section>
-          <section className="flex flex-col items-center space-y-10">
+          <section className="flex flex-col items-center space-y-10 print:space-y-0">
             {pageImages.map((_images, page) => (
               <PdfPage key={page}>
                 <div className="flex flex-wrap justify-start items-start content-start">
