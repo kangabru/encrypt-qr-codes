@@ -27,10 +27,8 @@ export default function DemoMode({ imageSrc, description }: DemoProps) {
   return (
     <div
       className={join(
-        "group flex flex-col items-center justify-center w-full h-40 rounded-lg cursor-pointer text-center p-2 border-dashed border-2",
-        isDropping
-          ? "border-indigo-400"
-          : "border-gray-300 hover:border-indigo-400"
+        "group flex flex-col items-center justify-center w-full h-40 rounded-lg text-center p-2 border-dashed border-2",
+        isDropping ? "border-indigo-400" : "border-gray-300"
       )}
     >
       <img src={imageSrc} alt="" className="h-full w-full object-contain" />
