@@ -38,7 +38,7 @@ function QrCodeImageInputCore(props: DemoProps) {
             mode === "image" && "border-b-2 border-b-indigo-500"
           )}
         >
-          <QrcodeIcon className="w-5 h-5 mr-1" />
+          <QrcodeIcon className="w-5 h-5 mr-1 flex-shrink-0" />
           <span>Select image</span>
         </button>
         <button
@@ -49,7 +49,7 @@ function QrCodeImageInputCore(props: DemoProps) {
             mode === "camera" && "border-b-2 border-b-indigo-500"
           )}
         >
-          <VideoCameraIcon className="w-5 h-5 mr-1" />
+          <VideoCameraIcon className="w-5 h-5 mr-1 flex-shrink-0" />
           <span>Scan camera</span>
         </button>
         <button
@@ -60,7 +60,7 @@ function QrCodeImageInputCore(props: DemoProps) {
             mode === "demo" && "border-b-2 border-b-indigo-500"
           )}
         >
-          <BeakerIcon className="w-5 h-5 mr-1" />
+          <BeakerIcon className="w-5 h-5 mr-1 flex-shrink-0" />
           <span>Demo QR code</span>
         </button>
       </div>

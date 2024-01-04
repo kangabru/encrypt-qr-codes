@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function FAQ({ faqs }: { faqs: Q_A[] }) {
   return (
-    <div className="mt-8 mx-auto max-w-2xl">
+    <div className="mt-8 px-4 mx-auto max-w-2xl">
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
         FAQs
       </h2>

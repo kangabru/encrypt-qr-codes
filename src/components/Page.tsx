@@ -17,7 +17,7 @@ export default function Page(props: { title: string } & Children) {
   const path = usePagePath();
   return (
     <div className="min-h-screen bg-gray-100 pb-32">
-      <div className="bg-indigo-600 pb-32">
+      <div className="bg-indigo-600 pb-16 md:pb-32">
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
             <div className="flex items-center px-2 lg:px-0">
@@ -47,7 +47,7 @@ export default function Page(props: { title: string } & Children) {
                 </div>
               </div>
             </div>
-            <div className="block ml-4">
+            <div className="hidden sm:block ml-4">
               <div className="flex items-center">
                 <Link
                   href={links.github.home}

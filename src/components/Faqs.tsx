@@ -118,7 +118,7 @@ const _faqsEncrypt: Q_A[] = [
               ]}
             />
           </>,
-          <div key={0} className="flex">
+          <div key={0} className="sm:flex">
             <p className="flex-1 mr-2">
               The ciphertext, salt, and IV are encoded into a text format and
               saved as a JSON object. The data is encoded into a new encrypted
