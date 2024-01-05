@@ -33,8 +33,8 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-xl text-lg text-gray-600">
             Securely encrypt and decrypt QR codes used for two-factor
-            authentication. Safely store encrypted QR codes in your photo
-            gallery or print them out.
+            authentication. Safely store encrypted QR codes as photos or print
+            them out.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
