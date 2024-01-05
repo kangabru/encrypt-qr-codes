@@ -1,9 +1,6 @@
-import { Children, join } from "@/common/utils";
+import { Children } from "@/common/utils";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Encrypt QR Codes",
@@ -14,7 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Children) {
   return (
     <html lang="en">
-      <body className={join(inter.className, "!font-mono")}>{children}</body>
+      <body className="bg-gray-100 !font-mono">{children}</body>
     </html>
   );
 }

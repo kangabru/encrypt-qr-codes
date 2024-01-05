@@ -115,7 +115,7 @@ function EncryptPanel(props: {
             <button
               type="submit"
               className={join(
-                "flex items-center justify-center mt-1 p-2 w-full rounded-md shadow-sm text-white disabled focus-ring",
+                "flex items-center justify-center mt-1 p-2 w-full rounded-md shadow-sm text-white disabled focus-ring text-sm sm:text-base",
                 typeof errors === "string"
                   ? "bg-red-500 focus:ring-red-300/50"
                   : "bg-indigo-500 focus:ring-indigo-300/50"
