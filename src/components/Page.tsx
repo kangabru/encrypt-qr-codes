@@ -1,7 +1,7 @@
 "use client";
 
 import links from "@/common/links";
-import { Children, join } from "@/common/utils";
+import { Children, CssClass, join } from "@/common/utils";
 import { QrcodeIcon } from "@heroicons/react/outline";
 import {
   LockClosedIcon,
@@ -18,7 +18,7 @@ const navigation = [
   { name: "Print", href: "/print", icon: PrinterIcon },
 ];
 
-export default function Page(props: { title: string } & Children) {
+export default function Page(props: { title: string } & Children & CssClass) {
   const path = usePagePath();
   return (
     <div className="min-h-screen bg-gray-100 pb-32 print:pb-0">
@@ -61,7 +61,12 @@ export default function Page(props: { title: string } & Children) {
         <h1 className="hidden">{props.title}</h1>
       </header>
 
-      <main className="-mt-32 print:mt-0 mx-auto max-w-screen-lg w-full">
+      <main
+        className={join(
+          "-mt-32 print:mt-0 mx-auto max-w-screen-lg w-full",
+          props.className
+        )}
+      >
         {props.children}
       </main>
     </div>

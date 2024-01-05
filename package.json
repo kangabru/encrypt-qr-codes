@@ -22,6 +22,7 @@
     "qr-scanner": "^1.4.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-use-measure": "^2.1.1",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
