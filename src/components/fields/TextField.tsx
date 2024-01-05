@@ -21,7 +21,7 @@ export default function TextField(props: Props) {
   return (
     <label className="block">
       <div className="flex items-center justify-between">
-        <span className="text-gray-700">{props.label}</span>
+        <span className="text-gray-800 ml-2">{props.label}</span>
         <span className="text-xs mr-2">
           {value.length === 0
             ? "*"
@@ -30,7 +30,7 @@ export default function TextField(props: Props) {
               : null}
         </span>
       </div>
-      <span className="text-xs">{props.description}</span>
+      <span className="text-xs text-gray-600 ml-2">{props.description}</span>
       <input
         {...field}
         {...props}

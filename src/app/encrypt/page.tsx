@@ -36,17 +36,21 @@ export default function EncryptSection() {
 
 interface Fields extends ImageFields {
   hint: string;
-  pass: string;
+  pass1: string;
+  pass2: string;
 }
 
 async function encrypt({
   image,
   hint,
-  pass,
+  pass1,
+  pass2,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
+  if (pass1 !== pass2) throw new Error("Passwords do not match");
+
   const dataDecrypted = cameraQrCodeData || (await readQrCode(image));
-  const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass);
+  const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass1);
   const svgHtml = generateQrCodeSvg(
     JSON.stringify(dataEncrypted),
     dataEncrypted.hint,
@@ -63,7 +67,13 @@ function EncryptPanel(props: {
 }) {
   return (
     <Formik<Fields>
-      initialValues={{ image: "", hint: "", pass: "", cameraQrCodeData: "" }}
+      initialValues={{
+        image: "",
+        hint: "",
+        pass1: "",
+        pass2: "",
+        cameraQrCodeData: "",
+      }}
       onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null);
         await encrypt(values)
@@ -74,7 +84,7 @@ function EncryptPanel(props: {
           });
       }}
     >
-      {({ isValid, errors, values: { image } }) => (
+      {({ isValid, errors, values: { pass1, image } }) => (
         <Panel
           title="Encrypt a QR Code"
           icon={
@@ -97,11 +107,20 @@ function EncryptPanel(props: {
               placeholder="Google Account"
             />
             <TextField
-              name="pass"
+              name="pass1"
               label="Password"
               type="password"
               description="Make it secure but memorable as this is unrecoverable."
               minLength={12}
+              disabled={!image}
+              placeholder="hunter2"
+            />
+            <TextField
+              name="pass2"
+              label="Confirm Password"
+              type="password"
+              description="To ensure that you didn't mistype it."
+              minLength={pass1.length || 12}
               disabled={!image}
               placeholder="hunter2"
             />
