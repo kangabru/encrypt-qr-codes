@@ -22,6 +22,15 @@ const links = {
     home: "https://authy.com/",
     backup: "https://authy.com/blog/how-the-authy-two-factor-backups-work/",
   },
+  _1Password: {
+    twoFactor: "https://1password.com/features/two-factor-authentication/",
+    password: "https://support.1password.com/strong-account-password/",
+    passwordCost: "https://support.1password.com/pbkdf2/",
+    generator: "https://1password.com/password-generator/",
+  },
+  lastPass: {
+    incidents: "https://en.wikipedia.org/wiki/LastPass#Security_incidents",
+  },
 };
 
 export default links;

@@ -71,6 +71,24 @@ export const faqsCommon: Q_A[] = [
     ),
   },
   {
+    question: "What's wrong with 1Password?",
+    answer: (
+      <BulletPoints
+        points={[
+          "1Password is a great password manager that can double as a backup by saving your 2FA codes for you. This is convenient but storing 2FA codes within it could pose a risk if the vault is compromised.",
+          <>
+            <L href={links._1Password.twoFactor}>They claim</L> that most hacks
+            made are not by compromising your vault, but by guessing your
+            password or finding it in a data breach. This is true but a vault is
+            a high value target and a even breach on LastPass was made by{" "}
+            <L href={links.lastPass.incidents}>hacking the corporate vault</L>.
+          </>,
+          "So if you want to separate your 2FA codes from your password manager then encrypting and backing up your 2FA codes is a good solution.",
+        ]}
+      />
+    ),
+  },
+  {
     question: "Can I rely on this website?",
     answer: (
       <>
@@ -182,6 +200,39 @@ const _faqsEncrypt: Q_A[] = [
           "Type an unencrypted hint to remember what the QR code is for.",
           "Type a secure password to encrypt the QR code with. You MUST remember the password to unlock it again - this is unrecoverable if you forget it. Ideally use a unique password for each QR code.",
           "Download the encrypted QR code and save or print the image in multiple places as a backup.",
+        ]}
+      />
+    ),
+  },
+  {
+    question: (
+      <IconTitle icon={LockClosedIcon}>
+        How do I choose and store a password?
+      </IconTitle>
+    ),
+    answer: (
+      <BulletPoints
+        points={[
+          <>
+            1Password has good tips <L href={links._1Password.password}>here</L>{" "}
+            and <L href={links._1Password.passwordCost}>here</L> for choosing a
+            password:
+            <BulletPoints
+              key={0}
+              points={[
+                "Make it long (16+ characters). Each character makes it exponentially harder to crack.",
+                <>
+                  Make it random. We&apos;re not as random as we think so you
+                  should use a password{" "}
+                  <L href={links._1Password.generator}>generator</L> (turn the
+                  &apos;memorable&apos; option on).
+                </>,
+                "Make it memorable: 5 random words is much harder to crack and easier to remember than 16+ random characters.",
+              ]}
+            />
+          </>,
+          "The solution? Generate 5 random words like this `passion-ken-omit-verso-tortoise` - it's long, random, and memorable. Write it down and practice it regularly until you commit it to memory.",
+          "Using the same password for all QR codes should be fine. If you plan to store your 2FA codes separate to your password manager then create a new password and don't store it in your vault.",
         ]}
       />
     ),
