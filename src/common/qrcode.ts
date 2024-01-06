@@ -2,18 +2,18 @@ import {
   IllegalStateException,
   QRCodeDecoderErrorCorrectionLevel,
   QRCodeEncoder,
-} from "@zxing/library";
-import QRCode from "@zxing/library/esm/core/qrcode/encoder/QRCode";
+} from "@zxing/library"
+import QRCode from "@zxing/library/esm/core/qrcode/encoder/QRCode"
 
 export interface BlockText {
-  text: string;
-  x: number;
-  y: number;
-  align: "left" | "right";
+  text: string
+  x: number
+  y: number
+  align: "left" | "right"
 }
 export interface Blocks {
-  size: number;
-  blocks: [number, number][];
+  size: number
+  blocks: [number, number][]
 }
 export enum ErrorCorrectionLevel {
   Low,
@@ -24,36 +24,36 @@ export enum ErrorCorrectionLevel {
 
 export function getQrCodeBlocks(
   contents: string,
-  errorCorrectionLevel?: ErrorCorrectionLevel
+  errorCorrectionLevel?: ErrorCorrectionLevel,
 ): Blocks {
   const _errorCorrectionLevel: QRCodeDecoderErrorCorrectionLevel = {
     [ErrorCorrectionLevel.Low]: QRCodeDecoderErrorCorrectionLevel.L,
     [ErrorCorrectionLevel.Medium]: QRCodeDecoderErrorCorrectionLevel.M,
     [ErrorCorrectionLevel.High]: QRCodeDecoderErrorCorrectionLevel.Q,
     [ErrorCorrectionLevel.Higher]: QRCodeDecoderErrorCorrectionLevel.H,
-  }[errorCorrectionLevel ?? ErrorCorrectionLevel.Higher];
+  }[errorCorrectionLevel ?? ErrorCorrectionLevel.Higher]
 
-  let code: QRCode;
+  let code: QRCode
   try {
-    code = QRCodeEncoder.encode(contents, _errorCorrectionLevel);
+    code = QRCodeEncoder.encode(contents, _errorCorrectionLevel)
   } catch (error) {
-    console.info(error);
-    throw new Error("Failed to read QR code");
+    console.info(error)
+    throw new Error("Failed to read QR code")
   }
 
-  const input = code.getMatrix();
-  if (input === null) throw new IllegalStateException();
+  const input = code.getMatrix()
+  if (input === null) throw new IllegalStateException()
 
-  const inputWidth = input.getWidth();
-  const inputHeight = input.getHeight();
+  const inputWidth = input.getWidth()
+  const inputHeight = input.getHeight()
 
-  const size = Math.max(inputWidth, inputHeight);
+  const size = Math.max(inputWidth, inputHeight)
 
-  const blocks: [number, number][] = [];
+  const blocks: [number, number][] = []
 
   for (let inputY = 0; inputY < inputHeight; inputY++)
     for (let inputX = 0; inputX < inputWidth; inputX++)
-      if (input.get(inputX, inputY) === 1) blocks.push([inputX, inputY]);
+      if (input.get(inputX, inputY) === 1) blocks.push([inputX, inputY])
 
-  return { size, blocks };
+  return { size, blocks }
 }

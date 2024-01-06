@@ -1,14 +1,14 @@
-import links from "@/common/links";
-import { Children } from "@/common/utils";
-import { BulletPoints } from "@/components/BulletPoints";
-import L from "@/components/FaqLink";
-import { QrcodeIcon } from "@heroicons/react/outline";
-import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/solid";
-import type { ReactNode } from "react";
+import links from "@/common/links"
+import { Children } from "@/common/utils"
+import { BulletPoints } from "@/components/BulletPoints"
+import L from "@/components/FaqLink"
+import { QrcodeIcon } from "@heroicons/react/outline"
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/solid"
+import type { ReactNode } from "react"
 
 export interface QnA {
-  question: string | ReactNode;
-  answer: string | ReactNode;
+  question: string | ReactNode
+  answer: string | ReactNode
 }
 
 export const faqsCommon: QnA[] = [
@@ -26,7 +26,7 @@ export const faqsCommon: QnA[] = [
           contains useful data. They are blocky, black/white, square images
           which you usually scan when adding two-factor auth to an account.
         </span>
-        <QrcodeIcon className="w-28 h-28 ml-2 text-gray-700 flex-shrink-0" />
+        <QrcodeIcon className="ml-2 h-28 w-28 flex-shrink-0 text-gray-700" />
       </p>
     ),
   },
@@ -106,7 +106,7 @@ export const faqsCommon: QnA[] = [
       </>
     ),
   },
-];
+]
 
 const _faqsEncrypt: QnA[] = [
   {
@@ -140,7 +140,7 @@ const _faqsEncrypt: QnA[] = [
             />
           </>,
           <div key={0} className="sm:flex">
-            <p className="flex-1 mr-2">
+            <p className="mr-2 flex-1">
               The ciphertext, salt, and IV are encoded into a text format and
               saved as a JSON object. The data is encoded into a new encrypted
               QR code.{" "}
@@ -148,7 +148,7 @@ const _faqsEncrypt: QnA[] = [
             </p>
             <p
               key={0}
-              className="text-mono bg-white border-gray-200 border rounded-md text-sm shadow py-2 px-3 whitespace-pre-wrap"
+              className="text-mono whitespace-pre-wrap rounded-md border border-gray-200 bg-white px-3 py-2 text-sm shadow"
             >
               {[
                 "{",
@@ -244,7 +244,7 @@ const _faqsEncrypt: QnA[] = [
       />
     ),
   },
-];
+]
 
 const _faqsDecrypt: QnA[] = [
   {
@@ -267,25 +267,21 @@ const _faqsDecrypt: QnA[] = [
       />
     ),
   },
-];
+]
 
-export const faqsEncrypt: QnA[] = [..._faqsEncrypt];
-export const faqsDecrypt: QnA[] = [..._faqsDecrypt];
-export const faqsHome: QnA[] = [
-  ...faqsCommon,
-  ..._faqsEncrypt,
-  ..._faqsDecrypt,
-];
+export const faqsEncrypt: QnA[] = [..._faqsEncrypt]
+export const faqsDecrypt: QnA[] = [..._faqsDecrypt]
+export const faqsHome: QnA[] = [...faqsCommon, ..._faqsEncrypt, ..._faqsDecrypt]
 
 function IconTitle(
   props: Children & {
-    icon: (props: React.ComponentProps<"svg">) => JSX.Element;
-  }
+    icon: (props: React.ComponentProps<"svg">) => JSX.Element
+  },
 ) {
   return (
     <span className="flex items-center">
-      <props.icon className="w-5 h-5 mr-2 -mt-0.5" />
+      <props.icon className="-mt-0.5 mr-2 h-5 w-5" />
       {props.children}
     </span>
-  );
+  )
 }

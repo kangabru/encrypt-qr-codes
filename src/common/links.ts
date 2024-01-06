@@ -34,6 +34,6 @@ const links = {
     hackExtra:
       "https://support.lastpass.com/s/document-item?language=en_US&bundleId=lastpass&topicId=LastPass/incident-2-details.html&_LANG=enus",
   },
-};
+}
 
-export default links;
+export default links

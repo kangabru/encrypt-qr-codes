@@ -1,23 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+"use client"
 
-import { encryptText } from "@/common/crypto";
-import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
-import { getErrorMessage, join } from "@/common/utils";
-import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
-import { faqsEncrypt } from "@/components/FaqContent";
-import FaqList from "@/components/FaqList";
-import Page from "@/components/Page";
-import { Panel, SplitPanelSection } from "@/components/Panel";
-import QrCodeImageInput from "@/components/fields/QrCodeImageField";
-import { ImageFields } from "@/components/fields/QrCodeImageField/types";
-import TextField from "@/components/fields/TextField";
-import { LockClosedIcon } from "@heroicons/react/solid";
-import { Form, Formik } from "formik";
-import { useState } from "react";
+import { encryptText } from "@/common/crypto"
+import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser"
+import { getErrorMessage, join } from "@/common/utils"
+import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel"
+import { faqsEncrypt } from "@/components/FaqContent"
+import FaqList from "@/components/FaqList"
+import Page from "@/components/Page"
+import { Panel, SplitPanelSection } from "@/components/Panel"
+import QrCodeImageInput from "@/components/fields/QrCodeImageField"
+import { ImageFields } from "@/components/fields/QrCodeImageField/types"
+import TextField from "@/components/fields/TextField"
+import { LockClosedIcon } from "@heroicons/react/solid"
+import { Form, Formik } from "formik"
+import { useState } from "react"
 
 export default function EncryptSection() {
-  const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null);
+  const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null)
   return (
     <Page title="Encrypt QR Codes">
       <SplitPanelSection>
@@ -31,13 +31,13 @@ export default function EncryptSection() {
       </SplitPanelSection>
       <FaqList faqs={faqsEncrypt} />
     </Page>
-  );
+  )
 }
 
 interface Fields extends ImageFields {
-  hint: string;
-  pass1: string;
-  pass2: string;
+  hint: string
+  pass1: string
+  pass2: string
 }
 
 async function encrypt({
@@ -47,23 +47,23 @@ async function encrypt({
   pass2,
   cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
-  if (pass1 !== pass2) throw new Error("Passwords do not match");
+  if (pass1 !== pass2) throw new Error("Passwords do not match")
 
-  const dataDecrypted = cameraQrCodeData || (await readQrCode(image));
-  const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass1);
+  const dataDecrypted = cameraQrCodeData || (await readQrCode(image))
+  const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass1)
   const svgHtml = generateQrCodeSvg(
     JSON.stringify(dataEncrypted),
     dataEncrypted.hint,
-    dataEncrypted.date
-  );
+    dataEncrypted.date,
+  )
 
-  console.info("Generated encrypted QR Code:");
-  console.table({ plainText: dataDecrypted, ...dataEncrypted });
-  return { svgHtml, dataEncrypted, dataDecrypted };
+  console.info("Generated encrypted QR Code:")
+  console.table({ plainText: dataDecrypted, ...dataEncrypted })
+  return { svgHtml, dataEncrypted, dataDecrypted }
 }
 
 function EncryptPanel(props: {
-  setQrCodeInfo: (qr: QrCodeInfo | null) => void;
+  setQrCodeInfo: (qr: QrCodeInfo | null) => void
 }) {
   return (
     <Formik<Fields>
@@ -75,24 +75,24 @@ function EncryptPanel(props: {
         cameraQrCodeData: "",
       }}
       onSubmit={async (values, helpers) => {
-        props.setQrCodeInfo(null);
+        props.setQrCodeInfo(null)
         await encrypt(values)
           .then(props.setQrCodeInfo)
           .catch((e) => {
-            console.info(e);
-            helpers.setErrors(getErrorMessage(e));
-          });
+            console.info(e)
+            helpers.setErrors(getErrorMessage(e))
+          })
       }}
     >
       {({ isValid, errors, values: { pass1, image } }) => (
         <Panel
           title="Encrypt a QR Code"
           icon={
-            <LockClosedIcon className="w-6 h-6 mr-2 -mt-0.5 text-gray-300" />
+            <LockClosedIcon className="-mt-0.5 mr-2 h-6 w-6 text-gray-300" />
           }
           hasError={typeof errors === "string"}
         >
-          <Form className="space-y-4 flex flex-col flex-1">
+          <Form className="flex flex-1 flex-col space-y-4">
             <QrCodeImageInput
               demoSrc="/demo/qr-code-plain.png"
               demoDescription="Demo QR Code"
@@ -134,19 +134,19 @@ function EncryptPanel(props: {
             <button
               type="submit"
               className={join(
-                "flex items-center justify-center mt-1 p-2 w-full rounded-md shadow-sm text-white disabled focus-ring text-sm sm:text-base",
+                "disabled focus-ring mt-1 flex w-full items-center justify-center rounded-md p-2 text-sm text-white shadow-sm sm:text-base",
                 typeof errors === "string"
                   ? "bg-red-500 focus:ring-red-300/50"
-                  : "bg-indigo-500 focus:ring-indigo-300/50"
+                  : "bg-indigo-500 focus:ring-indigo-300/50",
               )}
               disabled={!(image && isValid)}
             >
-              <LockClosedIcon className="w-5 h-5 mr-1" />
+              <LockClosedIcon className="mr-1 h-5 w-5" />
               <span>Encrypt</span>
             </button>
           </Form>
         </Panel>
       )}
     </Formik>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import { downloadPng, svgToDataUrl } from "@/app/download";
-import { EncryptedQRData } from "@/common/parser";
-import { addImageToStore } from "@/common/useImageStore";
-import { Panel } from "@/components/Panel";
-import { QrcodeIcon } from "@heroicons/react/outline";
-import { CheckIcon, DownloadIcon, PrinterIcon } from "@heroicons/react/solid";
-import { useState } from "react";
+import { downloadPng, svgToDataUrl } from "@/app/download"
+import { EncryptedQRData } from "@/common/parser"
+import { addImageToStore } from "@/common/useImageStore"
+import { Panel } from "@/components/Panel"
+import { QrcodeIcon } from "@heroicons/react/outline"
+import { CheckIcon, DownloadIcon, PrinterIcon } from "@heroicons/react/solid"
+import { useState } from "react"
 
 export interface QrCodeInfo {
-  svgHtml: string;
-  dataDecrypted: string;
-  dataEncrypted: EncryptedQRData;
+  svgHtml: string
+  dataDecrypted: string
+  dataEncrypted: EncryptedQRData
 }
 
 export default function DisplayPanel({
@@ -18,34 +18,34 @@ export default function DisplayPanel({
   qrCodeInfo,
   getFileName,
 }: {
-  title: string;
-  decryptedTextLabel: string;
-  qrCodeInfo: QrCodeInfo | null;
-  getFileName: (i: EncryptedQRData) => string;
+  title: string
+  decryptedTextLabel: string
+  qrCodeInfo: QrCodeInfo | null
+  getFileName: (i: EncryptedQRData) => string
 }) {
-  const [savedImageForPrint, setSavedImageForPrint] = useState(false);
+  const [savedImageForPrint, setSavedImageForPrint] = useState(false)
   return (
     <Panel title={title}>
       {qrCodeInfo ? (
         <>
           <div
             dangerouslySetInnerHTML={{ __html: qrCodeInfo.svgHtml }}
-            className="w-full max-w-lg aspect-square rounded-md shadow-sm border border-gray-300"
+            className="aspect-square w-full max-w-lg rounded-md border border-gray-300 shadow-sm"
           />
-          <p className="mt-4 mb-1 text-sm">{decryptedTextLabel}</p>
-          <div className="text-mono p-2 rounded-md text-sm shadow-sm bg-gray-50 border border-gray-300 break-words">
+          <p className="mb-1 mt-4 text-sm">{decryptedTextLabel}</p>
+          <div className="text-mono break-words rounded-md border border-gray-300 bg-gray-50 p-2 text-sm shadow-sm">
             {qrCodeInfo.dataDecrypted}
           </div>
         </>
       ) : (
-        <div className="grid place-items-center w-full h-full text-gray-200">
+        <div className="grid h-full w-full place-items-center text-gray-200">
           <QrcodeIcon className="max-h-40" />
         </div>
       )}
 
       <div className="flex-1" />
 
-      <div className="grid grid-cols-2 gap-4 mt-4 text-sm sm:text-base">
+      <div className="mt-4 grid grid-cols-2 gap-4 text-sm sm:text-base">
         {/* <button
           className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
           disabled={!qrCodeInfo}
@@ -60,42 +60,42 @@ export default function DisplayPanel({
         </button> */}
 
         <button
-          className="flex items-center justify-center p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
+          className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
           disabled={!qrCodeInfo}
           onClick={() => {
-            const { svgHtml, dataEncrypted } = qrCodeInfo!;
+            const { svgHtml, dataEncrypted } = qrCodeInfo!
             downloadPng(svgHtml, getFileName(dataEncrypted)).catch((e) =>
-              console.error("Failed to download image", e)
-            );
+              console.error("Failed to download image", e),
+            )
           }}
         >
-          <DownloadIcon className="w-5 h-5 mr-1" />
+          <DownloadIcon className="mr-1 h-5 w-5" />
           <span>Download PNG</span>
         </button>
 
         <button
-          className="flex justify-center items-center p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
+          className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
           disabled={!qrCodeInfo}
           onClick={() => {
             const {
               svgHtml,
               dataEncrypted: { hint, date },
-            } = qrCodeInfo!;
-            addImageToStore({ src: svgToDataUrl(svgHtml), hint, date });
-            setSavedImageForPrint(true);
-            setTimeout(() => setSavedImageForPrint(false), 1000);
+            } = qrCodeInfo!
+            addImageToStore({ src: svgToDataUrl(svgHtml), hint, date })
+            setSavedImageForPrint(true)
+            setTimeout(() => setSavedImageForPrint(false), 1000)
           }}
         >
           {savedImageForPrint ? (
-            <CheckIcon className="w-5 h-5 mr-1" />
+            <CheckIcon className="mr-1 h-5 w-5" />
           ) : (
             <>
-              <PrinterIcon className="w-5 h-5 mr-1" />
+              <PrinterIcon className="mr-1 h-5 w-5" />
               <span>Save for print</span>
             </>
           )}
         </button>
       </div>
     </Panel>
-  );
+  )
 }

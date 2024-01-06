@@ -1,30 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+"use client"
 
-import { loadImageFromFile } from "@/common/use-image-load";
-import { join } from "@/common/utils";
-import { PhotographIcon } from "@heroicons/react/solid";
-import { useField } from "formik";
-import { useContext, useEffect } from "react";
-import { imageInputContext } from "./context";
+import { loadImageFromFile } from "@/common/use-image-load"
+import { join } from "@/common/utils"
+import { PhotographIcon } from "@heroicons/react/solid"
+import { useField } from "formik"
+import { useContext, useEffect } from "react"
+import { imageInputContext } from "./context"
 
 export default function ImageMode() {
-  const [field, meta] = useField<string>("image");
-  const { value: dataUrl, ...fieldVals } = field;
+  const [field, meta] = useField<string>("image")
+  const { value: dataUrl, ...fieldVals } = field
 
   const { fileName, isDropping, setImageDetails, resetImageDetails } =
-    useContext(imageInputContext);
+    useContext(imageInputContext)
 
-  useEffect(() => resetImageDetails, [resetImageDetails]); // reset on exit
+  useEffect(() => resetImageDetails, [resetImageDetails]) // reset on exit
 
   return (
     <label
       tabIndex={0}
       className={join(
-        "group flex flex-col items-center justify-center w-full h-40 rounded-lg cursor-pointer text-center p-2 border-dashed border-2 focus-ring focus:ring-indigo-400/50",
+        "focus-ring group flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-2 text-center focus:ring-indigo-400/50",
         isDropping
           ? "border-indigo-400"
-          : "border-gray-300 hover:border-indigo-400"
+          : "border-gray-300 hover:border-indigo-400",
       )}
     >
       {dataUrl ? (
@@ -34,7 +34,7 @@ export default function ImageMode() {
         </>
       ) : (
         <>
-          <PhotographIcon className="text-gray-300 w-12 h-12" />
+          <PhotographIcon className="h-12 w-12 text-gray-300" />
           <span className="mt-4 text-sm leading-6 text-gray-600">
             <span className="inline font-semibold text-indigo-600 group-hover:underline">
               Select an image
@@ -45,7 +45,7 @@ export default function ImageMode() {
       )}
 
       {meta.touched && meta.error && (
-        <span className="text-red-500 text-sm">{meta.error}</span>
+        <span className="text-sm text-red-500">{meta.error}</span>
       )}
 
       <input
@@ -54,13 +54,13 @@ export default function ImageMode() {
         accept="image/*"
         {...fieldVals}
         onChange={async (e) => {
-          const files = (e.target as HTMLInputElement)?.files;
+          const files = (e.target as HTMLInputElement)?.files
           if (files) {
-            const imageDetails = await loadImageFromFile(files[0]);
-            setImageDetails(imageDetails, "image");
+            const imageDetails = await loadImageFromFile(files[0])
+            setImageDetails(imageDetails, "image")
           }
         }}
       />
     </label>
-  );
+  )
 }

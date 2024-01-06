@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { QnA } from "@/components/FaqContent";
-import { Children, CssClass } from "@/common/utils";
-import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
-import { useState } from "react";
+import { QnA } from "@/components/FaqContent"
+import { Children, CssClass } from "@/common/utils"
+import { MinusIcon, PlusIcon } from "@heroicons/react/outline"
+import { useState } from "react"
 
 export default function FaqList({ faqs }: { faqs: QnA[] }) {
   return (
-    <section className="mt-8 px-4 mx-auto max-w-3xl">
+    <section className="mx-auto mt-8 max-w-3xl px-4">
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
         FAQs
       </h2>
@@ -17,17 +17,17 @@ export default function FaqList({ faqs }: { faqs: QnA[] }) {
         ))}
       </dl>
     </section>
-  );
+  )
 }
 
 function Disclosure(props: Children & CssClass & QnA) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   return (
     <div>
       <dt>
         <button
           onClick={() => setOpen((o) => !o)}
-          className="py-4 flex w-full items-start justify-between text-left text-gray-900"
+          className="flex w-full items-start justify-between py-4 text-left text-gray-900"
         >
           <span className="text-base font-semibold leading-7">
             {props.question}
@@ -47,5 +47,5 @@ function Disclosure(props: Children & CssClass & QnA) {
         </dd>
       )}
     </div>
-  );
+  )
 }

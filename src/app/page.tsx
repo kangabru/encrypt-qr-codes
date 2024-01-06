@@ -1,10 +1,10 @@
-import links from "@/common/links";
-import { CssClass } from "@/common/utils";
-import L from "@/components/FaqLink";
-import { QnA, faqsHome } from "@/components/FaqContent";
-import HangingQrCodes from "@/components/HangingQrCodes";
-import { GitHubIcon } from "@/components/icons";
-import { QrcodeIcon } from "@heroicons/react/outline";
+import links from "@/common/links"
+import { CssClass } from "@/common/utils"
+import L from "@/components/FaqLink"
+import { QnA, faqsHome } from "@/components/FaqContent"
+import HangingQrCodes from "@/components/HangingQrCodes"
+import { GitHubIcon } from "@/components/icons"
+import { QrcodeIcon } from "@heroicons/react/outline"
 import {
   CodeIcon,
   EyeOffIcon,
@@ -12,21 +12,21 @@ import {
   LockClosedIcon,
   LockOpenIcon,
   PhotographIcon,
-} from "@heroicons/react/solid";
-import Image from "next/image";
-import Link from "next/link";
-import { SVGProps } from "react";
+} from "@heroicons/react/solid"
+import Image from "next/image"
+import Link from "next/link"
+import { SVGProps } from "react"
 
 export default function Home() {
   return (
-    <main className="relative bg-gray-50 min-h-screen w-full px-5 pt-12 sm:pt-16 pb-32 border-y-4 border-indigo-500 overflow-hidden">
+    <main className="relative min-h-screen w-full overflow-hidden border-y-4 border-indigo-500 bg-gray-50 px-5 pb-32 pt-12 sm:pt-16">
       <HangingQrCodes />
 
       <section className="relative flex flex-col items-center text-center">
         <div className="relative z-10 flex flex-col items-center text-center">
-          <QrcodeIcon className="w-20 h-20 text-indigo-500 mb-4" />
+          <QrcodeIcon className="mb-4 h-20 w-20 text-indigo-500" />
 
-          <h1 className="text-3xl font-bold tracking-tight leading-loose text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold leading-loose tracking-tight text-gray-900 sm:text-4xl">
             Encrypt QR codes
             <br />
             for private 2FA backups
@@ -41,24 +41,24 @@ export default function Home() {
               href="/encrypt"
               className="flex items-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              <LockClosedIcon className="w-6 h-6 mr-2 -ml-1" />
+              <LockClosedIcon className="-ml-1 mr-2 h-6 w-6" />
               <span>Encrypt</span>
             </Link>
             <Link
               href="/decrypt"
               className="flex items-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              <LockOpenIcon className="w-6 h-6 mr-2 -ml-1" />
+              <LockOpenIcon className="-ml-1 mr-2 h-6 w-6" />
               <span>Decrypt</span>
             </Link>
           </div>
 
           <Link
             href={links.github.home}
-            className="mt-5 mx-auto flex items-center rounded-md py-2 px-3 font-medium text-black hover:bg-gray-200 hover:bg-opacity-75"
+            className="mx-auto mt-5 flex items-center rounded-md px-3 py-2 font-medium text-black hover:bg-gray-200 hover:bg-opacity-75"
           >
             <GitHubIcon
-              className="h-5 w-5 -mt-0.5 mr-2 -ml-1"
+              className="-ml-1 -mt-0.5 mr-2 h-5 w-5"
               aria-hidden="true"
             />
             <span>Star on GitHub</span>
@@ -73,10 +73,10 @@ export default function Home() {
         alt="Encrypt UI"
         width={1542}
         height={1018}
-        className="mt-5 mx-auto w-full max-w-3xl rounded-2xl shadow"
+        className="mx-auto mt-5 w-full max-w-3xl rounded-2xl shadow"
       />
 
-      <section className="mx-auto max-w-2xl mt-16 sm:mt-20 lg:mt-24 lg:max-w-4xl">
+      <section className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
         <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
           {features.map((feature) => (
             <div key={feature.name} className="relative pl-16">
@@ -97,21 +97,21 @@ export default function Home() {
         </dl>
       </section>
 
-      <section className="relative mt-20 mx-auto max-w-screen-2xl">
-        <QrcodeIcon className="absolute w-48 h-48 left-10 top-1/4 rotate-6 text-indigo-500 opacity-5" />
-        <QrcodeIcon className="absolute w-64 h-64 -right-5 top-1/2 -rotate-3 text-indigo-500 opacity-5" />
-        <QrcodeIcon className="absolute w-52 h-52 -left-5 top-[80%] rotate-3 text-indigo-500 opacity-5" />
+      <section className="relative mx-auto mt-20 max-w-screen-2xl">
+        <QrcodeIcon className="absolute left-10 top-1/4 h-48 w-48 rotate-6 text-indigo-500 opacity-5" />
+        <QrcodeIcon className="absolute -right-5 top-1/2 h-64 w-64 -rotate-3 text-indigo-500 opacity-5" />
+        <QrcodeIcon className="absolute -left-5 top-[80%] h-52 w-52 rotate-3 text-indigo-500 opacity-5" />
 
         <FaqLarge faqs={faqsHome} className="mx-auto max-w-2xl" />
       </section>
     </main>
-  );
+  )
 }
 
 interface Feature {
-  name: string;
-  description: string | JSX.Element;
-  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+  name: string
+  description: string | JSX.Element
+  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
 }
 
 const features: Feature[] = [
@@ -151,7 +151,7 @@ const features: Feature[] = [
     ),
     icon: FingerPrintIcon,
   },
-];
+]
 
 function FaqLarge({ faqs, className }: { faqs: QnA[] } & CssClass) {
   return (
@@ -166,10 +166,10 @@ function FaqLarge({ faqs, className }: { faqs: QnA[] } & CssClass) {
               <div className="my-10 h-px bg-gradient-to-r from-slate-200/0 via-slate-200 to-slate-200/0" />
               {faq.question}
             </dt>
-            <dd className="space-y-8 leading-8 mt-4">{faq.answer}</dd>
+            <dd className="mt-4 space-y-8 leading-8">{faq.answer}</dd>
           </div>
         ))}
       </dl>
     </div>
-  );
+  )
 }

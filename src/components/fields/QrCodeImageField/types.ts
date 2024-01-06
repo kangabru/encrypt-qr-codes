@@ -1,4 +1,4 @@
 export interface ImageFields {
-  image: string;
-  cameraQrCodeData: string;
+  image: string
+  cameraQrCodeData: string
 }
