@@ -30,6 +30,9 @@ const links = {
   },
   lastPass: {
     incidents: "https://en.wikipedia.org/wiki/LastPass#Security_incidents",
+    hack: "https://blog.lastpass.com/2023/03/security-incident-update-recommended-actions/",
+    hackExtra:
+      "https://support.lastpass.com/s/document-item?language=en_US&bundleId=lastpass&topicId=LastPass/incident-2-details.html&_LANG=enus",
   },
 };
 

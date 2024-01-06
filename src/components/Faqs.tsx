@@ -75,13 +75,15 @@ export const faqsCommon: Q_A[] = [
     answer: (
       <BulletPoints
         points={[
-          "1Password is a great password manager that can double as a backup by saving your 2FA codes for you. This is convenient but storing 2FA codes within it could pose a risk if the vault is compromised.",
+          "1Password is a great password manager that can double as a backup by saving your 2FA codes for you. This is convenient but in the (unlikely) event that your vault is compromised then your 2FA codes won't protect those accounts.",
           <>
             <L href={links._1Password.twoFactor}>They claim</L> that most hacks
             made are not by compromising your vault, but by guessing your
             password or finding it in a data breach. This is true but a vault is
-            a high value target and a even breach on LastPass was made by{" "}
-            <L href={links.lastPass.incidents}>hacking the corporate vault</L>.
+            a high value target and even a breach on LastPass was{" "}
+            <L href={links.lastPass.incidents}>made</L> by{" "}
+            <L href={links.lastPass.hack}>hacking</L> the{" "}
+            <L href={links.lastPass.hackExtra}>corporate vault</L>.
           </>,
           "So if you want to separate your 2FA codes from your password manager then encrypting and backing up your 2FA codes is a good solution.",
         ]}
@@ -120,6 +122,7 @@ const _faqsEncrypt: Q_A[] = [
             The plaintext is encrypted into ciphertext as follows:
             <BulletPoints
               key={0}
+              className="ml-2"
               points={[
                 <>
                   <L href={links.crypto.pbkdf2}>PBKDF2</L> derives a 256 bit key
@@ -140,7 +143,8 @@ const _faqsEncrypt: Q_A[] = [
             <p className="flex-1 mr-2">
               The ciphertext, salt, and IV are encoded into a text format and
               saved as a JSON object. The data is encoded into a new encrypted
-              QR code.
+              QR code.{" "}
+              <L href={links.examples.typescript}>View the process here</L>.
             </p>
             <p
               key={0}
@@ -169,10 +173,10 @@ const _faqsEncrypt: Q_A[] = [
       <BulletPoints
         points={[
           "Log into an account and follow their instructions to set up 2FA. Stop when they present you with a QR code.",
-          "Before you scan the QR code with your auth app, first encrypt the QR code with this website.",
+          "Before you scan the QR code with your auth app, first encrypt a copy of the QR code with this website.",
           "Either screenshot, copy/paste, or scan the QR code with a camera and encrypt it. The following Q&A has more details.",
           "Download the encrypted QR code and save or print the image in multiple places as a backup.",
-          "Continue setting up 2FA as normal with your authenticator app.",
+          "Continue setting up 2FA with the original QR code as normal with your authenticator app.",
         ]}
       />
     ),
@@ -189,6 +193,7 @@ const _faqsEncrypt: Q_A[] = [
             scanning it via camera. E.g:
             <BulletPoints
               key={0}
+              className="ml-2"
               points={[
                 "Scan a QR code on your phone via your laptop webcam.",
                 "Scan a printed QR code with your mobile camera.",
@@ -219,6 +224,7 @@ const _faqsEncrypt: Q_A[] = [
             password:
             <BulletPoints
               key={0}
+              className="ml-2"
               points={[
                 "Make it long (16+ characters). Each character makes it exponentially harder to crack.",
                 <>
@@ -227,12 +233,13 @@ const _faqsEncrypt: Q_A[] = [
                   <L href={links._1Password.generator}>generator</L> (turn the
                   &apos;memorable&apos; option on).
                 </>,
-                "Make it memorable: 5 random words is much harder to crack and easier to remember than 16+ random characters.",
+                "Make it memorable: 5 random words is much easier to remember but still harder to crack than 16+ random characters.",
               ]}
             />
           </>,
           "The solution? Generate 5 random words like this `passion-ken-omit-verso-tortoise` - it's long, random, and memorable. Write it down and practice it regularly until you commit it to memory.",
-          "Using the same password for all QR codes should be fine. If you plan to store your 2FA codes separate to your password manager then create a new password and don't store it in your vault.",
+          "If you plan to keep your 2FA codes separate from your password manager then create a new password (not your master password) and commit it to memory - don't store it in your vault.",
+          "Ideally use a unique password for each QR code. Using the same one for all codes should be fine if they're accessed rarely and stored safely in the same place - akin to a using password manager.",
         ]}
       />
     ),
@@ -250,7 +257,7 @@ const _faqsDecrypt: Q_A[] = [
           "Note: Encryption/decryption is done on your device and no data is collected about you.",
           "Select/paste/drop/scan an encrypted QR code into the decrypt page. You can use your phone camera to scan a printed code for example.",
           "Type in the original password to unlock the code. There is no way to recover a password if you have lost or forgotten it.",
-          "You can scan the decrypted code as a normal two-factor auth QR code.",
+          "You can scan the decrypted code as a normal 2FA QR code.",
           <>
             Advanced users can decrypt codes using{" "}
             <L href={links.examples.typescript}>Typescript</L> or{" "}
