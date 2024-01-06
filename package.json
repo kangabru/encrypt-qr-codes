@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check": "npm run typecheck & npm run lint & npm run test",
+    "check": "npm run typecheck & npm run lint & npm run pretty:check & npm run test",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "pretty:check": "npx prettier . --check",
+    "pretty:write": "npx prettier . --write",
     "test": "jest"
   },
   "dependencies": {
