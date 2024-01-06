@@ -18,12 +18,17 @@ import { useState } from "react"
 
 export default function EncryptSection() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null)
+  const [isEncrypting, setIsEncrypting] = useState(false)
   return (
     <Page title="Encrypt QR Codes">
       <SplitPanelSection>
-        <EncryptPanel setQrCodeInfo={setQrCodeInfo} />
+        <EncryptPanel
+          setQrCodeInfo={setQrCodeInfo}
+          setIsEncrypting={setIsEncrypting}
+        />
         <DisplayPanel
           title="Encrypted QR Code"
+          isLoading={isEncrypting}
           decryptedTextLabel="Original text"
           qrCodeInfo={qrCodeInfo}
           getFileName={(d) => `qr-encrypted-${d.date}-${d.hint}`}
@@ -64,6 +69,7 @@ async function encrypt({
 
 function EncryptPanel(props: {
   setQrCodeInfo: (qr: QrCodeInfo | null) => void
+  setIsEncrypting: (_: boolean) => void
 }) {
   return (
     <Formik<Fields>
@@ -76,12 +82,14 @@ function EncryptPanel(props: {
       }}
       onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null)
+        props.setIsEncrypting(true)
         await encrypt(values)
           .then(props.setQrCodeInfo)
           .catch((e) => {
             console.info(e)
             helpers.setErrors(getErrorMessage(e))
           })
+        props.setIsEncrypting(false)
       }}
     >
       {({ isValid, errors, values: { pass1, image } }) => (

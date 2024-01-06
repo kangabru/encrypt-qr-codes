@@ -19,12 +19,17 @@ import { useState } from "react"
 
 export default function DecryptPage() {
   const [qrCodeInfo, setQrCodeInfo] = useState<QrCodeInfo | null>(null)
+  const [isEncrypting, setIsEncrypting] = useState(false)
   return (
     <Page title="Encrypt QR Codes">
       <SplitPanelSection>
-        <DecryptPanel setQrCodeInfo={setQrCodeInfo} />
+        <DecryptPanel
+          setQrCodeInfo={setQrCodeInfo}
+          setIsEncrypting={setIsEncrypting}
+        />
         <DisplayPanel
           title="Decrypted QR Code"
+          isLoading={isEncrypting}
           decryptedTextLabel="Decrypted text"
           qrCodeInfo={qrCodeInfo}
           getFileName={(d) => `qr-decrypted-${d.date}-${d.hint}`}
@@ -64,18 +69,21 @@ async function decrypt({
 
 function DecryptPanel(props: {
   setQrCodeInfo: (qr: QrCodeInfo | null) => void
+  setIsEncrypting: (_: boolean) => void
 }) {
   return (
     <Formik<Fields>
       initialValues={{ image: "", pass: "", cameraQrCodeData: "" }}
-      onSubmit={(values, helpers) => {
+      onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null)
-        return decrypt(values)
+        props.setIsEncrypting(true)
+        await decrypt(values)
           .then(props.setQrCodeInfo)
           .catch((e) => {
             console.info(e)
             helpers.setErrors(getErrorMessage(e))
           })
+        props.setIsEncrypting(false)
       }}
     >
       {({ isValid, errors, values: { image } }) => (

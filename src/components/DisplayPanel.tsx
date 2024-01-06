@@ -5,6 +5,7 @@ import { Panel } from "@/components/Panel"
 import { QrcodeIcon } from "@heroicons/react/outline"
 import { CheckIcon, DownloadIcon, PrinterIcon } from "@heroicons/react/solid"
 import { useState } from "react"
+import { LoadingIcon } from "./icons"
 
 export interface QrCodeInfo {
   svgHtml: string
@@ -14,11 +15,13 @@ export interface QrCodeInfo {
 
 export default function DisplayPanel({
   title,
+  isLoading,
   decryptedTextLabel,
   qrCodeInfo,
   getFileName,
 }: {
   title: string
+  isLoading: boolean
   decryptedTextLabel: string
   qrCodeInfo: QrCodeInfo | null
   getFileName: (i: EncryptedQRData) => string
@@ -38,8 +41,12 @@ export default function DisplayPanel({
           </div>
         </>
       ) : (
-        <div className="grid h-full w-full place-items-center text-gray-200">
-          <QrcodeIcon className="max-h-40" />
+        <div className="grid h-full w-full place-items-center">
+          {isLoading ? (
+            <LoadingIcon className="h-8 w-8 text-indigo-600" />
+          ) : (
+            <QrcodeIcon className="max-h-40 text-gray-200" />
+          )}
         </div>
       )}
 
