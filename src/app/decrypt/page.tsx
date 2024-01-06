@@ -2,12 +2,12 @@
 "use client";
 
 import { decryptText } from "@/common/crypto";
-import { faqsDecrypt } from "@/components/Faqs";
 import { parseEncryptedQRDataString } from "@/common/parser";
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser";
 import { getErrorMessage, join } from "@/common/utils";
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel";
-import FAQ from "@/components/FAQ";
+import { faqsDecrypt } from "@/components/FaqContent";
+import FaqList from "@/components/FaqList";
 import Page from "@/components/Page";
 import { Panel, SplitPanelSection } from "@/components/Panel";
 import QrCodeImageInput from "@/components/fields/QrCodeImageField";
@@ -30,7 +30,7 @@ export default function DecryptPage() {
           getFileName={(d) => `qr-decrypted-${d.date}-${d.hint}`}
         />
       </SplitPanelSection>
-      <FAQ faqs={faqsDecrypt} />
+      <FaqList faqs={faqsDecrypt} />
     </Page>
   );
 }

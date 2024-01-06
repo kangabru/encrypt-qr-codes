@@ -1,7 +1,7 @@
 import links from "@/common/links";
 import { CssClass } from "@/common/utils";
 import L from "@/components/FaqLink";
-import { Q_A, faqsHome } from "@/components/Faqs";
+import { QnA, faqsHome } from "@/components/FaqContent";
 import HangingQrCodes from "@/components/HangingQrCodes";
 import { GitHubIcon } from "@/components/icons";
 import { QrcodeIcon } from "@heroicons/react/outline";
@@ -153,7 +153,7 @@ const features: Feature[] = [
   },
 ];
 
-function FaqLarge({ faqs, className }: { faqs: Q_A[] } & CssClass) {
+function FaqLarge({ faqs, className }: { faqs: QnA[] } & CssClass) {
   return (
     <div className={className}>
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">

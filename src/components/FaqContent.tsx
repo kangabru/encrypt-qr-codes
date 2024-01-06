@@ -6,12 +6,12 @@ import { QrcodeIcon } from "@heroicons/react/outline";
 import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/solid";
 import type { ReactNode } from "react";
 
-export interface Q_A {
+export interface QnA {
   question: string | ReactNode;
   answer: string | ReactNode;
 }
 
-export const faqsCommon: Q_A[] = [
+export const faqsCommon: QnA[] = [
   {
     question: "Who is this for?",
     answer:
@@ -108,7 +108,7 @@ export const faqsCommon: Q_A[] = [
   },
 ];
 
-const _faqsEncrypt: Q_A[] = [
+const _faqsEncrypt: QnA[] = [
   {
     question: (
       <IconTitle icon={LockClosedIcon}>How are codes encrypted?</IconTitle>
@@ -246,7 +246,7 @@ const _faqsEncrypt: Q_A[] = [
   },
 ];
 
-const _faqsDecrypt: Q_A[] = [
+const _faqsDecrypt: QnA[] = [
   {
     question: (
       <IconTitle icon={LockOpenIcon}>How do I decrypt a QR code?</IconTitle>
@@ -269,9 +269,9 @@ const _faqsDecrypt: Q_A[] = [
   },
 ];
 
-export const faqsEncrypt: Q_A[] = [..._faqsEncrypt];
-export const faqsDecrypt: Q_A[] = [..._faqsDecrypt];
-export const faqsHome: Q_A[] = [
+export const faqsEncrypt: QnA[] = [..._faqsEncrypt];
+export const faqsDecrypt: QnA[] = [..._faqsDecrypt];
+export const faqsHome: QnA[] = [
   ...faqsCommon,
   ..._faqsEncrypt,
   ..._faqsDecrypt,

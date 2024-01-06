@@ -1,11 +1,11 @@
 "use client";
 
-import { Q_A } from "@/components/Faqs";
+import { QnA } from "@/components/FaqContent";
 import { Children, CssClass } from "@/common/utils";
 import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
-export default function FAQ({ faqs }: { faqs: Q_A[] }) {
+export default function FaqList({ faqs }: { faqs: QnA[] }) {
   return (
     <section className="mt-8 px-4 mx-auto max-w-3xl">
       <h2 className="text-xl font-bold leading-10 tracking-tight text-gray-900">
@@ -20,7 +20,7 @@ export default function FAQ({ faqs }: { faqs: Q_A[] }) {
   );
 }
 
-function Disclosure(props: Children & CssClass & Q_A) {
+function Disclosure(props: Children & CssClass & QnA) {
   const [open, setOpen] = useState(false);
   return (
     <div>
