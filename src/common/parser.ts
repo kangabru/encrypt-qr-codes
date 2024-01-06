@@ -2,6 +2,7 @@ export interface EncryptedQRData {
   iv: string
   salt: string
   cipherText: string
+  vers: string
   hint: string
   date: string
 }
@@ -26,10 +27,13 @@ function parseEncryptedQrData(data: EncryptedQRData): EncryptedQRData {
   if (!(data && typeof data === "object"))
     throw new Error("Data is not a valid object")
 
+  if (!data.vers) data.vers = "v0" // Default vers for old codes
+
   return {
     iv: parseStringFromObj("iv", data),
     salt: parseStringFromObj("salt", data),
     cipherText: parseStringFromObj("cipherText", data),
+    vers: parseStringFromObj("vers", data),
     hint: parseStringFromObj("hint", data),
     date: parseStringFromObj("date", data),
   }

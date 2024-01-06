@@ -1,10 +1,18 @@
 import { EncryptedQRData } from "@/common/parser"
 import { getDate } from "@/common/utils"
 
-const ITERATIONS = 100000
+const version = "v1" // ID to support older QR codes in case we update the encryption algo
+
 const SHA = "SHA-256"
 const ALGORITHM = "AES-GCM"
 
+// https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#password-hashing-algorithms
+const ITERATIONS: Record<string, number> = {
+  v0: 100000,
+  v1: 600000,
+}
+
+// We pass in the deps so we can target the browser, node, and tests
 export interface CryptoLib {
   getRandomValues: (array: Uint8Array) => Uint8Array
   subtle: SubtleCrypto
@@ -21,7 +29,7 @@ export async function encryptText(
     lib,
     password,
     salt,
-    ITERATIONS,
+    ITERATIONS[version ?? "v0"],
     SHA,
   )
 
@@ -36,6 +44,7 @@ export async function encryptText(
     iv: hexify(iv),
     salt: hexify(salt),
     cipherText: hexify(encrypted),
+    vers: version,
     hint,
     date: getDate(),
   }
@@ -43,14 +52,14 @@ export async function encryptText(
 
 export async function decryptText(
   lib: CryptoLib,
-  data: EncryptedQRData,
+  data: EncryptedQRData & Partial<Pick<EncryptedQRData, "vers">>,
   password: string,
 ): Promise<string> {
   const derivedKey = await deriveKeyFromPassword(
     lib,
     password,
     dehexify(data.salt),
-    ITERATIONS,
+    ITERATIONS[data.vers] ?? ITERATIONS["v0"],
     SHA,
   )
 
@@ -79,6 +88,9 @@ async function deriveKeyFromPassword(
   iterations: number,
   hash: string,
 ): Promise<CryptoKey> {
+  if (typeof iterations !== "number" && iterations < 1000)
+    throw new Error("Iterations not provided")
+
   const importedKey = await lib.subtle.importKey(
     "raw",
     new TextEncoder().encode(password),

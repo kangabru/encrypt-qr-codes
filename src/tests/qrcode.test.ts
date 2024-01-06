@@ -122,16 +122,18 @@ test("Encrypt QR code", async () => {
   expect(cipherTextInput.hint).toEqual("hint")
   expect(cipherTextInput.iv).toEqual("000102030405060708090a0b")
   expect(cipherTextInput.salt).toEqual("000102030405060708090a0b0c0d0e0f")
+  expect(cipherTextInput.vers).toEqual("v1")
   expect(cipherTextInput.cipherText).toEqual(
-    "a108e150e5fa3dfea7f6273c3f99f1467dde8eabb8616d836a29a7a6e00eebc7919684e2de",
+    "b28a7fe7d6ca62ca90c7b4585701d30564d4209c633f81910339f83fcaff1d4cdc31b7f361",
   )
 
   // Test outputs
   expect(cipherTextOutput.hint).toEqual("hint")
   expect(cipherTextOutput.iv).toEqual("000102030405060708090a0b")
   expect(cipherTextOutput.salt).toEqual("000102030405060708090a0b0c0d0e0f")
+  expect(cipherTextOutput.vers).toEqual("v1")
   expect(cipherTextOutput.cipherText).toEqual(
-    "a108e150e5fa3dfea7f6273c3f99f1467dde8eabb8616d836a29a7a6e00eebc7919684e2de",
+    "b28a7fe7d6ca62ca90c7b4585701d30564d4209c633f81910339f83fcaff1d4cdc31b7f361",
   )
   expect(plainTextOutput).toEqual(secret2fa) // The most important one
 })
