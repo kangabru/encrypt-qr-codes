@@ -60,6 +60,7 @@ async function encrypt({
     JSON.stringify(dataEncrypted),
     dataEncrypted.hint,
     dataEncrypted.date,
+    true,
   )
 
   console.info("Generated encrypted QR Code:")

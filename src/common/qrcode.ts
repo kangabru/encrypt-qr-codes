@@ -31,7 +31,7 @@ export function getQrCodeBlocks(
     [ErrorCorrectionLevel.Medium]: QRCodeDecoderErrorCorrectionLevel.M,
     [ErrorCorrectionLevel.High]: QRCodeDecoderErrorCorrectionLevel.Q,
     [ErrorCorrectionLevel.Higher]: QRCodeDecoderErrorCorrectionLevel.H,
-  }[errorCorrectionLevel ?? ErrorCorrectionLevel.Higher]
+  }[errorCorrectionLevel ?? ErrorCorrectionLevel.Medium]
 
   let code: QRCode
   try {
