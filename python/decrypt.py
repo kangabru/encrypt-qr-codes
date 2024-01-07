@@ -3,6 +3,10 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 
+ITERATIONS = {
+    "v0": 100000,
+    "v1": 600000,
+}
 
 def decrypt(image_path: str, password: str):
     # Read QR code
@@ -14,13 +18,14 @@ def decrypt(image_path: str, password: str):
         raise Exception("Could not read QR code")
 
     # Extract encrypted data
-    iv, salt, ciphertext = None, None, None
+    iv, salt, ciphertext, version = None, None, None, None
     try:
         data = json.loads(data_str)
 
         iv = bytes.fromhex(data['iv'])
         salt = bytes.fromhex(data['salt'])
         ciphertext_raw = bytes.fromhex(data['cipherText'])
+        version = data.get('vers')
     except:
         raise Exception("Could not parse QR code data")
 
@@ -28,7 +33,10 @@ def decrypt(image_path: str, password: str):
     plaintext = None
     try:
         tag, ciphertext = ciphertext_raw[-16:], ciphertext_raw[:-16]
-        key = PBKDF2(password, salt, count=100000, hmac_hash_module=SHA256, dkLen=32)
+
+        iterations = ITERATIONS.get(version or "v0")
+
+        key = PBKDF2(password, salt, count=iterations, hmac_hash_module=SHA256, dkLen=32)
         cipher = AES.new(key, AES.MODE_GCM, nonce=iv)
         plaintext_bytes = cipher.decrypt_and_verify(ciphertext, tag)
         plaintext = plaintext_bytes.decode()
