@@ -80,7 +80,11 @@ export default function PrintPage() {
                         >
                           <XIcon className="h-4 w-4 text-white" />
                         </button>
-                        <img src={image.src} alt="QR code" />
+                        <img
+                          src={image.src}
+                          alt="QR code"
+                          className="pointer-events-none"
+                        />
                       </div>
                     ))}
                   </div>
