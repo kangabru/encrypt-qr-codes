@@ -60,16 +60,14 @@ function QrCodeImageInputCore(props: DemoProps) {
           <span>Demo QR code</span>
         </button>
       </div>
-      <div>
-        {mode === "image" && <ImageMode />}
-        {mode === "camera" && <CameraMode />}
-        {mode === "demo" && (
-          <DemoMode
-            imageSrc={props.demoSrc}
-            description={props.demoDescription}
-          />
-        )}
-      </div>
+      {mode === "image" && <ImageMode />}
+      {mode === "camera" && <CameraMode />}
+      {mode === "demo" && (
+        <DemoMode
+          imageSrc={props.demoSrc}
+          description={props.demoDescription}
+        />
+      )}
     </div>
   )
 }

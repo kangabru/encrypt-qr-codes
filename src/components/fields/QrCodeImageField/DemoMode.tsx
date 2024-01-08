@@ -27,11 +27,13 @@ export default function DemoMode({ imageSrc, description }: DemoProps) {
   return (
     <div
       className={join(
-        "group flex h-40 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-2 text-center",
+        "flex h-40 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-2 text-center",
         isDropping ? "border-indigo-400" : "border-gray-300",
       )}
     >
-      <img src={imageSrc} alt="" className="h-full w-full object-contain" />
+      <div className="w-full flex-1 overflow-hidden">
+        <img src={imageSrc} alt="" className="h-full w-full object-contain" />
+      </div>
       <span>{description}</span>
     </div>
   )

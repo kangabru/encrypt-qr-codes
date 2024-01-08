@@ -29,7 +29,13 @@ export default function ImageMode() {
     >
       {dataUrl ? (
         <>
-          <img src={dataUrl} alt="" className="h-full w-full object-contain" />
+          <div className="w-full flex-1 overflow-hidden">
+            <img
+              src={dataUrl}
+              alt=""
+              className="h-full w-full object-contain"
+            />
+          </div>
           {fileName && <span>{fileName}</span>}
         </>
       ) : (
