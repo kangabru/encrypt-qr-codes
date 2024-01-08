@@ -29,22 +29,22 @@ export async function readQrCodeFromSvg(svgXml: string): Promise<ImageData> {
   return ctx.getImageData(0, 0, canvas.width, canvas.height)
 }
 
-export function generateQrCodeSvg(
-  data: string,
-  textLeft?: string,
-  textRight?: string,
-  showLockSymbol?: boolean,
-): string {
-  const blocks = getQrCodeBlocks(data)
-  return renderBlocksToSvg(blocks, textLeft, textRight, showLockSymbol)
+interface QrCodeOoptions {
+  title?: string
+  date?: string
+  showLockSymbol?: boolean
+  showWebsiteUrl?: boolean
 }
 
-function renderBlocksToSvg(
-  blocks: Blocks,
-  title?: string,
-  date?: string,
-  showLockSymbol?: boolean,
+export function generateQrCodeSvg(
+  data: string,
+  options: QrCodeOoptions,
 ): string {
+  const blocks = getQrCodeBlocks(data)
+  return renderBlocksToSvg(blocks, options)
+}
+
+function renderBlocksToSvg(blocks: Blocks, options: QrCodeOoptions): string {
   const pad = Math.ceil(blocks.size * 0.1)
   const size = blocks.size + 2 * pad
 
@@ -55,8 +55,8 @@ function renderBlocksToSvg(
         <path clip-rule="evenodd" fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" />
       </svg>
     </defs>
-    ${getQrBlocks(blocks, size, pad, !!showLockSymbol)}
-    ${getQrText(title, date, size, pad)}
+    ${getQrBlocks(blocks, size, pad, !!options.showLockSymbol)}
+    ${getQrText(options, size, pad)}
   </svg>`
 }
 
@@ -91,12 +91,7 @@ function getQrBlocks(
   return svgLines.join("")
 }
 
-function getQrText(
-  title: string | undefined,
-  date: string | undefined,
-  size: number,
-  pad: number,
-): string {
+function getQrText(options: QrCodeOoptions, size: number, pad: number): string {
   const svgLines: string[] = []
 
   const f = 0.85
@@ -107,10 +102,10 @@ function getQrText(
   const fontSmall = (pad * 0.35).toFixed(1)
 
   // Top left
-  if (title)
+  if (options.title)
     svgLines.push(
       `<text x="${x1}" y="${y1}" font-size="${fontLarge}" text-anchor="start" font-family="sans-serif">
-        ${escape(title)}
+        ${escape(options.title)}
       </text>`,
     )
 
@@ -119,20 +114,19 @@ function getQrText(
   )
 
   // Bottom right
-  if (date) {
+  if (options.date) {
     svgLines.push(
       `<text x="${x2}" y="${y2}" text-anchor="end">
-        ${escape(date)}
+        ${escape(options.date)}
       </text>`,
     )
   }
 
   // Bottom left
-  svgLines.push(
-    `<text x="${x1}" y="${y2}" text-anchor="start">
-      /kangabru/encrypt-qr-codes
-    </text>`,
-  )
+  if (options.showWebsiteUrl)
+    svgLines.push(
+      `<text x="${x1}" y="${y2}" text-anchor="start">/kangabru/encrypt-qr-codes</text>`,
+    )
 
   svgLines.push(`</g>`)
 

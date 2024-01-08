@@ -56,12 +56,12 @@ async function encrypt({
 
   const dataDecrypted = cameraQrCodeData || (await readQrCode(image))
   const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass1)
-  const svgHtml = generateQrCodeSvg(
-    JSON.stringify(dataEncrypted),
-    dataEncrypted.hint,
-    dataEncrypted.date,
-    true,
-  )
+  const svgHtml = generateQrCodeSvg(JSON.stringify(dataEncrypted), {
+    title: dataEncrypted.hint,
+    date: dataEncrypted.date,
+    showLockSymbol: true,
+    showWebsiteUrl: true,
+  })
 
   console.info("Generated encrypted QR Code:")
   console.table({ plainText: dataDecrypted, ...dataEncrypted })

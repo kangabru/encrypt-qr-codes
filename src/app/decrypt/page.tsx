@@ -56,11 +56,9 @@ async function decrypt({
   console.table({ ...dataEncrypted })
 
   const dataDecrypted = await decryptText(crypto, dataEncrypted, pass)
-
-  const svgHtml = generateQrCodeSvg(
-    dataDecrypted,
-    `Decrypted: ${dataEncrypted.hint}`,
-  )
+  const svgHtml = generateQrCodeSvg(dataDecrypted, {
+    title: dataEncrypted.hint,
+  })
 
   console.info("Decrypted data:")
   console.table({ dataDecrypted })
