@@ -29,9 +29,16 @@ export default function PrintPage() {
       <div ref={ref}>
         {hasImages ? (
           <>
-            <section className="mx-auto mb-6 grid w-full max-w-lg gap-4 text-sm print:hidden sm:grid-cols-2 sm:text-base">
+            <section className="mx-auto mb-6 flex w-full max-w-sm space-x-2 text-sm print:hidden sm:text-base">
               <button
-                className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                className="flex flex-1 items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                onClick={window.print}
+              >
+                <PrinterIcon className="mr-2 h-5 w-5" />
+                <span>Print pages</span>
+              </button>
+              <button
+                className="rounded-md border-gray-300 bg-indigo-500 px-3 py-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
                 onClick={() => {
                   if (
                     window.confirm(
@@ -41,15 +48,7 @@ export default function PrintPage() {
                     clearImages()
                 }}
               >
-                <TrashIcon className="mr-2 h-5 w-5" />
-                <span>Clear data</span>
-              </button>
-              <button
-                className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-                onClick={window.print}
-              >
-                <PrinterIcon className="mr-2 h-5 w-5" />
-                <span>Print pages</span>
+                <TrashIcon className="h-5 w-5" />
               </button>
             </section>
             <section
