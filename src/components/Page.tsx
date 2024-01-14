@@ -9,7 +9,7 @@ import {
   PrinterIcon,
 } from "@heroicons/react/solid"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { GitHubIcon } from "./icons"
 
 const navigation = [
@@ -19,7 +19,7 @@ const navigation = [
 ]
 
 export default function Page(props: { title: string } & Children & CssClass) {
-  const path = usePagePath()
+  const path = usePathname()
   return (
     <div className="min-h-screen bg-gray-100 pb-32 print:pb-0">
       <header className="bg-indigo-600 pb-32 text-white print:hidden md:pb-48">
@@ -75,23 +75,4 @@ export default function Page(props: { title: string } & Children & CssClass) {
       </main>
     </div>
   )
-}
-
-function usePagePath() {
-  const [path, setPath] = useState(getPath())
-
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    const handleLocationChange = () => setPath(getPath())
-
-    window.addEventListener("popstate", handleLocationChange)
-    handleLocationChange()
-    return () => window.removeEventListener("popstate", handleLocationChange)
-  }, [])
-
-  return path
-}
-
-function getPath() {
-  return typeof window === "undefined" ? "" : window.location.pathname
 }
