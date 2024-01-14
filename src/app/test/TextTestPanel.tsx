@@ -55,7 +55,7 @@ export default function TextTestPanel() {
               name="text"
               type="text"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200/50 focus:ring-opacity-50"
               placeholder="my-secret-text"
             />
           </label>
@@ -66,17 +66,14 @@ export default function TextTestPanel() {
               name="encrypt-password"
               type="password"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200/50 focus:ring-opacity-50"
               placeholder="my-secret-password"
             />
           </label>
 
           <div className="flex-1" />
 
-          <button
-            type="submit"
-            className="disabled mt-1 block w-full rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-          >
+          <button type="submit" className="action-button">
             Encrypt/Decrypt
           </button>
         </form>

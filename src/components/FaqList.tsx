@@ -27,7 +27,7 @@ function Disclosure(props: Children & CssClass & QnA) {
       <dt>
         <button
           onClick={() => setOpen((o) => !o)}
-          className="flex w-full items-start justify-between py-4 text-left text-gray-900"
+          className="flex w-full items-start justify-between rounded-md px-2 py-4 text-left text-gray-900 hover:underline focus:underline focus:outline-none"
         >
           <span className="text-base font-semibold leading-7">
             {props.question}

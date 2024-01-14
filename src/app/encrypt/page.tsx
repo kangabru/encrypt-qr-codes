@@ -142,12 +142,7 @@ function EncryptPanel(props: {
 
             <button
               type="submit"
-              className={join(
-                "disabled focus-ring mt-1 flex w-full items-center justify-center rounded-md p-2 text-sm text-white shadow-sm sm:text-base",
-                typeof errors === "string"
-                  ? "bg-red-500 focus:ring-red-300/50"
-                  : "bg-indigo-500 focus:ring-indigo-300/50",
-              )}
+              className="action-button mt-1"
               disabled={!(image && isValid)}
             >
               <LockClosedIcon className="mr-1 h-5 w-5" />

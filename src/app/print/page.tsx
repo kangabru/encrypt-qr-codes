@@ -30,15 +30,12 @@ export default function PrintPage() {
         {hasImages ? (
           <>
             <section className="mx-auto mb-6 flex w-full max-w-sm space-x-2 text-sm print:hidden sm:text-base">
-              <button
-                className="flex flex-1 items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-                onClick={window.print}
-              >
+              <button className="action-button flex-1" onClick={window.print}>
                 <PrinterIcon className="mr-2 h-5 w-5" />
                 <span>Print pages</span>
               </button>
               <button
-                className="rounded-md border-gray-300 bg-indigo-500 px-3 py-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                className="action-button px-3"
                 onClick={() => {
                   if (
                     window.confirm(

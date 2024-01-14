@@ -29,7 +29,7 @@ export default function ImageMode() {
     <label
       tabIndex={0}
       className={join(
-        "focus-ring group flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-2 text-center focus:ring-indigo-400/50",
+        "focus-ring group flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-2 text-center focus:ring-indigo-300/50",
         isDropping
           ? "border-indigo-400"
           : "border-gray-300 hover:border-indigo-400",

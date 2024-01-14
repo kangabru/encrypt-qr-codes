@@ -12,6 +12,12 @@
   }
 }
 
+@layer components {
+  .action-button {
+    @apply disabled focus-ring flex items-center justify-center rounded-md bg-indigo-500 p-2 text-sm text-white shadow-sm focus:ring focus:ring-indigo-300/50 focus:ring-opacity-50 sm:text-base;
+  }
+}
+
 @page {
   size: A4;
   margin: 0;

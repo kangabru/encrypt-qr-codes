@@ -79,10 +79,7 @@ export default function QrCodeTestPanel() {
             )}
           </div>
 
-          <button
-            type="submit"
-            className="disabled mt-1 block w-full rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
-          >
+          <button type="submit" className="action-button">
             Encrypt/Decrypt
           </button>
         </form>

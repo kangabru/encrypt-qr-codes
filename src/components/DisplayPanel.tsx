@@ -54,7 +54,7 @@ export default function DisplayPanel({
 
       <div className="mt-4 grid grid-cols-2 gap-4 text-sm sm:text-base">
         {/* <button
-          className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-indigo-500 text-white disabled"
+          className="action-button"
           disabled={!qrCodeInfo}
           onClick={() => {
             const { svgHtml, dataEncrypted } = qrCodeInfo!;
@@ -67,7 +67,7 @@ export default function DisplayPanel({
         </button> */}
 
         <button
-          className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+          className="action-button"
           disabled={!qrCodeInfo}
           onClick={() => {
             const { svgHtml, dataEncrypted } = qrCodeInfo!
@@ -81,7 +81,7 @@ export default function DisplayPanel({
         </button>
 
         <button
-          className="disabled flex w-full items-center justify-center rounded-md border-gray-300 bg-indigo-500 p-2 text-white shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+          className="action-button"
           disabled={!qrCodeInfo}
           onClick={() => {
             const {
