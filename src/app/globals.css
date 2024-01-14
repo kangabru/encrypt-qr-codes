@@ -8,7 +8,7 @@
   }
 
   .focus-ring {
-    @apply focus:outline-none focus:ring;
+    @apply focus:z-10 focus:outline-none focus:ring;
   }
 }
 
