@@ -17,10 +17,7 @@ export default function ImageMode() {
     error: otherError,
     isDropping,
     setImageDetails,
-    resetImageDetails,
   } = useContext(imageInputContext)
-
-  useEffect(() => resetImageDetails, [resetImageDetails]) // reset on exit
 
   const fieldError = meta.touched && meta.error
   const displayError = fieldError || otherError

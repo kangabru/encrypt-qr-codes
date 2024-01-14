@@ -23,8 +23,6 @@ export function useImagePaste(
   setError: (err: string) => void,
 ) {
   useEffect(() => {
-    console.log("Setting up paste")
-
     const onPaste = (e: LocalClipboardEvent) =>
       loadImageOnPaste(e)
         .then(setDataUrl)

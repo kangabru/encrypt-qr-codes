@@ -8,7 +8,7 @@ import {
 } from "@/common/use-image-load"
 import { Children } from "@/common/utils"
 import { useFormikContext } from "formik"
-import { createContext, useCallback, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import { ImageFields } from "./types"
 
 export type Mode = "image" | "camera" | "demo"
@@ -65,6 +65,11 @@ export function WithImageInputContext(props: Children) {
     },
   )
   const [isDropping] = useImageDrop((d) => setImageDetails(d, "image"))
+
+  // Reset image details whening leaving image mode
+  useEffect(() => {
+    if (mode === "image") return resetImageDetails
+  }, [mode, resetImageDetails])
 
   return (
     <imageInputContext.Provider
