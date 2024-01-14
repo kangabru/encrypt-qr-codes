@@ -18,13 +18,20 @@ export type ImageDetails = {
 export type SetImageDetails = (_: ImageDetails) => void
 
 /** Imports an image by pasting from clipboard */
-export function useImagePaste(setDataUrl: SetImageDetails) {
+export function useImagePaste(
+  setDataUrl: SetImageDetails,
+  setError: (err: string) => void,
+) {
   useEffect(() => {
+    console.log("Setting up paste")
+
     const onPaste = (e: LocalClipboardEvent) =>
-      loadImageOnPaste(e).then(setDataUrl)
+      loadImageOnPaste(e)
+        .then(setDataUrl)
+        .catch((e) => setError(e.toString()))
     document.addEventListener("paste", onPaste)
     return () => document.removeEventListener("paste", onPaste)
-  }, [setDataUrl])
+  }, [setDataUrl, setError])
 }
 
 /** Imports an image by dragging and dropping from the file system. */
@@ -92,7 +99,7 @@ export function loadImageFromFile(
           .then(accept)
           .catch(reject)
     } else if (file) reject("File is not an image")
-    else reject("No data given")
+    else reject("No image found")
   })
 }
 
@@ -123,7 +130,7 @@ function loadImageOnChange(e: Event): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
     const files = (e.target as HTMLInputElement)?.files
     if (files) loadImageFromFile(files[0]).then(accept).catch(reject)
-    else reject("No data given")
+    else reject("No image files found")
   })
 }
 
@@ -145,7 +152,7 @@ function loadImageOnPaste(e: LocalClipboardEvent): Promise<ImageDetails> {
 
     loadImageFromFile(file)
       .then((d) => accept({ ...d, fileName: "Pasted image" }))
-      .catch(reject)
+      .catch(() => reject("No image found from paste"))
   })
 }
 
@@ -154,6 +161,6 @@ function loadImageOnDrop(e: DragEvent): Promise<ImageDetails> {
   return new Promise((accept, reject) => {
     const files = e.dataTransfer?.files
     if (files) loadImageFromFile(files[0]).then(accept).catch(reject)
-    else reject("No data given")
+    else reject("No image found from drop")
   })
 }

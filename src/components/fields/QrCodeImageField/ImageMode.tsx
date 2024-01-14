@@ -12,10 +12,18 @@ export default function ImageMode() {
   const [field, meta] = useField<string>("image")
   const { value: dataUrl, ...fieldVals } = field
 
-  const { fileName, isDropping, setImageDetails, resetImageDetails } =
-    useContext(imageInputContext)
+  const {
+    fileName,
+    error: otherError,
+    isDropping,
+    setImageDetails,
+    resetImageDetails,
+  } = useContext(imageInputContext)
 
   useEffect(() => resetImageDetails, [resetImageDetails]) // reset on exit
+
+  const fieldError = meta.touched && meta.error
+  const displayError = fieldError || otherError
 
   return (
     <label
@@ -50,8 +58,8 @@ export default function ImageMode() {
         </>
       )}
 
-      {meta.touched && meta.error && (
-        <span className="text-sm text-red-500">{meta.error}</span>
+      {displayError && (
+        <span className="text-sm text-red-500">{displayError}</span>
       )}
 
       <input

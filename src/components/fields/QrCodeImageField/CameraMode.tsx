@@ -7,17 +7,16 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { imageInputContext } from "./context"
 
 export default function CameraMode() {
-  const { setImageDetails } = useContext(imageInputContext)
+  const { setImageDetails, error, setError } = useContext(imageInputContext)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const qrRef = useRef<QrScanner>(null)
 
   const [running, setRunning] = useState(false)
-  const [error, setError] = useState<string>()
   const [cams, setCams] = useState<QrScanner.Camera[]>([])
 
   useEffect(() => {
-    setError(undefined)
+    setError("")
     setRunning(false)
     if (!videoRef.current) return
 
@@ -60,7 +59,7 @@ export default function CameraMode() {
       setRunning(false)
       qrScanner.destroy()
     }
-  }, [setImageDetails])
+  }, [setImageDetails, setError])
 
   useEffect(() => {
     setCams([])

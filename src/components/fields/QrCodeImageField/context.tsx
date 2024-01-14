@@ -17,6 +17,8 @@ export interface ImageInputContext {
   mode: Mode
   setMode: (m: Mode) => void
   fileName: string
+  error: string
+  setError: (e: string) => void
   isDropping: boolean
   setImageDetails: (d: ImageDetails, m?: Mode) => void
   resetImageDetails: () => void
@@ -32,10 +34,12 @@ type FieldSetter = <K extends keyof ImageFields>(
 export function WithImageInputContext(props: Children) {
   const [mode, setMode] = useState<Mode>("image")
   const [fileName, setFileName] = useState("")
+  const [error, setError] = useState("")
 
   const setFieldValue = useFormikContext().setFieldValue as FieldSetter
   const setImageDetails: ImageInputContext["setImageDetails"] = useCallback(
     (details, mode) => {
+      setError("")
       setFileName(details.fileName ?? "")
       setFieldValue("image", details.dataUrl)
       setFieldValue("cameraQrCodeData", details.qrCodeData ?? "")
@@ -46,13 +50,20 @@ export function WithImageInputContext(props: Children) {
 
   const resetImageDetails: ImageInputContext["resetImageDetails"] =
     useCallback(() => {
+      setError("")
       setFileName("")
       setFieldValue("image", "")
       setFieldValue("cameraQrCodeData", "")
     }, [setFieldValue])
 
   // We keep these at this level to enable paste/drop in camera mode
-  useImagePaste((d) => setImageDetails(d, "image"))
+  useImagePaste(
+    (d) => setImageDetails(d, "image"),
+    (err) => {
+      setMode("image")
+      setError(err)
+    },
+  )
   const [isDropping] = useImageDrop((d) => setImageDetails(d, "image"))
 
   return (
@@ -63,6 +74,8 @@ export function WithImageInputContext(props: Children) {
         setImageDetails,
         resetImageDetails,
         fileName,
+        error,
+        setError,
         isDropping,
       }}
     >
