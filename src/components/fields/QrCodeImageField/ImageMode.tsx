@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
-import { loadImageFromFile } from "@/common/use-image-load"
 import { join } from "@/common/utils"
 import { PhotographIcon } from "@heroicons/react/solid"
+import { loadImageFromFile } from "@/common/useImage"
 import { useField } from "formik"
 import { useContext, useEffect } from "react"
 import { imageInputContext } from "./context"

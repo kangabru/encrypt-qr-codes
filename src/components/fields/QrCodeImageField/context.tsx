@@ -1,11 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
-import {
-  ImageDetails,
-  useImageDrop,
-  useImagePaste,
-} from "@/common/use-image-load"
+import { ImageDetails, useImageDrop, useImagePaste } from "@/common/useImage"
 import { Children } from "@/common/utils"
 import { useFormikContext } from "formik"
 import { createContext, useCallback, useEffect, useState } from "react"

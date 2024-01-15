@@ -3,7 +3,7 @@
 
 import { encryptText } from "@/common/crypto"
 import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser"
-import { getErrorMessage, join } from "@/common/utils"
+import { getErrorMessage } from "@/common/utils"
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel"
 import { faqsEncrypt } from "@/components/FaqContent"
 import FaqList from "@/components/FaqList"
