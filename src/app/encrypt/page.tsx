@@ -101,6 +101,7 @@ function EncryptPanel(props: {
         >
           <Form className="flex flex-1 flex-col space-y-4">
             <QrCodeImageInput
+              showTypeMode
               demoSrc="/demo/qr-code-plain.png"
               demoDescription="Demo QR Code"
             />

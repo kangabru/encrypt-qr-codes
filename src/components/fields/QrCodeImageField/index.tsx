@@ -15,12 +15,13 @@ import ImageMode from "./ImageMode"
 import TypeMode from "./TypeMode"
 import { Mode, WithImageInputContext, imageInputContext } from "./context"
 
-interface DemoProps {
+interface Props {
+  showTypeMode?: boolean
   demoSrc: string
   demoDescription: string
 }
 
-export default function QrCodeImageInput(props: DemoProps) {
+export default function QrCodeImageInput(props: Props) {
   return (
     <WithImageInputContext>
       <QrCodeImageInputCore {...props} />
@@ -28,14 +29,21 @@ export default function QrCodeImageInput(props: DemoProps) {
   )
 }
 
-function QrCodeImageInputCore(props: DemoProps) {
+function QrCodeImageInputCore(props: Props) {
   const { mode } = useContext(imageInputContext)
   return (
     <div>
-      <div className="mb-2 grid grid-cols-4 text-center text-sm font-medium text-gray-900">
+      <div
+        className={join(
+          "mb-2 grid text-center text-sm font-medium text-gray-900",
+          props.showTypeMode ? "grid-cols-4" : "grid-cols-3",
+        )}
+      >
         <ModeButton mode="image" text="Select" icon={QrcodeIcon} />
         <ModeButton mode="camera" text="Scan" icon={VideoCameraIcon} />
-        <ModeButton mode="type" text="Type" icon={AnnotationIcon} />
+        {props.showTypeMode && (
+          <ModeButton mode="type" text="Text" icon={AnnotationIcon} />
+        )}
         <ModeButton mode="demo" text="Demo" icon={BeakerIcon} />
       </div>
       {mode === "image" && <ImageMode />}
