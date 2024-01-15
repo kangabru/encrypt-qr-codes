@@ -53,6 +53,7 @@ export function WithImageInputContext(props: Children) {
 
   // Reset image details whening leaving image mode
   useEffect(() => {
+    setError("")
     if (mode === "image") return resetImageDetails
   }, [mode, resetImageDetails])
 
