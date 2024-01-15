@@ -1,0 +1,9 @@
+.grow-wrap {
+  display: grid;
+}
+
+.grow-wrap > * {
+  resize: none;
+  overflow: hidden;
+  grid-area: 1 / 1 / 2 / 2;
+}

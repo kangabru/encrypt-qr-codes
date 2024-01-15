@@ -3,8 +3,8 @@
 
 import { decryptText } from "@/common/crypto"
 import { parseEncryptedQRDataString } from "@/common/parser"
-import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser"
-import { getErrorMessage, join } from "@/common/utils"
+import { generateQrCodeSvg } from "@/common/qrcode.browser"
+import { getErrorMessage } from "@/common/utils"
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel"
 import { faqsDecrypt } from "@/components/FaqContent"
 import FaqList from "@/components/FaqList"
@@ -30,9 +30,16 @@ export default function DecryptPage() {
         <DisplayPanel
           title="Decrypted QR Code"
           isLoading={isEncrypting}
-          decryptedTextLabel="Decrypted text"
           qrCodeInfo={qrCodeInfo}
           getFileName={(d) => `qr-decrypted-${d.date}-${d.hint}`}
+          extraInfo={
+            <>
+              <p className="mb-1 mt-4 text-sm">Decrypted text</p>
+              <p className="text-mono whitespace-pre-wrap break-words rounded-md border border-gray-300 bg-gray-50 p-2 text-sm shadow-sm">
+                {qrCodeInfo?.dataDecrypted}
+              </p>
+            </>
+          }
         />
       </SplitPanelSection>
       <FaqList faqs={faqsDecrypt} />

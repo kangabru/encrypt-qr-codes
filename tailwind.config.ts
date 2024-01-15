@@ -12,6 +12,9 @@ const config: Config = {
       colors: {
         gray: colors.slate,
       },
+      minHeight: {
+        40: "10rem",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms"), require("./tailwind.utils.js")],

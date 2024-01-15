@@ -2,7 +2,7 @@
 "use client"
 
 import { encryptText } from "@/common/crypto"
-import { generateQrCodeSvg, readQrCode } from "@/common/qrcode.browser"
+import { generateQrCodeSvg } from "@/common/qrcode.browser"
 import { getErrorMessage } from "@/common/utils"
 import DisplayPanel, { QrCodeInfo } from "@/components/DisplayPanel"
 import { faqsEncrypt } from "@/components/FaqContent"
@@ -29,7 +29,6 @@ export default function EncryptSection() {
         <DisplayPanel
           title="Encrypted QR Code"
           isLoading={isEncrypting}
-          decryptedTextLabel="Original text"
           qrCodeInfo={qrCodeInfo}
           getFileName={(d) => `qr-encrypted-${d.date}-${d.hint}`}
         />

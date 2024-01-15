@@ -16,13 +16,13 @@ export interface QrCodeInfo {
 export default function DisplayPanel({
   title,
   isLoading,
-  decryptedTextLabel,
+  extraInfo,
   qrCodeInfo,
   getFileName,
 }: {
   title: string
   isLoading: boolean
-  decryptedTextLabel: string
+  extraInfo?: JSX.Element
   qrCodeInfo: QrCodeInfo | null
   getFileName: (i: EncryptedQRData) => string
 }) {
@@ -35,10 +35,7 @@ export default function DisplayPanel({
             dangerouslySetInnerHTML={{ __html: qrCodeInfo.svgHtml }}
             className="aspect-square w-full max-w-lg rounded-md border border-gray-300 shadow-sm"
           />
-          <p className="mb-1 mt-4 text-sm">{decryptedTextLabel}</p>
-          <div className="text-mono break-words rounded-md border border-gray-300 bg-gray-50 p-2 text-sm shadow-sm">
-            {qrCodeInfo.dataDecrypted}
-          </div>
+          {extraInfo}
         </>
       ) : (
         <div className="grid h-full w-full place-items-center">
