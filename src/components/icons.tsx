@@ -1,6 +1,7 @@
 import { join } from "@/common/utils"
 
-type IconProps = React.ComponentProps<"svg">
+export type IconProps = React.ComponentProps<"svg">
+export type IconElement = (props: React.ComponentProps<"svg">) => JSX.Element
 
 export function GitHubIcon(props: IconProps) {
   return (

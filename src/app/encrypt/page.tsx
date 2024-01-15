@@ -46,15 +46,14 @@ interface Fields extends ImageFields {
 }
 
 async function encrypt({
-  image,
+  qrCodeData,
   hint,
   pass1,
   pass2,
-  cameraQrCodeData,
 }: Fields): Promise<QrCodeInfo> {
   if (pass1 !== pass2) throw new Error("Passwords do not match")
 
-  const dataDecrypted = cameraQrCodeData || (await readQrCode(image))
+  const dataDecrypted = qrCodeData
   const dataEncrypted = await encryptText(crypto, dataDecrypted, hint, pass1)
   const svgHtml = generateQrCodeSvg(JSON.stringify(dataEncrypted), {
     title: dataEncrypted.hint,
@@ -76,10 +75,10 @@ function EncryptPanel(props: {
     <Formik<Fields>
       initialValues={{
         image: "",
+        qrCodeData: "",
         hint: "",
         pass1: "",
         pass2: "",
-        cameraQrCodeData: "",
       }}
       onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null)
@@ -93,7 +92,7 @@ function EncryptPanel(props: {
         props.setIsEncrypting(false)
       }}
     >
-      {({ isValid, errors, values: { pass1, image } }) => (
+      {({ isValid, errors, values: { pass1, qrCodeData: data } }) => (
         <Panel
           title="Encrypt a QR Code"
           icon={
@@ -112,7 +111,7 @@ function EncryptPanel(props: {
               label="Hint"
               description="Unencrypted text to remember what the QR code is for."
               minLength={3}
-              disabled={!image}
+              disabled={!data}
               placeholder="Google Account"
             />
             <TextField
@@ -121,7 +120,7 @@ function EncryptPanel(props: {
               type="password"
               description="Make it secure but memorable as this is unrecoverable."
               minLength={12}
-              disabled={!image}
+              disabled={!data}
               placeholder="hunter2"
             />
             <TextField
@@ -130,7 +129,7 @@ function EncryptPanel(props: {
               type="password"
               description="To ensure that you didn't mistype it."
               minLength={pass1.length || 12}
-              disabled={!image}
+              disabled={!data}
               placeholder="hunter2"
             />
 
@@ -143,7 +142,7 @@ function EncryptPanel(props: {
             <button
               type="submit"
               className="action-button mt-1"
-              disabled={!(image && isValid)}
+              disabled={!(data && isValid)}
             >
               <LockClosedIcon className="mr-1 h-5 w-5" />
               <span>Encrypt</span>

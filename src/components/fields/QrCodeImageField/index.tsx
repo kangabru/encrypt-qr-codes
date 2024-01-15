@@ -1,12 +1,19 @@
 "use client"
 
 import { join } from "@/common/utils"
-import { BeakerIcon, QrcodeIcon, VideoCameraIcon } from "@heroicons/react/solid"
+import { IconElement } from "@/components/icons"
+import {
+  AnnotationIcon,
+  BeakerIcon,
+  QrcodeIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/solid"
 import { useContext } from "react"
 import CameraMode from "./CameraMode"
 import DemoMode from "./DemoMode"
 import ImageMode from "./ImageMode"
-import { WithImageInputContext, imageInputContext } from "./context"
+import TypeMode from "./TypeMode"
+import { Mode, WithImageInputContext, imageInputContext } from "./context"
 
 interface DemoProps {
   demoSrc: string
@@ -22,46 +29,18 @@ export default function QrCodeImageInput(props: DemoProps) {
 }
 
 function QrCodeImageInputCore(props: DemoProps) {
-  const { mode, setMode } = useContext(imageInputContext)
+  const { mode } = useContext(imageInputContext)
   return (
     <div>
-      <div className="mb-2 grid grid-cols-3 text-center text-sm font-medium text-gray-900">
-        <button
-          type="button"
-          onClick={() => setMode("image")}
-          className={join(
-            "focus-ring flex items-center justify-center p-3 hover:rounded hover:bg-gray-50 focus:rounded",
-            mode === "image" && "border-b-2 border-b-indigo-500",
-          )}
-        >
-          <QrcodeIcon className="mr-1 h-5 w-5 flex-shrink-0" />
-          <span>Select image</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("camera")}
-          className={join(
-            "focus-ring flex items-center justify-center p-3 hover:rounded hover:bg-gray-50 focus:rounded",
-            mode === "camera" && "border-b-2 border-b-indigo-500",
-          )}
-        >
-          <VideoCameraIcon className="mr-1 h-5 w-5 flex-shrink-0" />
-          <span>Scan camera</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("demo")}
-          className={join(
-            "focus-ring flex items-center justify-center p-3 hover:rounded hover:bg-gray-50 focus:rounded",
-            mode === "demo" && "border-b-2 border-b-indigo-500",
-          )}
-        >
-          <BeakerIcon className="mr-1 h-5 w-5 flex-shrink-0" />
-          <span>Demo QR code</span>
-        </button>
+      <div className="mb-2 grid grid-cols-4 text-center text-sm font-medium text-gray-900">
+        <ModeButton mode="image" text="Select" icon={QrcodeIcon} />
+        <ModeButton mode="camera" text="Scan" icon={VideoCameraIcon} />
+        <ModeButton mode="type" text="Type" icon={AnnotationIcon} />
+        <ModeButton mode="demo" text="Demo" icon={BeakerIcon} />
       </div>
       {mode === "image" && <ImageMode />}
       {mode === "camera" && <CameraMode />}
+      {mode === "type" && <TypeMode />}
       {mode === "demo" && (
         <DemoMode
           imageSrc={props.demoSrc}
@@ -69,5 +48,22 @@ function QrCodeImageInputCore(props: DemoProps) {
         />
       )}
     </div>
+  )
+}
+
+function ModeButton(props: { mode: Mode; text: string; icon: IconElement }) {
+  const { mode, setMode } = useContext(imageInputContext)
+  return (
+    <button
+      type="button"
+      onClick={() => setMode(props.mode)}
+      className={join(
+        "focus-ring flex items-center justify-center p-3 hover:rounded hover:bg-gray-50 focus:rounded",
+        mode === props.mode && "border-b-2 border-b-indigo-500",
+      )}
+    >
+      <props.icon className="mr-1 h-5 w-5 flex-shrink-0" />
+      <span>{props.text}</span>
+    </button>
   )
 }

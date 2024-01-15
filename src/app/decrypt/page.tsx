@@ -44,12 +44,8 @@ interface Fields extends ImageFields {
   pass: string
 }
 
-async function decrypt({
-  image,
-  pass,
-  cameraQrCodeData,
-}: Fields): Promise<QrCodeInfo> {
-  const dataEncryptedString = cameraQrCodeData || (await readQrCode(image))
+async function decrypt({ qrCodeData, pass }: Fields): Promise<QrCodeInfo> {
+  const dataEncryptedString = qrCodeData
   const dataEncrypted = parseEncryptedQRDataString(dataEncryptedString)
 
   console.info("Encrypted data:")
@@ -71,7 +67,7 @@ function DecryptPanel(props: {
 }) {
   return (
     <Formik<Fields>
-      initialValues={{ image: "", pass: "", cameraQrCodeData: "" }}
+      initialValues={{ image: "", pass: "", qrCodeData: "" }}
       onSubmit={async (values, helpers) => {
         props.setQrCodeInfo(null)
         props.setIsEncrypting(true)
@@ -84,7 +80,7 @@ function DecryptPanel(props: {
         props.setIsEncrypting(false)
       }}
     >
-      {({ isValid, errors, values: { image } }) => (
+      {({ isValid, errors, values: { qrCodeData: data } }) => (
         <Panel
           title="Decrypt a QR Code"
           hasError={typeof errors === "string"}
@@ -102,7 +98,7 @@ function DecryptPanel(props: {
               type="password"
               description="Used to encrypt the QR code. Unrecoverable if lost."
               minLength={1}
-              disabled={!image}
+              disabled={!data}
               placeholder="hunter2"
             />
 
@@ -115,7 +111,7 @@ function DecryptPanel(props: {
             <button
               type="submit"
               className="action-button mt-1"
-              disabled={!(image && isValid)}
+              disabled={!(data && isValid)}
             >
               <LockOpenIcon className="mr-1 h-5 w-5" />
               <span>Decrypt</span>

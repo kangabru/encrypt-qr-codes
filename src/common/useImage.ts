@@ -5,6 +5,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react"
+import { readQrCode } from "./qrcode.browser"
 
 type Event = ChangeEvent<HTMLInputElement>
 
@@ -13,7 +14,7 @@ export type ImageDetails = {
   width: number
   height: number
   fileName?: string
-  qrCodeData?: string
+  qrCodeData: string
 }
 export type SetImageDetails = (_: ImageDetails) => void
 
@@ -113,7 +114,11 @@ export function loadImageFromDataUrl(
     image.onload = (_) => {
       const width = image.naturalWidth
       const height = image.naturalHeight
-      accept({ dataUrl, fileName, width, height })
+      readQrCode(dataUrl)
+        .then((qrCodeData) => {
+          accept({ dataUrl, fileName, width, height, qrCodeData })
+        })
+        .catch(reject)
     }
     image.src = dataUrl
   })

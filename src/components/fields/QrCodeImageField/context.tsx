@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
-import { ImageDetails, useImageDrop, useImagePaste } from "@/common/useImage"
+import { ImageDetails } from "@/common/useImage"
 import { Children } from "@/common/utils"
 import { useFormikContext } from "formik"
 import { createContext, useCallback, useEffect, useState } from "react"
 import { ImageFields } from "./types"
 
-export type Mode = "image" | "camera" | "demo"
+export type Mode = "image" | "camera" | "type" | "demo"
 
 export interface ImageInputContext {
   mode: Mode
@@ -15,7 +15,6 @@ export interface ImageInputContext {
   fileName: string
   error: string
   setError: (e: string) => void
-  isDropping: boolean
   setImageDetails: (d: ImageDetails, m?: Mode) => void
   resetImageDetails: () => void
 }
@@ -38,7 +37,7 @@ export function WithImageInputContext(props: Children) {
       setError("")
       setFileName(details.fileName ?? "")
       setFieldValue("image", details.dataUrl)
-      setFieldValue("cameraQrCodeData", details.qrCodeData ?? "")
+      setFieldValue("qrCodeData", details.qrCodeData ?? "")
       if (mode) setMode(mode)
     },
     [setFieldValue],
@@ -49,18 +48,8 @@ export function WithImageInputContext(props: Children) {
       setError("")
       setFileName("")
       setFieldValue("image", "")
-      setFieldValue("cameraQrCodeData", "")
+      setFieldValue("qrCodeData", "")
     }, [setFieldValue])
-
-  // We keep these at this level to enable paste/drop in camera mode
-  useImagePaste(
-    (d) => setImageDetails(d, "image"),
-    (err) => {
-      setMode("image")
-      setError(err)
-    },
-  )
-  const [isDropping] = useImageDrop((d) => setImageDetails(d, "image"))
 
   // Reset image details whening leaving image mode
   useEffect(() => {
@@ -77,7 +66,6 @@ export function WithImageInputContext(props: Children) {
         fileName,
         error,
         setError,
-        isDropping,
       }}
     >
       {props.children}
