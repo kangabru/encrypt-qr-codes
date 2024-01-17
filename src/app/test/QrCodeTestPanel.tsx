@@ -34,11 +34,10 @@ export default function QrCodeTestPanel() {
       const dataEncypted = await encryptText(crypto, plainText, hint, pass)
       addMessage(`Encrypted text:\n${JSON.stringify(dataEncypted, null, 4)}`)
 
-      const svgSrc = generateQrCodeSvg(
-        JSON.stringify(dataEncypted),
-        dataEncypted.hint,
-        dataEncypted.date,
-      )
+      const svgSrc = generateQrCodeSvg(JSON.stringify(dataEncypted), {
+        title: dataEncypted.hint,
+        date: dataEncypted.date,
+      })
       const pngSrc = await svgToPng(svgSrc)
       setDataUrl(pngSrc)
       addMessage(`Generated QR code from encrypted data`)

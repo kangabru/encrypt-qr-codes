@@ -22,6 +22,7 @@ export default function DemoMode({ imageSrc, description }: DemoProps) {
       width: 500,
       height: 500,
       fileName: "Demo QR Code",
+      qrCodeData: "",
     })
 
     readQrCode(imageSrc)
