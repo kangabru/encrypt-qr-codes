@@ -31,11 +31,18 @@ Start at the landing page `app/page.tsx` and start playing. The page auto-update
 
 ## Deploy
 
-Test and deploy with:
+Test, build, and run:
 
 ```bash
 npm run check
 npm run build
+npm start
+```
+
+Or build and run with docker:
+
+```bash
+docker compose up
 ```
 
 Or quickly self-host with:
