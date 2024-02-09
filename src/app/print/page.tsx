@@ -1,14 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
-import useImageStore, { StoredImage } from "@/common/useImageStore"
-import { Children } from "@/common/utils"
+import useImageStore from "@/common/useImageStore"
 import Page from "@/components/Page"
 import { QrcodeIcon } from "@heroicons/react/outline"
-import { PrinterIcon, TrashIcon, XIcon } from "@heroicons/react/solid"
+import {
+  DownloadIcon,
+  PrinterIcon,
+  TrashIcon,
+  XIcon,
+} from "@heroicons/react/solid"
 import useMeasure from "react-use-measure"
-
-type ImageInfo = [string, StoredImage]
+import { downloadPng, svgToPngDataUrl } from "../download"
 
 const CODES_PER_PAGE = 12
 
@@ -64,7 +67,21 @@ export default function PrintPage() {
                         className="relative m-4 h-52 w-52 rounded-lg border border-gray-100 bg-white p-4"
                       >
                         <button
-                          className="absolute -right-2 -top-2 rounded-full bg-black p-1 print:hidden"
+                          className="absolute -top-2 right-5 rounded-full bg-black p-1 hover:scale-105 print:hidden"
+                          onClick={async () =>
+                            downloadPng(
+                              await svgToPngDataUrl(image.src),
+                              image.fileName ??
+                                `qr-${image.date}-${image.hint}`,
+                            ).catch((e) =>
+                              console.error("Failed to download image", e),
+                            )
+                          }
+                        >
+                          <DownloadIcon className="h-4 w-4 text-white" />
+                        </button>
+                        <button
+                          className="absolute -right-2 -top-2 rounded-full bg-black p-1 hover:scale-105 print:hidden"
                           onClick={() => {
                             if (
                               window.confirm(

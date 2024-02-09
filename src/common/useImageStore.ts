@@ -5,6 +5,7 @@ export interface StoredImage {
   src: string
   hint: string
   date: string
+  fileName: string
 }
 
 export default function useImageStore(): [

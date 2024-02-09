@@ -1,4 +1,4 @@
-import { downloadPng, svgToDataUrl } from "@/app/download"
+import { downloadPng, svgToDataUrl, svgToPngDataUrl } from "@/app/download"
 import { EncryptedQRData } from "@/common/parser"
 import { addImageToStore } from "@/common/useImageStore"
 import { Panel } from "@/components/Panel"
@@ -66,11 +66,13 @@ export default function DisplayPanel({
         <button
           className="action-button"
           disabled={!qrCodeInfo}
-          onClick={() => {
-            const { svgHtml, dataEncrypted } = qrCodeInfo!
-            downloadPng(svgHtml, getFileName(dataEncrypted)).catch((e) =>
-              console.error("Failed to download image", e),
-            )
+          onClick={async () => {
+            const dataUrlSvg = svgToDataUrl(qrCodeInfo!.svgHtml)
+            const dataUrlPng = await svgToPngDataUrl(dataUrlSvg)
+            downloadPng(
+              dataUrlPng,
+              getFileName(qrCodeInfo!.dataEncrypted),
+            ).catch((e) => console.error("Failed to download image", e))
           }}
         >
           <DownloadIcon className="mr-1 h-5 w-5" />
@@ -81,11 +83,14 @@ export default function DisplayPanel({
           className="action-button"
           disabled={!qrCodeInfo}
           onClick={() => {
-            const {
-              svgHtml,
-              dataEncrypted: { hint, date },
-            } = qrCodeInfo!
-            addImageToStore({ src: svgToDataUrl(svgHtml), hint, date })
+            const { svgHtml, dataEncrypted } = qrCodeInfo!
+            const { hint, date } = dataEncrypted
+            addImageToStore({
+              src: svgToDataUrl(svgHtml),
+              hint,
+              date,
+              fileName: getFileName(dataEncrypted),
+            })
             setSavedImageForPrint(true)
             setTimeout(() => setSavedImageForPrint(false), 1000)
           }}

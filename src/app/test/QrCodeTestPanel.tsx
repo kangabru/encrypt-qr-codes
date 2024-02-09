@@ -8,7 +8,7 @@ import { getErrorMessage } from "@/common/utils"
 import { Panel, SplitPanelSection } from "@/components/Panel"
 import { QrcodeIcon } from "@heroicons/react/outline"
 import { useCallback, useState } from "react"
-import { svgToPng } from "../download"
+import { svgToPngDataUrl } from "../download"
 
 export default function QrCodeTestPanel() {
   const [messages, setMessages] = useState<string[]>([])
@@ -38,7 +38,7 @@ export default function QrCodeTestPanel() {
         title: dataEncypted.hint,
         date: dataEncypted.date,
       })
-      const pngSrc = await svgToPng(svgSrc)
+      const pngSrc = await svgToPngDataUrl(svgSrc)
       setDataUrl(pngSrc)
       addMessage(`Generated QR code from encrypted data`)
 

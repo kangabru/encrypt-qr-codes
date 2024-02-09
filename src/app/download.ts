@@ -1,37 +1,28 @@
-export async function downloadSvg(svgXml: string, fileName: string) {
-  const blob = new Blob([svgXml], { type: "text/plain" })
-  const url = URL.createObjectURL(blob)
-
-  const link = document.createElement("a")
-  link.href = url
-  link.download = `${fileName}.svg`
-  link.style.display = "block"
-  link.click()
-
-  URL.revokeObjectURL(url)
+export function svgToDataUrl(svgXml: string) {
+  return `data:image/svg+xml;base64,${btoa(svgXml)}`
 }
 
-export async function downloadPng(svgXml: string, fileName: string) {
-  const pngImage = await svgToPng(svgXml)
+export async function svgToPngDataUrl(dataUrl: string): Promise<string> {
+  const [canvas] = await svgToCanvas(dataUrl)
+  return canvas.toDataURL("image/png")
+}
+
+export async function downloadPng(pngDataUrl: string, fileName: string) {
+  if (!pngDataUrl.startsWith("data:image/png;"))
+    throw new Error(`Data is not a PNG data url: ${pngDataUrl}`)
 
   const link = document.createElement("a")
-  link.href = pngImage
+  link.href = pngDataUrl
   link.download = `${fileName}.png`
   link.style.display = "block"
   link.click()
 }
 
-export async function svgToPng(svgXml: string): Promise<string> {
-  const [canvas] = await svgToCanvas(svgXml)
-  return canvas.toDataURL("image/png")
-}
-
 export async function svgToCanvas(
-  svgXml: string,
+  dataUrl: string,
   size = 1000,
 ): Promise<[HTMLCanvasElement, CanvasRenderingContext2D]> {
-  const svgDataUrl = svgToDataUrl(svgXml)
-  const svgImage = await createImage(svgDataUrl)
+  const svgImage = await createImage(dataUrl)
 
   const canvas = document.createElement("canvas")
   canvas.width = size
@@ -43,10 +34,6 @@ export async function svgToCanvas(
   context.drawImage(svgImage, 0, 0, size, size)
 
   return [canvas, context]
-}
-
-export function svgToDataUrl(svgXml: string) {
-  return `data:image/svg+xml;base64,${btoa(svgXml)}`
 }
 
 function createImage(src: string): Promise<HTMLImageElement> {
