@@ -32,7 +32,10 @@ export default function DisplayPanel({
       {qrCodeInfo ? (
         <>
           <div
-            dangerouslySetInnerHTML={{ __html: qrCodeInfo.svgHtml }}
+            dangerouslySetInnerHTML={{
+              // In-app generated SVG. Comes from the output of the QR code parser so isn't injectable from a QR code.
+              __html: qrCodeInfo.svgHtml,
+            }}
             className="aspect-square w-full max-w-lg rounded-md border border-gray-300 shadow-sm"
           />
           {extraInfo}
