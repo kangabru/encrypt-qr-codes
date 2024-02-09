@@ -8,7 +8,7 @@ export default function TypeMode() {
   return (
     <AutogrowTextarea
       {...field}
-      className="text-mono min-h-40 relative w-full break-words rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:ring focus:ring-indigo-200/50"
+      className="text-mono relative min-h-40 w-full break-words rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:ring focus:ring-indigo-200/50"
       placeholder={`Google Backup codes\n\nabz2j-18dn3\n1l42k-vme4q`}
     />
   )
